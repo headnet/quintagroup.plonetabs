@@ -1,0 +1,9 @@
+Changelog for quintagroup.plonetabs
+
+    (name of developer listed in brackets)
+
+quintagroup.plonetabs - 0.5 Unreleased
+
+    - Initial package structure.
+      [zopeskel]
+
