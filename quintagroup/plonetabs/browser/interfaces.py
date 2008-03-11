@@ -30,6 +30,12 @@ class IPloneTabsControlPanel(Interface):
     def getCategories():
         """ Return list of categories contained in portal_actions tool """
     
+    def portal_tabs():
+        """ See global-sections viewlet """
+    
+    def selected_portal_tab():
+        """ See global-sections viewlet """
+    
     def test(condition, ifTrue, ifFalse):
         """ Instead of test function in skins page templates """
     

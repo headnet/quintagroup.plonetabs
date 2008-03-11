@@ -1,0 +1,22 @@
+<metal:block use-macro="here/global_defines/macros/defines" />
+
+<tal:cache tal:define="lang language;
+                       charset site_properties/default_charset|string:utf-8">
+  <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
+    Get the global cache headers located in global_cache_settings.
+  </metal:cache>
+</tal:cache>
+
+<tal:tabs i18n:domain="plone">
+
+    <ul id="portal-globalnav">
+        <tal:tabs tal:repeat="tab view/portal_tabs"><li tal:attributes="id string:portaltab-${tab/id};
+                            class python:view.selected_portal_tab==tab['id'] and 'selected' or 'plain'">
+            <a href="" 
+               tal:content="tab/name"
+               tal:attributes="href tab/url;
+                               title tab/description|nothing">
+            Tab Name
+            </a></li></tal:tabs>
+    </ul>
+</tal:tabs>
