@@ -17,9 +17,14 @@
 
 /* Hovering for IE especially */
 #app li:mouseover {
+    action-client: addClass;
+    addClass-value: onHover;
 }
 
 #app li:mouseout {
+    action-client: removeClass;
+    removeClass-value: onHover;
+}
 }
 
 /* Automatically generated tabs */
