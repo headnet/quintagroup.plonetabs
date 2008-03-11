@@ -1,0 +1,352 @@
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+/*
+***************************************************************************************************
+*                                                                                                 *
+*   There are two global self-excluding classes: 'viewing' and 'sorting',                         *
+*   one local class 'editing' for menu items which are expanded for editing,                      *
+*   and one more local class 'adding' for adding form when it's in open state.                    *
+*                                                                                                 *
+*   Reorder action are always available and it TEMPORARY stop other actions on the form:          *
+*       editing items                                                                             *
+*       deleting items                                                                            *
+*       toggling item visibility                                                                  *
+*       adding item                                                                               *
+*                                                                                                 *
+*   After returning to 'viewing' class from 'sorting' all items become to the same state they     *
+*   were before sorting (in editing state or not).                                                *
+*                                                                                                 *
+*   And the same behaviour for adding form: form state ('adding' or not) become the same it was   *
+*   before sorting.                                                                               *
+*                                                                                                 *
+*   All actions except reordering could be done at any time in relationship to each other.        *
+*                                                                                                 *
+***************************************************************************************************
+*/
+
+#app.viewing                        .reorder-controls,
+#app.sorting                        .sort-controls,
+#app.viewing li.editing             .editform,
+#app #addaction.adding              .field-visible,
+#app #addaction.adding              .field-name dt,
+#app #addaction.adding              .field-action,
+#app #addaction.adding              .field-action label,
+#app #addaction.adding              .advanced,
+#app #addaction.adding              .field-id,
+#app #addaction.adding              .field-condition,
+#app #addaction.adding              .add-controls {
+    display: block;
+}
+
+#app                                #busy,
+#app.viewing                        .noitems,
+#app                                .reorder-controls,
+#app                                .sort-controls,
+#app.viewing li.editing             .url-helper,
+#app.viewing li.editing             .tab-title,
+#app                                .drag-handle,
+#app                                .delete,
+#app                                .visibility,
+#app                                .editform,
+#app.sorting                        #addaction,
+#app                                .field-visible,
+#app                                .field-name dt,
+#app                                .field-action,
+#app                                .advanced,
+#app                                .field-id,
+#app                                .field-condition,
+#app                                .add-controls {
+    display: none;
+}
+
+#app.working #busy,
+#app.viewing ul.csshover li:hover    .delete,
+#app.viewing ul.csshover li.onHover  .delete,
+#app.viewing ul.csshover li:hover    .visibility,
+#app.viewing ul.csshover li.onHover  .visibility,
+#app ul#roottabs.csshover li:hover   .visibility,
+#app ul#roottabs.csshover li.onHover .visibility,
+#app.sorting                         .drag-handle {
+    display: inline;
+}
+
+/**********************************************************/
+
+#app.sorting #tabslist img.drag-handle {
+    cursor: move;
+}
+
+#app .invisible span.tab-title {
+    color:#aaa;
+}
+
+/*common***************************************************/
+
+div.reorder-controls,
+div.sort-controls {
+    float:left;
+}
+
+.drag-handle {
+    float:left;
+    margin:0.5em 0.5em 0 0;
+}
+
+#app ul {
+    list-style-type: none;
+    list-style-image: none;
+    margin:2.5em 0 0 1.7em;
+}
+
+#app .delete {
+    background: url(++resource++trash.gif) 12px 50% no-repeat;
+    padding: 0 0 0 25px;
+    line-height:1.8em;
+    font-size:80%;
+    border:0;
+    position:absolute;
+    right:0;
+    margin-right:-5.7em;
+    color: #436976 !important;
+}
+
+* html #app .delete {
+    margin-right:-4.7em;
+}
+
+#app ul.csshover li {
+    border: 1px solid transparent;
+    border-right:0;
+    padding: 0 0.5em;
+    margin: 0.1em 0;
+    width:35em;
+    margin-right:6.5em;
+    line-height:1.5em;
+    clear:left;
+    position:relative;
+}
+
+* html #app ul.csshover li {
+    border-color:white;
+}
+
+#app ul.csshover li span {
+    display:block;
+}
+
+#app ul.csshover li span.url-helper {
+    position:absolute;
+    right:0;
+    margin-left:20%;
+    padding-right:0.5em;
+    overflow:hidden;
+    font-size:80%;
+    color:#aaa;
+    text-align: right;
+    width: 80%;
+
+}
+
+#app ul.csshover li.editing {
+    padding:0;
+    margin: 0;
+    width:36em;
+}
+
+#app.sorting ul.csshover li.editing {
+    padding: 0 0.5em;
+}
+
+#app li.editing form {
+    margin:-0.1em;
+}
+
+* html #app li.editing form {
+    margin: -0.2em 0 0 0;
+}
+
+#app dl {
+    margin:0;
+}
+
+#app dl label {
+    display:none;
+}
+
+#app dl dl label {
+    display:block;
+} 
+
+#app dd {
+    margin:0;
+}
+
+#app dd dl {
+    margin:0.5em 0;
+}
+
+#app input[type="text"] {
+    width: 99.5%;
+}
+
+#app .bridge {
+    position:absolute;
+    left:-1.5em;
+    top:0.2em;
+    width:3em;
+}
+
+* html #app div.bridge {
+    top:0;
+    left:-2em;
+}
+
+#app input:focus {
+    border:  1px inset threedface !important;
+}
+
+* html #app input {
+    width:97.3%;
+    padding: 0.1em 0.4em;
+}
+
+#app form div {
+    line-height:1.4em;
+    margin-top:0.1em;
+    min-height:1.6em;
+}
+
+* html #app form div {
+    margin-top:-0.2em;
+    position:relative;
+    height:1%;
+}
+
+#app div input {
+    width:auto;
+    padding: 0.05em 0.5em;
+    float:left;
+    margin:0 0.1em 0 0;
+}
+
+* html #app div input {
+    padding: 0 0.3em;
+}
+
+div.field { margin-top:2em; }
+
+/*hover***************************************************/
+
+#app.viewing ul#tabslist.csshover li:hover,
+#app.viewing ul#tabslist.csshover li.onHover {
+    background-color: #FFFFDD;
+    border: 1px inset threedface;
+    cursor: text;
+}
+
+#app.viewing ul#tabslist.csshover li.editing {
+    background-color: White;
+    border: 1px solid white;
+    cursor: auto;
+}
+
+#app ul#roottabs.csshover li:hover,
+#app ul#roottabs.csshover li.onHover {
+    background-color: #FFFFDD;
+/*    border:  1px inset threedface;*/
+    cursor: default;
+}
+
+/*edit*****************************************************/
+
+#app dl.collapseAdvanced {
+    margin-top:0.15em;
+    position:relative;
+    padding:0;
+    border:0 !important;
+    height:auto;
+    line-height:1em;
+}
+
+#app dl.collapseAdvanced dt.headerAdvanced {
+    cursor: pointer;
+    font-size: 90%;
+    font-weight:normal;
+    position:absolute;
+    padding-right:0.5em;
+    display:block;
+    margin:0;
+    top:0;
+    right:0;
+    color: #436976;
+    line-height:2em;
+    background-color:transparent;
+}
+
+#app dl.collapseAdvanced dd.contentAdvanced {
+    padding:1em 1.5em 0 1.5em;
+    border:0;
+    background-color:#dee7ec;
+}
+
+dl.expandedBlock dt.headerAdvanced {
+    padding: 0 6px 0 22px;
+    background: url(++resource++treeExpanded.gif) no-repeat 6px 50%;
+}
+
+dl.collapsedBlock dt.headerAdvanced {
+    padding: 0 0 0 22px;
+    background: url(++resource++treeCollapsed.gif) no-repeat 6px 50%;
+ }
+
+#app dl.advanced { 
+    clear: both;
+}
+
+/****************************************************************/
+
+#app #addaction {
+    margin-left:1.7em;
+    width:36.2em;
+    position:relative;
+}
+
+* html #app #addaction {
+    width:36.15em;
+}
+
+#app #addaction.adding .field-action label {
+    position:absolute;
+    line-height:2.1em;
+    font-size:80%;
+    color: #8cacbb;
+    right:0.5em;
+    font-weight:normal;
+    background-color:transparent;
+}
+
+#app #addaction.adding .field-action input {
+    margin-top:0.1em; 
+    padding-right:9em;
+    width:27em;
+}
+
+* html #app #addaction.adding .field-action input {
+    padding-right:0.5em;
+    width:96.8%;
+    margin-top:-0.05em;
+}
+
+#app #addaction .bridge {
+    left:-1.8em;
+    top:0em;
+}
+
+* html #app #addaction .bridge {
+    width:1.7em;
+    left:-2em;
+}
+
+
+/* </dtml-with> (do not remove this either :) */

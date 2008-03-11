@@ -1,0 +1,13 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+    
+    <browser:page
+        for="plone.app.kss.interfaces.IPortalObject"
+        attribute="toggleGeneratedTabs"
+        class=".plonetabs.PloneTabsControlPanel"
+        name="plonetabs-toggleGeneratedTabs"
+        permission="cmf.ManagePortal"
+        />
+    
+</configure>

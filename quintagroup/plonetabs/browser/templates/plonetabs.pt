@@ -1,0 +1,170 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en" lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="quintagroup.plonetabs">
+
+<metal:block metal:fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border', 1)" />
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_main"
+     tal:define="test nocall:view/test;
+                 category here/REQUEST/category|nothing;
+                 category python:test(category and category != '', category, 'portal_tabs');">
+
+<div id="app" class="viewing">
+
+  <h1 class="documentFirstHeading">
+    <span i18n:translate="heading_plonetabs">
+      <tal:title replace="python:view.getPageTitle(category)">Plone Tabs</tal:title>
+    </span>
+    <span id="busy"><img src="++resource++busy_icon.gif" alt="" tal:attributes="src string:${portal_url}/${attrs/src}" /></span>
+  </h1>
+
+  <a href=""
+     class="link-parent"
+     tal:attributes="href string: $portal_url/plone_control_panel"
+     i18n:domain="plone"
+     i18n:translate="label_up_to_plone_setup">
+    Up to Site Setup
+  </a>
+
+  <p i18n:translate="description_plonetabs">
+    Select category to manage:
+    <select name="select_category"
+            id="select_category"
+            tal:define="categories view/getCategories">
+      <tal:options repeat="cat categories">
+        <option tal:attributes="value string:category=${cat};
+                                selected python:test(category == cat, 'selected', None)"
+                tal:content="cat" />
+      </tal:options>
+    </select>
+  </p>
+
+  <input type="hidden" name="category" value="portal_tabs" id="actions_category"
+         tal:attributes="value category" />
+
+  <div class="reorder-controls"
+       tal:define="notempty python:view.hasActions(category)">
+    <a href="#" id="reorder" class=""
+       tal:attributes="class python:test(notempty, '', 'noitems')">Reorder</a>
+  </div>
+
+  <div class="sort-controls">
+    <a href="#" id="save">Save</a> |
+    <a href="#" id="cancel">Cancel</a>
+  </div>
+
+  <ul class="csshover"
+      id="tabslist"
+      tal:content="structure python:view.getActionsList(category=category)" />
+
+  <form id="addaction"
+        method="post"
+        action="@@plonetabs_controlpanel"
+        tal:attributes="action string:${portal_url}/${attrs/action}">
+    <dl class="field-visible bridge">
+      <dt>
+        <label>Visible</label>
+      </dt>
+      <dd>
+        <input id="actvisible" type="checkbox" value="1" checked="checked" title="visibility" name="visible" />
+      </dd>
+    </dl>
+    <dl class="field-name">
+      <dt>
+        <label>Name</label>
+      </dt>
+      <dd>
+        <input id="actname" type="text" value="" name="name" />
+      </dd>
+    </dl>
+    <dl class="field-action">
+      <dt>
+        <label>URL (Expression)</label>
+      </dt>
+      <dd>
+        <input id="actaction" type="text" value="" size="30" name="action" />
+      </dd>
+    </dl>
+    <dl class="advanced collapseAdvanced expandedBlock">
+      <dt class="headerAdvanced">Advanced</dt>
+      <dd class="contentAdvanced">
+        <dl class="field-id">
+          <dt>
+            <label>Id</label>
+          </dt>
+          <dd>
+            <input id="actid" type="text" value="" name="id" />
+          </dd>
+        </dl>
+        <dl class="field-condition">
+          <dt>
+            <label>Condition (Expression)</label>
+          </dt>
+          <dd>
+            <input id="actcondition" type="text" value="" size="30" name="condition" />
+          </dd>
+        </dl>
+        <div class="visualClear"><!-- --></div>
+      </dd>
+    </dl>
+    <div class="add-controls">
+      <input type="submit" id="buttonadd" i18n:attributes="value" value="Add" />
+      <input type="submit" id="buttoncancel" i18n:attributes="value" value="Cancel" />
+    </div>
+  </form>
+
+  <tal:autogeneration condition="python:category == 'portal_tabs'">
+
+    <div class="field"
+         tal:define="generated_tabs request/generated_tabs|view/isGeneratedTabs;
+                     error errors/generated_tabs|nothing"
+         tal:attributes="class python:test(error, 'field error', 'field')">
+      <input type="checkbox"
+             id="generated_tabs"
+             name="generated_tabs"
+             value="1"
+             tal:attributes="checked python:test(generated_tabs, 'checked', None)" />
+      <label for="generated_tabs" i18n:translate="label_generated_tabs_enable">Automatically generate tabs</label>
+      <div class="formHelp" i18n:translate="help_generated_tabs">
+        By default, all folders created at the root level will have global section
+        navigation generated. You can turn this off if you prefer manually constructing
+        this part of the navigation.
+      </div>
+    </div>
+
+    <div class="field"
+         tal:define="nonfolderish_tabs request/nonfolderish_tabs|view/isNotFoldersGenerated;
+                     error errors/nonfolderish_tabs|nothing"
+         tal:attributes="class python:test(error, 'field error', 'field')">
+      <input type="checkbox"
+             id="nonfolderish_tabs"
+             name="nonfolderish_tabs"
+             value="1"
+             tal:attributes="checked python:test(nonfolderish_tabs, 'checked', None)" />
+      <label for="nonfolderish_tabs" i18n:translate="label_nonfolderish_tabs_enable">Generate tabs for items other than folders</label>
+      <div class="formHelp" i18n:translate="help_nonfolderish_tabs">
+        By default, any content item in the root of the portal will be shown as
+        a global section. If you turn this option off, only folders will be shown.
+        This only has an effect if "Automatically generate tabs" is enabled
+      </div>
+    </div>
+
+    <ul class="csshover" id="roottabs"
+        tal:content="structure view/getGeneratedTabs" />
+
+  </tal:autogeneration>
+
+
+</div>
+
+</div>
+
+</body>
+</html>

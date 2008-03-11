@@ -1,0 +1,36 @@
+/* <dtml-call expr="RESPONSE.setHeader('pragma','no-cache')"> */
+
+/*
+    The above trick to let this file not be cached does not work, unless this file is renamed to have
+    a kss.dtml extension.
+*/
+
+
+/* General stylesheet for Plone Tabs AJAX configlet */
+
+/* Add class to body to allow conditional styling when kss is available */
+
+#select_category:change {
+    action-client: plonetabs-redirectTo;
+    plonetabs-redirectTo-search: currentFormVar();
+}
+
+/* Hovering for IE especially */
+#app li:mouseover {
+}
+
+#app li:mouseout {
+}
+
+/* Automatically generated tabs */
+#generated_tabs:click {
+    action-server: plonetabs-toggleGeneratedTabs;
+    plonetabs-toggleGeneratedTabs-field: disable_folder_sections;
+    plonetabs-toggleGeneratedTabs-checked: currentFormVar();
+}
+
+#nonfolderish_tabs:click {
+    action-server: plonetabs-toggleGeneratedTabs;
+    plonetabs-toggleGeneratedTabs-field: disable_nonfolderish_sections;
+    plonetabs-toggleGeneratedTabs-checked: currentFormVar();
+}

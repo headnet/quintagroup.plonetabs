@@ -1,0 +1,18 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+    
+    <include file="kssactions.zcml" />
+    
+    <include file="resources.zcml" />
+    
+    <browser:page
+        name="plonetabs-controlpanel"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".plonetabs.PloneTabsControlPanel"
+        template="./templates/plonetabs.pt"
+        permission="cmf.ManagePortal"
+        allowed_interface = ".interfaces.IPloneTabsControlPanel"
+        />
+    
+</configure>
