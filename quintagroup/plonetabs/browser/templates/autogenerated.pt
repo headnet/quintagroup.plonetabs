@@ -11,13 +11,14 @@
           tal:repeat="tab view/getRootTabs">
 <li tal:define="id tab/id;
                 visible python:not tab['exclude_from_nav']"
-    tal:attributes="id string:tabslist_${id};
+    tal:attributes="id string:roottabs_${id};
                     title tab/description|nothing;
                     class python:view.test(visible, '', 'invisible')">
-  <div class="bridge"><input type="checkbox" class="visibility" value="1" id="id" name="rootvis"  title="visibility"
-         tal:attributes="name string:i${repeat/tab/index}_${attrs/name};
-                         id id;
-                         checked python:view.test(visible, 'checked', None)" /></div>
+  <div class="bridge">
+    <input type="checkbox" class="visibility" value="1" name="rootvis"  title="visibility"
+           tal:attributes="name string:i${repeat/tab/index}_${attrs/name};
+                           checked python:view.test(visible, 'checked', None)" />
+  </div>
   <span class="url-helper" tal:content="python:tab['url']">Tab Action</span>
   <span class="tab-title"  tal:content="tab/name">Tab Name</span>
 </li>

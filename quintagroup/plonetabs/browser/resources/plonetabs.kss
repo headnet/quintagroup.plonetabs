@@ -10,12 +10,18 @@
 
 /* Add class to body to allow conditional styling when kss is available */
 
+#actions_category:load {
+    action-client: setStateVar;
+    setStateVar-varname: plonetabs-category;
+    setStateVar-value: currentFormVar();
+}
+
 #select_category:change {
     action-client: plonetabs-redirectTo;
     plonetabs-redirectTo-search: currentFormVar();
 }
 
-/* Hovering for IE especially */
+/* Hovering for IE especially 
 #app li:mouseover {
     action-client: addClass;
     addClass-value: onHover;
@@ -25,7 +31,7 @@
     action-client: removeClass;
     removeClass-value: onHover;
 }
-}
+*/
 
 /* Automatically generated tabs */
 #generated_tabs:click {
@@ -38,4 +44,18 @@
     action-server: plonetabs-toggleGeneratedTabs;
     plonetabs-toggleGeneratedTabs-field: disable_nonfolderish_sections;
     plonetabs-toggleGeneratedTabs-checked: currentFormVar();
+}
+
+/* Visibility switching */
+#tabslist .visibility:click {
+    action-server: plonetabs-toggleActionsVisibility;
+    plonetabs-toggleActionsVisibility-id: nodeAttr(id, true);
+    plonetabs-toggleActionsVisibility-checked: currentFormVar();
+    plonetabs-toggleActionsVisibility-category: stateVar(plonetabs-category);
+}
+
+#roottabs .visibility:click {
+    action-server: plonetabs-toggleRootsVisibility;
+    plonetabs-toggleRootsVisibility-id: nodeAttr(id, true);
+    plonetabs-toggleRootsVisibility-checked: currentFormVar();
 }

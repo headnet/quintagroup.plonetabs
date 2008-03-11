@@ -1,15 +1,4 @@
 
-/* Use onDOMLoad event to initialize kukit
-   earlier then the document is fully loaded,
-   but after the DOM is at its place already.
-
-   This functionality is missing from Plone 2.1,
-   the script is present in >=2.5, but it is not
-   always added to RR - it needs to be added manually.
-
-   If it's present we use it.
-*/
-
 kukit.plonetabs = {};
 
 /* Base kukit plugins for plonetabs */

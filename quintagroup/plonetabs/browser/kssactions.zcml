@@ -10,4 +10,20 @@
         permission="cmf.ManagePortal"
         />
     
+    <browser:page
+        for="plone.app.kss.interfaces.IPortalObject"
+        attribute="toggleActionsVisibility"
+        class=".plonetabs.PloneTabsControlPanel"
+        name="plonetabs-toggleActionsVisibility"
+        permission="cmf.ManagePortal"
+        />
+    
+    <browser:page
+        for="plone.app.kss.interfaces.IPortalObject"
+        attribute="toggleRootsVisibility"
+        class=".plonetabs.PloneTabsControlPanel"
+        name="plonetabs-toggleRootsVisibility"
+        permission="cmf.ManagePortal"
+        />
+    
 </configure>

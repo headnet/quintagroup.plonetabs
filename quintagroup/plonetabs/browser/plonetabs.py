@@ -1,11 +1,14 @@
+from Acquisition import aq_inner
+
 from zope.interface import implements
-from zope.component import getUtility
+from zope.component import getUtility, getMultiAdapter
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
 
 from Acquisition import aq_inner
 
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import IAction
 from Products.CMFEditions.setuphandlers import DEFAULT_POLICIES
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone import PloneMessageFactory as pmf
@@ -18,7 +21,7 @@ from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.kss.plonekssview import PloneKSSView
 from plone.app.workflow.remap import remap_workflow
 from plone.memoize.instance import memoize
-from kss.core import kssaction
+from kss.core import kssaction, KSSExplicitError
 
 from quintagroup.plonetabs.config import *
 from interfaces import IPloneTabsControlPanel
@@ -62,7 +65,17 @@ class PloneTabsControlPanel(PloneKSSView):
     
     def getPortalActions(self, category="portal_tabs"):
         """ See interface """
-        return getToolByName(self.context, "portal_actions").listActions(categories=[category,])
+        portal_actions = getToolByName(self.context, "portal_actions")
+        
+        if category not in portal_actions.objectIds():
+            return []
+        
+        actions = []
+        for item in portal_actions[category].objectValues():
+            if IAction.providedBy(item):
+                actions.append(item)
+        
+        return actions
     
     def isGeneratedTabs(self):
         """ See interface """
@@ -164,11 +177,11 @@ class PloneTabsControlPanel(PloneKSSView):
             withKssSetup="False")
     
     @kssaction
-    def toggleGeneratedTabs(self, field, checked="0"):
+    def toggleGeneratedTabs(self, field, checked='0'):
         """ Toggle autogenaration setting on configlet """
         
         changeProperties = getToolByName(self.context, "portal_properties").site_properties.manage_changeProperties
-        if checked == "1":
+        if checked == '1':
             changeProperties(**{field : False})
         else:
             changeProperties(**{field : True})
@@ -179,8 +192,68 @@ class PloneTabsControlPanel(PloneKSSView):
         
         ksscore.replaceInnerHTML(ksscore.getHtmlIdSelector(replace_id), content, withKssSetup="True")
         
-        
+        # update global-sections viewlet
         self.updateGlobalSections(ksscore)
     
+    @kssaction
+    def toggleActionsVisibility(self, id, checked='0', category=None):
+        """ Toggle visibility for portal actions """
+        portal_actions = getToolByName(self.context, "portal_actions")
+        
+        if category not in portal_actions.objectIds():
+            raise KSSExplicitError, "Unexistent root portal actions category %s" % category
+        
+        # remove prefix, added for making ids on configlet unique ("tabslist_")
+        act_id = id[len("tabslist_"):]
+        
+        cat_container = portal_actions[category]
+        if act_id not in cat_container.objectIds():
+            raise KSSExplicitError, "%s action does not exist in %s category" % (act_id, category)
+        
+        if checked == '1':
+            checked = True
+        else:
+            checked = False
+        
+        cat_container[act_id].visible = checked
+        
+        ksscore = self.getCommandSet("core")
+        if checked:
+            ksscore.removeClass(ksscore.getHtmlIdSelector(id), value="invisible")
+        else:
+            ksscore.addClass(ksscore.getHtmlIdSelector(id), value="invisible")
+        
+        # update global-sections viewlet
+        self.updateGlobalSections(ksscore)
+    
+    @kssaction
+    def toggleRootsVisibility(self, id, checked='0'):
+        """ Toggle visibility for portal root objects (exclude_from_nav) """
+        portal = getMultiAdapter((aq_inner(self.context), self.request), name='plone_portal_state').portal()
+        
+        # remove prefix, added for making ids on configlet unique ("roottabs_")
+        obj_id = id[len("roottabs_"):]
+        
+        if obj_id not in portal.objectIds():
+            raise KSSExplicitError, "Object with %s id doesn't exist in portal root" % obj_id
+        
+        if checked == '1':
+            checked = True
+        else:
+            checked = False
+        
+        portal[obj_id].update(excludeFromNav=not checked)
+        
+        ksscore = self.getCommandSet("core")
+        if checked:
+            ksscore.removeClass(ksscore.getHtmlIdSelector(id), value="invisible")
+        else:
+            ksscore.addClass(ksscore.getHtmlIdSelector(id), value="invisible")
+        
+        # update global-sections viewlet
+        self.updateGlobalSections(ksscore)
+    
+
+
 
 
