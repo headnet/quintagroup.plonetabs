@@ -23,6 +23,6 @@ kukit.actionsGlobalRegistry.register('plonetabs-redirectTo', function(oper) {
     window.location.replace(url);
 
 });
-kukit.commandsGlobalRegistry.registerFromAction('plonetabs-redirectTo',
-    kukit.cr.makeSelectorCommand);
+
+kukit.commandsGlobalRegistry.registerFromAction('plonetabs-redirectTo', kukit.cr.makeSelectorCommand);
 

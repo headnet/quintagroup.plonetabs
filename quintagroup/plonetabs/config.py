@@ -1,6 +1,11 @@
 PROPERTY_SHEET = "tabs_properties"
 FIELD_NAME     = "titles"
 
+# XXX TODO
+SECTION_MAPPING = {"portal-globalnav"   : "global_sections/macros/portal_tabs",
+                   "user"               : "",
+                   "portal-siteactions" : ""}
+
 """ Example javascript
 {"id"          : "test.js",
  "expression"  : "python: member is not None",

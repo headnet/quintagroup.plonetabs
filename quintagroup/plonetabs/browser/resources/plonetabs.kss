@@ -21,7 +21,7 @@
     plonetabs-redirectTo-search: currentFormVar();
 }
 
-/* Hovering for IE especially 
+ /*Hovering for IE especially */
 #app li:mouseover {
     action-client: addClass;
     addClass-value: onHover;
@@ -31,7 +31,7 @@
     action-client: removeClass;
     removeClass-value: onHover;
 }
-*/
+
 
 /* Automatically generated tabs */
 #generated_tabs:click {
@@ -59,3 +59,14 @@
     plonetabs-toggleRootsVisibility-id: nodeAttr(id, true);
     plonetabs-toggleRootsVisibility-checked: currentFormVar();
 }
+
+/* Delete action link */
+#tabslist .delete:click {
+    evt-click-preventdefault: True;
+    evt-click-allowbubbling: True;
+    action-server: plonetabs-deleteAction;
+    plonetabs-deleteAction-id: nodeAttr(id, true);
+    plonetabs-deleteAction-category: stateVar(plonetabs-category);
+}
+
+

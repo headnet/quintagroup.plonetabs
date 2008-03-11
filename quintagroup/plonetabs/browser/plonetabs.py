@@ -194,6 +194,21 @@ class PloneTabsControlPanel(PloneKSSView):
             self.sections_template(),
             withKssSetup="False")
     
+    
+    # XXX TODO
+    #def updateSection(self, ksscore, section):
+        #""" Method for updating global-sections on client """
+        
+        #replace_id = section
+        #macro = SECTION_MAPPING.get(section, None)
+        
+        #if macro is not None:
+            #ksscore.replaceHTML(
+                #ksscore.getHtmlIdSelector(replace_id),
+                #self.macroContent(macro),
+                ##self.sections_template(),
+                #withKssSetup="False")
+    
     @kssaction
     def toggleGeneratedTabs(self, field, checked='0'):
         """ Toggle autogenaration setting on configlet """
@@ -225,7 +240,7 @@ class PloneTabsControlPanel(PloneKSSView):
         act_id = id[len("tabslist_"):]
         
         cat_container = portal_actions[category]
-        if act_id not in cat_container.objectIds():
+        if act_id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
             raise KSSExplicitError, "%s action does not exist in %s category" % (act_id, category)
         
         if checked == '1':
@@ -242,7 +257,8 @@ class PloneTabsControlPanel(PloneKSSView):
             ksscore.addClass(ksscore.getHtmlIdSelector(id), value="invisible")
         
         # update global-sections viewlet
-        self.updateGlobalSections(ksscore)
+        if category == "portal_tabs":
+            self.updateGlobalSections(ksscore)
     
     @kssaction
     def toggleRootsVisibility(self, id, checked='0'):
@@ -271,6 +287,41 @@ class PloneTabsControlPanel(PloneKSSView):
         # update global-sections viewlet
         self.updateGlobalSections(ksscore)
     
+    @kssaction
+    def deleteAction(self, id, category):
+        """ Delete portal action with given id & category """
+        portal_actions = getToolByName(self.context, "portal_actions")
+        
+        if category not in portal_actions.objectIds():
+            raise KSSExplicitError, "Unexistent root portal actions category %s" % category
+        
+        # remove prefix, added for making ids on configlet unique ("tabslist_")
+        act_id = id[len("tabslist_"):]
+        
+        cat_container = portal_actions[category]
+        if act_id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
+            raise KSSExplicitError, "%s action does not exist in %s category" % (act_id, category)
+        
+        cat_container.manage_delObjects(ids=[act_id,])
+        
+        # update action list on client
+        ksscore = self.getCommandSet("core")
+        
+        ksscore.deleteNode(ksscore.getHtmlIdSelector(id))
+        
+        # add "noitems" class to Reorder controls to hide it
+        if not filter(lambda x: IAction.providedBy(x), cat_container.objectValues()):
+            ksscore.addClass(ksscore.getHtmlIdSelector("reorder"), value="noitems")
+        
+        # XXX TODO: fade effect during removing, for this kukit js action/command plugin needed
+        
+        # update global-sections viewlet
+        if category == "portal_tabs":
+            self.updateGlobalSections(ksscore)
+    
+
+
+
 
 
 
