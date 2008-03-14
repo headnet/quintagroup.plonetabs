@@ -10,16 +10,16 @@
 <tal:tabs tal:define="dummy python:request.RESPONSE.setHeader('Expires', 'Mon, 26 Jul 1996 05:00:00 GMT')"
           tal:repeat="tab view/getRootTabs">
 <li tal:define="id tab/id;
-                visible python:not tab['exclude_from_nav']"
+                visible not: tab/exclude_from_nav"
     tal:attributes="id string:roottabs_${id};
                     title tab/description|nothing;
                     class python:view.test(visible, '', 'invisible')">
   <div class="bridge">
-    <input type="checkbox" class="visibility" value="1" name="rootvis"  title="visibility"
-           tal:attributes="name string:i${repeat/tab/index}_${attrs/name};
+    <input type="checkbox" class="visibility" value="1" name="id"  title="visibility"
+           tal:attributes="name id;
                            checked python:view.test(visible, 'checked', None)" />
   </div>
-  <span class="url-helper" tal:content="python:tab['url']">Tab Action</span>
+  <span class="url-helper" tal:content="tab/url">Tab Action</span>
   <span class="tab-title"  tal:content="tab/name">Tab Name</span>
 </li>
 </tal:tabs>

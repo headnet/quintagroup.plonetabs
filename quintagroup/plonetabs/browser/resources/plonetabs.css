@@ -46,8 +46,8 @@
 #app.viewing li.editing             .url-helper,
 #app.viewing li.editing             .tab-title,
 #app                                .drag-handle,
-#app                                .delete,
-#app                                .visibility,
+#app.kssActive                      .delete,
+#app.kssActive                      .visibility,
 #app                                .editform,
 #app.sorting                        #addaction,
 #app                                .field-visible,
@@ -70,6 +70,15 @@
 #app.sorting                         .drag-handle {
     display: inline;
 }
+
+/**********************************************************/
+/* Additional style for functionality withou javascript   */
+#app.kssActive #autogeneration_controls {
+    display: none;
+}
+
+
+
 
 /**********************************************************/
 
@@ -290,18 +299,26 @@ div.field { margin-top:2em; }
     background-color:#dee7ec;
 }
 
-dl.expandedBlock dt.headerAdvanced {
+#app dl.expandedBlock dt.headerAdvanced {
     padding: 0 6px 0 22px;
-    background: url(++resource++treeExpanded.gif) no-repeat 6px 50%;
+    background: transparent url(++resource++treeExpanded.gif) no-repeat 6px 50%;
 }
 
-dl.collapsedBlock dt.headerAdvanced {
+#app dl.collapsedBlock dt.headerAdvanced {
     padding: 0 0 0 22px;
-    background: url(++resource++treeCollapsed.gif) no-repeat 6px 50%;
+    background: transparent url(++resource++treeCollapsed.gif) no-repeat 6px 50%;
  }
 
 #app dl.advanced { 
     clear: both;
+}
+
+#app dl.expandedBlock dd.contentAdvanced {
+    display: block;
+}
+
+#app dl.collapsedBlock dd.contentAdvanced {
+    display: none;
 }
 
 /****************************************************************/

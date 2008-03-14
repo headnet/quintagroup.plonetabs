@@ -1,62 +1,73 @@
 <tal:tabs tal:define="test nocall:view/test;
                       dummy python:request.RESPONSE.setHeader('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
                       category python:options.get('category', None) or 'portal_tabs'"
-          tal:repeat="tab python:view.getPortalActions(category)">
+          tal:repeat="tab options/tabs|python:view.getPortalActions(category)">
 <li tal:define="id tab/id;
                 visible tab/visible;
-                index repeat/tab/index"
+                editing tab/editing|nothing;
+                klass python:test(visible, [], ['invisible']);
+                klass python:test(editing, klass + ['editing'], klass)"
     tal:attributes="id string:tabslist_${id};
                     title tab/description;
-                    class python:test(visible, '', 'invisible')">
+                    class python:' '.join(klass)">
+
   <img class="drag-handle" src="++resource++drag.gif" alt="" height="11" width="25" />
+
   <div class="bridge">
-    <input type="checkbox" class="visibility" value="1" name="visibility" title="visibility"
+    <input type="checkbox" class="visibility" value="1" name="visible" title="visibility"
            tal:attributes="checked python:test(visible, 'checked', None);
-                           name string:i${index}_${attrs/name}" />
+                           name string:${attrs/name}_${id}" />
   </div>
+
   <a class="delete" href="#">Delete</a>
   <span class="url-helper" tal:content="tab/url_expr">Tab Action</span>
   <span class="tab-title" tal:content="tab/title">Tab Name</span>
+
   <form class="editform"
         method="post"
         action="@@plonetabs-controlpanel"
+        name="edit_form"
         tal:attributes="action string:${context/portal_url}/${attrs/action};
-                        name string:f$index">
-      <input type="hidden" name="idx" tal:attributes="value index" />
+                        name string:${attrs/name}_${id}">
+
       <dl>
         <dt><label>Name</label></dt>
-        <dd><input type="text" value="" name="name"
+        <dd><input type="text" value="" name="title"
                    tal:attributes="value tab/title;
-                                   name string:i${index}_${attrs/name}"      /></dd>
+                                   name string:${attrs/name}_${id}" /></dd>
       </dl>
-      <dl class="collapseAdvanced expandedBlock">
+
+      <dl class="collapseAdvanced collapsedBlock">
         <dt class="headerAdvanced">Advanced</dt>
         <dd class="contentAdvanced">
           <dl>
             <dt><label>URL (Expression)</label></dt>
-            <dd><input type="text" value="" name="action"     size="30"
+            <dd><input type="text" value="" name="url_expr"     size="30"
                        tal:attributes="value tab/url_expr;
-                                       name string:i${index}_${attrs/name}" /></dd>
+                                       name string:${attrs/name}_${id}" /></dd>
           </dl>
           <dl>
             <dt><label>Id</label></dt>
             <dd><input type="text" value="" name="id"
                        tal:attributes="value tab/id;
-                                       name string:i${index}_${attrs/name}" /></dd>
+                                       name string:${attrs/name}_${id}" /></dd>
           </dl>
           <dl>
             <dt><label>Condition (Expression)</label></dt>
             <dd><input type="text" value="" name="condition"  size="30"
                        tal:attributes="value tab/available_expr;
-                                       name string:i${index}_${attrs/name}" /></dd>
+                                       name string:${attrs/name}_${id}" /></dd>
           </dl>
           <div class="visualClear"><!-- --></div>
         </dd>
       </dl>
+
       <div>
         <input type="submit" class="editsave"   i18n:attributes="value" value="Save"   />
         <input type="submit" class="editcancel" i18n:attributes="value" value="Cancel" />
       </div>
+
   </form>
+
 </li>
 </tal:tabs>

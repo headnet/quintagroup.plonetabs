@@ -22,7 +22,7 @@
 }
 
  /*Hovering for IE especially */
-#app li:mouseover {
+/*#app li:mouseover {
     action-client: addClass;
     addClass-value: onHover;
 }
@@ -30,7 +30,7 @@
 #app li:mouseout {
     action-client: removeClass;
     removeClass-value: onHover;
-}
+}*/
 
 
 /* Automatically generated tabs */
@@ -47,7 +47,7 @@
 }
 
 /* Visibility switching */
-#tabslist .visibility:click {
+#tabslist input.visibility:click {
     action-server: plonetabs-toggleActionsVisibility;
     plonetabs-toggleActionsVisibility-id: nodeAttr(id, true);
     plonetabs-toggleActionsVisibility-checked: currentFormVar();
@@ -62,11 +62,48 @@
 
 /* Delete action link */
 #tabslist .delete:click {
-    evt-click-preventdefault: True;
-    evt-click-allowbubbling: True;
+    evt-click-preventdefault: true;
     action-server: plonetabs-deleteAction;
     plonetabs-deleteAction-id: nodeAttr(id, true);
     plonetabs-deleteAction-category: stateVar(plonetabs-category);
 }
+
+/* Actions edit */
+#tabslist .tab-title:click {
+    action-server: plonetabs-editAction;
+    plonetabs-editAction-id: nodeAttr(id, true);
+    plonetabs-editAction-category: stateVar(plonetabs-category);
+}
+
+/*#tabslist .url-helper:click {
+    action-client: executeCommand;
+    executeCommand-name: addClass;
+    executeCommand-selector: #tabslist li;
+    executeCommand-selectorType: parentnode;
+    executeCommand-value: editing;
+}*/
+
+/* Edit cancel button */
+#tabslist .editcancel:click {
+    evt-click-preventdefault: true;
+    action-server: plonetabs-editCancel;
+    plonetabs-editCancel-id: nodeAttr(id, true);
+    plonetabs-editCancel-category: stateVar(plonetabs-category);
+}
+
+/* Edit save button */
+#tabslist .editsave:click {
+    evt-click-preventdefault: true;
+    action-server: plonetabs-editSave;
+    plonetabs-editSave-id: nodeAttr(id, true);
+    
+    plonetabs-editSave-category: stateVar(plonetabs-category);
+}
+
+/* Collapsible sections */
+.collapseAdvanced .headerAdvanced:click {
+    action-client: plonetabs-toggleCollapsible;
+}
+
 
 

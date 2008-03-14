@@ -3,14 +3,14 @@ kukit.plonetabs = {};
 
 /* Base kukit plugins for plonetabs */
 
-kukit.actionsGlobalRegistry.register('plonetabs-redirectTo', function(oper) {
-;;; oper.componentName = '[plonetabs-redirectTo] action';
+kukit.actionsGlobalRegistry.register("plonetabs-redirectTo", function(oper) {
+;;; oper.componentName = "[plonetabs-redirectTo] action";
     var wl = window.location;
-    oper.evaluateParameters([], {'protocol' : wl.protocol,
-                                 'host'     : wl.host,
-                                 'pathname' : wl.pathname,
-                                 'search'   : wl.search,
-                                 'hash'     : wl.hash});
+    oper.evaluateParameters([], {"protocol" : wl.protocol,
+                                 "host"     : wl.host,
+                                 "pathname" : wl.pathname,
+                                 "search"   : wl.search,
+                                 "hash"     : wl.hash});
 
     // normalize parameters
     var protocol = oper.parms.protocol + (oper.parms.protocol[oper.parms.protocol.length - 1] == ":") ?  "" : ":";
@@ -24,5 +24,24 @@ kukit.actionsGlobalRegistry.register('plonetabs-redirectTo', function(oper) {
 
 });
 
-kukit.commandsGlobalRegistry.registerFromAction('plonetabs-redirectTo', kukit.cr.makeSelectorCommand);
+kukit.commandsGlobalRegistry.registerFromAction("plonetabs-redirectTo", kukit.cr.makeSelectorCommand);
+
+kukit.actionsGlobalRegistry.register("plonetabs-toggleCollapsible", function(oper) {
+;;; oper.componentName = "[plonetabs-toggleCollapsible] action";
+    oper.evaluateParameters([], {"collapsed" : "collapsedBlock", "expanded" : "expandedBlock"});
+
+    var node = oper.node.parentNode;  // collapsible section
+
+    if (hasClassName(node, oper.parms.collapsed)) {
+        removeClassName(node, oper.parms.collapsed);
+        addClassName(node, oper.parms.expanded);
+    } else {
+        removeClassName(node, oper.parms.expanded);
+        addClassName(node, oper.parms.collapsed);
+    }
+
+});
+
+kukit.commandsGlobalRegistry.registerFromAction("plonetabs-toggleCollapsible", kukit.cr.makeSelectorCommand);
+
 

@@ -1,3 +1,5 @@
+import copy
+
 from Acquisition import aq_inner
 
 from zope.interface import implements
@@ -31,6 +33,7 @@ def format_description(text, request=None):
     text = translate(text.strip(), domain="plone", context=request)
     return [s.strip() for s in text.split("- ") if s]
 
+ACTION_ATTRS = ["id", "visible", "description", "url_expr", "title", "available_expr"]
 
 class PloneTabsControlPanel(PloneKSSView):
     
@@ -209,6 +212,22 @@ class PloneTabsControlPanel(PloneKSSView):
                 ##self.sections_template(),
                 #withKssSetup="False")
     
+    def validateAction(self, id, category, prefix="tabslist_"):
+        """ If action with given id and category doesn't exist - raise kss exception """
+        portal_actions = getToolByName(self.context, "portal_actions")
+        
+        # remove prefix, added for making ids on configlet unique ("tabslist_")
+        act_id = id[len("tabslist_"):]
+        
+        if category not in portal_actions.objectIds():
+            raise KSSExplicitError, "Unexistent root portal actions category %s" % category
+        
+        cat_container = portal_actions[category]
+        if act_id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
+            raise KSSExplicitError, "%s action does not exist in %s category" % (act_id, category)
+        
+        return (cat_container, act_id)
+    
     @kssaction
     def toggleGeneratedTabs(self, field, checked='0'):
         """ Toggle autogenaration setting on configlet """
@@ -232,16 +251,7 @@ class PloneTabsControlPanel(PloneKSSView):
     def toggleActionsVisibility(self, id, checked='0', category=None):
         """ Toggle visibility for portal actions """
         portal_actions = getToolByName(self.context, "portal_actions")
-        
-        if category not in portal_actions.objectIds():
-            raise KSSExplicitError, "Unexistent root portal actions category %s" % category
-        
-        # remove prefix, added for making ids on configlet unique ("tabslist_")
-        act_id = id[len("tabslist_"):]
-        
-        cat_container = portal_actions[category]
-        if act_id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
-            raise KSSExplicitError, "%s action does not exist in %s category" % (act_id, category)
+        cat_container, act_id = self.validateAction(id, category)
         
         if checked == '1':
             checked = True
@@ -291,16 +301,7 @@ class PloneTabsControlPanel(PloneKSSView):
     def deleteAction(self, id, category):
         """ Delete portal action with given id & category """
         portal_actions = getToolByName(self.context, "portal_actions")
-        
-        if category not in portal_actions.objectIds():
-            raise KSSExplicitError, "Unexistent root portal actions category %s" % category
-        
-        # remove prefix, added for making ids on configlet unique ("tabslist_")
-        act_id = id[len("tabslist_"):]
-        
-        cat_container = portal_actions[category]
-        if act_id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
-            raise KSSExplicitError, "%s action does not exist in %s category" % (act_id, category)
+        cat_container, act_id = self.validateAction(id, category)
         
         cat_container.manage_delObjects(ids=[act_id,])
         
@@ -319,6 +320,99 @@ class PloneTabsControlPanel(PloneKSSView):
         if category == "portal_tabs":
             self.updateGlobalSections(ksscore)
     
+    @kssaction
+    def editAction(self, id, category):
+        """ Show edit form for given action """
+        cat_container, act_id = self.validateAction(id, category)
+        
+        # collect data
+        action_info = self.copyAction(cat_container[act_id])
+        action_info["editing"] = True
+        
+        ksscore = self.getCommandSet("core")
+        content = self.actionslist_template(tabs=[action_info,])
+        replace_id = id
+        
+        ksscore.replaceHTML(ksscore.getHtmlIdSelector(replace_id), content)
+        
+        # focus name field
+        ksscore.focus(ksscore.getCssSelector("#%s input[name=name_%s]" % (id, act_id)))
+    
+    @kssaction
+    def editCancel(self, id, category):
+        """ Hide edit form for given action """
+        cat_container, act_id = self.validateAction(id, category)
+        
+        ksscore = self.getCommandSet("core")
+        content = self.actionslist_template(tabs=[cat_container[act_id],])
+        replace_id = id
+        
+        ksscore.replaceHTML(ksscore.getHtmlIdSelector(replace_id), content)
+    
+    
+    # Methods for processing configlet actions without javascript/ajax
+    
+    def manage_setAutogeneration(self, generated_tabs="0", nonfolderish_tabs="0"):
+        """ Process managing autogeneration settings """
+        
+        # set excludeFromNav property for root objects
+        portal = getMultiAdapter((aq_inner(self.context), self.request), name='plone_portal_state').portal()
+        form = self.request.form
+        
+        for item in self.getRootTabs():
+            obj = getattr(portal, item['id'], None)
+            if obj is not None:
+                checked = form.get(item['id'], None)
+                if checked == '1':
+                    obj.update(excludeFromNav=False)
+                else:
+                    obj.update(excludeFromNav=True)
+
+        # set disable_folder_sections property
+        changeProperties = getToolByName(self.context, "portal_properties").site_properties.manage_changeProperties
+        
+        if int(generated_tabs) == 1:
+            changeProperties(disable_folder_sections=False)
+        else:
+            changeProperties(disable_folder_sections=True)
+        
+        # set disable_nonfolderish_sections property
+        if int(nonfolderish_tabs) == 1:
+            changeProperties(disable_nonfolderish_sections=False)
+        else:
+            changeProperties(disable_nonfolderish_sections=True)
+        
+        self.redirect()
+
+    
+    def redirect(self, url="", search="", hash=""):
+        """ Redirect to @@plonetabs-controlpanel configlet """
+        
+        if url == "":
+            portal_url =  getMultiAdapter((self.context, self.request), name=u"plone_portal_state").portal_url()
+            url = "%s/%s" % (portal_url, "@@plonetabs-controlpanel")
+        
+        if search != "":
+            search = "?%s" % search
+        
+        if hash != "":
+            hash = "#%s" % hash
+        
+        self.request.response.redirect("%s%s%s" % (url, search, hash))
+    
+    
+    # Utility Methods
+    
+    def copyAction(self, action):
+        """ Copyt action to dictionary """
+        action_info = {}
+        for attr in ACTION_ATTRS:
+            action_info[attr] = getattr(action, attr)
+        return action_info
+    
+
+
+
 
 
 
