@@ -25,13 +25,15 @@
 ***************************************************************************************************
 */
 
-#app.viewing                        .reorder-controls,
-#app.sorting                        .sort-controls,
+.kssTabsActive #app.viewing             .reorder-controls,
+.kssTabsActive #app.sorting             .sort-controls,
 #app.viewing li.editing             .editform,
 #app #addaction.adding              .field-visible,
 #app #addaction.adding              .field-name dt,
 #app #addaction.adding              .field-action,
-#app #addaction.adding              .field-action label,
+/* fix for 'non js' version 
+#app #addaction.adding              .field-action label,*/
+#app #addaction                     .field-action label,
 #app #addaction.adding              .advanced,
 #app #addaction.adding              .field-id,
 #app #addaction.adding              .field-condition,
@@ -46,17 +48,18 @@
 #app.viewing li.editing             .url-helper,
 #app.viewing li.editing             .tab-title,
 #app                                .drag-handle,
-#app.kssActive                      .delete,
-#app.kssActive                      .visibility,
+.kssTabsActive #app                 .delete,
+.kssTabsActive #app                 .visibility,
 #app                                .editform,
 #app.sorting                        #addaction,
-#app                                .field-visible,
-#app                                .field-name dt,
-#app                                .field-action,
-#app                                .advanced,
-#app                                .field-id,
-#app                                .field-condition,
-#app                                .add-controls {
+.kssTabsActive #app                 .field-visible,
+.kssTabsActive #app                 .field-name dt,
+.kssTabsActive #app                 .field-action,
+.kssTabsActive #app                 .advanced,
+.kssTabsActive #app                 .field-id,
+.kssTabsActive #app                 .field-condition,
+.kssTabsActive #app                 .add-controls,
+.kssTabsActive #app                 .change-button {
     display: none;
 }
 
@@ -73,12 +76,25 @@
 
 /**********************************************************/
 /* Additional style for functionality withou javascript   */
-#app.kssActive #autogeneration_controls {
+.kssTabsActive #autogeneration_controls {
     display: none;
 }
 
+#app dl.collapseAdvanced dt.headerAdvanced {
+    display: none;
+}
 
+.kssTabsActive #app dl.collapseAdvanced dt.headerAdvanced {
+    display: block;
+}
 
+#app input#buttoncancel {
+    display: none;
+}
+
+.kssTabsActive #app #buttoncancel {
+    display: block;
+}
 
 /**********************************************************/
 
@@ -91,6 +107,14 @@
 }
 
 /*common***************************************************/
+
+#app input.change-button {
+    float: none;
+}
+
+#app #autogeneration_section {
+    margin-top: 1em;
+}
 
 div.reorder-controls,
 div.sort-controls {
@@ -284,7 +308,7 @@ div.field { margin-top:2em; }
     font-weight:normal;
     position:absolute;
     padding-right:0.5em;
-    display:block;
+/*     display:block; */
     margin:0;
     top:0;
     right:0;
@@ -333,7 +357,11 @@ div.field { margin-top:2em; }
     width:36.15em;
 }
 
-#app #addaction.adding .field-action label {
+/* fixed for work in 'without js' version
+   removed .adding class from selector
+#app #addaction.adding .field-action label {  */
+
+#app #addaction .field-action label {
     position:absolute;
     line-height:2.1em;
     font-size:80%;

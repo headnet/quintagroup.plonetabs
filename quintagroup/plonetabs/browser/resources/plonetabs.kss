@@ -10,6 +10,11 @@
 
 /* Add class to body to allow conditional styling when kss is available */
 
+#plonetabs_form:load {
+  action-client: addClass;
+  addClass-value: kssTabsActive;
+}
+
 #actions_category:load {
     action-client: setStateVar;
     setStateVar-varname: plonetabs-category;

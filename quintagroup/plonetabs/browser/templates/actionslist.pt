@@ -19,7 +19,8 @@
                            name string:${attrs/name}_${id}" />
   </div>
 
-  <a class="delete" href="#">Delete</a>
+  <a class="delete" href="#"
+     tal:attributes="href string:${context/portal_url}/@@plonetabs-controlpanel?action=delete_action&category=${category}&id=${id}">Delete</a>
   <span class="url-helper" tal:content="tab/url_expr">Tab Action</span>
   <span class="tab-title" tal:content="tab/title">Tab Name</span>
 
@@ -29,6 +30,9 @@
         name="edit_form"
         tal:attributes="action string:${context/portal_url}/${attrs/action};
                         name string:${attrs/name}_${id}">
+
+      <input type="hidden" name="action" value="edit_action" />
+      <input type="hidden" name="form.submitted:boolean" value="True" />
 
       <dl>
         <dt><label>Name</label></dt>

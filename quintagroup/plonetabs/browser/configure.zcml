@@ -12,7 +12,6 @@
         name="plonetabs-controlpanel"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         class=".plonetabs.PloneTabsControlPanel"
-        template="./templates/plonetabs.pt"
         permission="cmf.ManagePortal"
         allowed_interface = ".interfaces.IPloneTabsControlPanel"
         />

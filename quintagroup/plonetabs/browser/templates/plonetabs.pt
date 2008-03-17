@@ -14,7 +14,10 @@
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="test nocall:view/test;
                  category here/REQUEST/category|nothing;
-                 category python:test(category and category != '', category, 'portal_tabs');">
+                 category python:test(category and category != '', category, 'portal_tabs');
+                 errors options/errors|nothing">
+
+<div id="plonetabs_form">
 
 <div id="app" class="viewing">
 
@@ -33,18 +36,33 @@
     Up to Site Setup
   </a>
 
-  <p i18n:translate="description_plonetabs">
-    Select category to manage:
-    <select name="select_category"
-            id="select_category"
-            tal:define="categories view/getCategories">
-      <tal:options repeat="cat categories">
-        <option tal:attributes="value string:category=${cat};
-                                selected python:test(category == cat, 'selected', None)"
-                tal:content="cat" />
-      </tal:options>
-    </select>
-  </p>
+  <div i18n:translate="description_plonetabs">
+    <form id="selectcategory_form"
+          name="selectcategory_form"
+          method="post"
+          action="@@plonetabs-controlpanel"
+          tal:attributes="action string:${portal_url}/${attrs/action}">
+      <div class="field"
+           tal:define="error errors/select_category|nothing"
+           tal:attributes="class python:test(error, 'field error', 'field')">
+        <div tal:replace="error">Error output</div>
+        <label for="select_category" i18n:translate="label_select_category">Select category to manage</label>
+        <select name="category"
+                id="select_category"
+                tal:define="categories view/getCategories">
+          <option value="current_category" selected="selected"
+                  tal:attributes="value category"
+                  tal:content="category" />
+          <tal:options repeat="cat categories">
+            <option tal:attributes="value cat"
+                    tal:content="cat"
+                    tal:condition="python: cat != category" />
+          </tal:options>
+        </select>
+        <input class="change-button" type="submit" name="selectcategory_button" value="Change" />
+      </div>
+    </form>
+  </div>
 
   <input type="hidden" name="category" value="portal_tabs" id="actions_category"
          tal:attributes="value category" />
@@ -65,50 +83,71 @@
       tal:content="structure python:view.getActionsList(category=category)" />
 
   <form id="addaction"
+        name="addaction_form"
         method="post"
         action="@@plonetabs-controlpanel"
         tal:attributes="action string:${portal_url}/${attrs/action}">
+    <input type="hidden" name="action" value="add_action" />
+    <input type="hidden" name="form.submitted:boolean" value="True" />
+    <input type="hidden" name="category" value="category" tal:attributes="value category" />
     <dl class="field-visible bridge">
       <dt>
         <label>Visible</label>
       </dt>
       <dd>
-        <input id="actvisible" type="checkbox" value="1" checked="checked" title="visibility" name="visible" />
+        <input id="actvisible" type="checkbox" value="1" checked="checked" title="visibility" name="visible"
+               tal:attributes="checked request/visible|string:checked" />
       </dd>
     </dl>
-    <dl class="field-name">
+    <dl class="field-name"
+        tal:define="error errors/title|nothing"
+        tal:attributes="class python:test(error, 'field-name error', 'field-name')">
       <dt>
         <label>Name</label>
       </dt>
       <dd>
-        <input id="actname" type="text" value="" name="name" />
+        <span tal:content="error">Validation error output</span>
+        <input id="actname" type="text" value="" name="title"
+               tal:attributes="value request/title|nothing"/>
       </dd>
     </dl>
-    <dl class="field-action">
+    <dl class="field-action"
+        tal:define="error errors/url_expr|nothing"
+        tal:attributes="class python:test(error, 'field-action error', 'field-action')">
       <dt>
         <label>URL (Expression)</label>
       </dt>
       <dd>
-        <input id="actaction" type="text" value="" size="30" name="action" />
+        <span tal:content="error">Validation error output</span>
+        <input id="actaction" type="text" value="" size="30" name="url_expr"
+               tal:attributes="value request/url_expr|nothing"/>
       </dd>
     </dl>
     <dl class="advanced collapseAdvanced expandedBlock">
       <dt class="headerAdvanced">Advanced</dt>
       <dd class="contentAdvanced">
-        <dl class="field-id">
+        <dl class="field-id"
+            tal:define="error errors/id|nothing"
+            tal:attributes="class python:test(error, 'field-id error', 'field-id')">
           <dt>
             <label>Id</label>
           </dt>
           <dd>
-            <input id="actid" type="text" value="" name="id" />
+            <span tal:content="error">Validation error output</span>
+            <input id="actid" type="text" value="" name="id"
+                   tal:attributes="value request/id|nothing" />
           </dd>
         </dl>
-        <dl class="field-condition">
+        <dl class="field-condition"
+            tal:define="error errors/available_expr|nothing"
+            tal:attributes="class python:test(error, 'field-condition error', 'field-condition')">
           <dt>
             <label>Condition (Expression)</label>
           </dt>
           <dd>
-            <input id="actcondition" type="text" value="" size="30" name="condition" />
+            <span tal:content="error">Validation error output</span>
+            <input id="actcondition" type="text" value="" size="30" name="available_expr"
+                   tal:attributes="value request/available_expr|nothing" />
           </dd>
         </dl>
         <div class="visualClear"><!-- --></div>
@@ -120,12 +159,15 @@
     </div>
   </form>
 
-  <tal:autogeneration condition="python:category == 'portal_tabs'">
+  <div id="autogeneration_section" tal:condition="python:category == 'portal_tabs'">
 
     <form name="generated_tabs_form"
-          action="@@manage-setAutogeneration"
+          action="@@plonetabs-controlpanel"
           method="post"
           tal:attributes="action string:${portal_url}/${attrs/action}">
+
+      <input type="hidden" name="action" value="set_autogeneration" />
+      <input type="hidden" name="form.submitted:boolean" value="True" />
 
       <div class="field"
            tal:define="generated_tabs request/generated_tabs|view/isGeneratedTabs;
@@ -170,8 +212,9 @@
 
     </form>
 
-  </tal:autogeneration>
+  </div>
 
+</div>
 
 </div>
 

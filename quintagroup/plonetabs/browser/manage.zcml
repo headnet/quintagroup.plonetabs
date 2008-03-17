@@ -2,30 +2,21 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
     
-    <browser:page
-        for="plone.app.kss.interfaces.IPortalObject"
-        attribute="manage_setAutogeneration"
-        class=".plonetabs.PloneTabsControlPanel"
-        name="manage-setAutogeneration"
-        permission="cmf.ManagePortal"
-        />
-    
 <!--    <browser:page
         for="plone.app.kss.interfaces.IPortalObject"
-        attribute="manage_toggleGeneratedTabs"
+        attribute="manage_deleteAction"
         class=".plonetabs.PloneTabsControlPanel"
-        name="manage-toggleGeneratedTabs"
-        permission="cmf.ManagePortal"
-        />
-    
-    <browser:page
-        for="plone.app.kss.interfaces.IPortalObject"
-        attribute="manage_toggleNonFolderishTabs"
-        class=".plonetabs.PloneTabsControlPanel"
-        name="manage-toggleNonFolderishTabs"
+        name="manage-deleteAction"
         permission="cmf.ManagePortal"
         />-->
     
+<!--    <browser:page
+        for="plone.app.kss.interfaces.IPortalObject"
+        attribute="manage_addAction"
+        class=".plonetabs.PloneTabsControlPanel"
+        name="manage-addAction"
+        permission="cmf.ManagePortal"
+        />-->
     
 <!--    <browser:page
         for="plone.app.kss.interfaces.IPortalObject"
