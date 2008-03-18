@@ -21,6 +21,17 @@
 
   <a class="delete" href="#"
      tal:attributes="href string:${context/portal_url}/@@plonetabs-controlpanel?action=delete_action&category=${category}&id=${id}">Delete</a>
+  <a href="#" title="Move up" class="up-arrow"
+     tal:condition="not:repeat/tab/start"
+     tal:attributes="href string:${context/portal_url}/@@plonetabs-controlpanel?action=moveup_action&category=${category}&id=${id}">
+    &uarr;
+  </a>
+  <a href="#" title="Move down" class="down-arrow"
+     tal:condition="not:repeat/tab/end"
+     tal:attributes="href string:${context/portal_url}/@@plonetabs-controlpanel?action=movedown_action&category=${category}&id=${id}">
+    &darr;
+  </a>
+
   <span class="url-helper" tal:content="tab/url_expr">Tab Action</span>
   <span class="tab-title" tal:content="tab/title">Tab Name</span>
 

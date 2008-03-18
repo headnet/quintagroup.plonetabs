@@ -37,7 +37,9 @@
 #app #addaction.adding              .advanced,
 #app #addaction.adding              .field-id,
 #app #addaction.adding              .field-condition,
-#app #addaction.adding              .add-controls {
+#app #addaction.adding              .add-controls,
+.kssTabsActive #app.viewing #tabslist li      .url-helper,
+.kssTabsActive #app.viewing #tabslist li      .tab-title {
     display: block;
 }
 
@@ -45,12 +47,17 @@
 #app.viewing                        .noitems,
 #app                                .reorder-controls,
 #app                                .sort-controls,
+
+/* fix for 'non js' version
 #app.viewing li.editing             .url-helper,
-#app.viewing li.editing             .tab-title,
+#app.viewing li.editing             .tab-title, */
+#app.viewing #tabslist li           .url-helper,
+#app.viewing #tabslist li           .tab-title,
+
 #app                                .drag-handle,
 .kssTabsActive #app                 .delete,
 .kssTabsActive #app                 .visibility,
-#app                                .editform,
+.kssTabsActive #app                 .editform,
 #app.sorting                        #addaction,
 .kssTabsActive #app                 .field-visible,
 .kssTabsActive #app                 .field-name dt,
@@ -59,7 +66,9 @@
 .kssTabsActive #app                 .field-id,
 .kssTabsActive #app                 .field-condition,
 .kssTabsActive #app                 .add-controls,
-.kssTabsActive #app                 .change-button {
+.kssTabsActive #app                 .change-button,
+.kssTabsActive #app                 .up-arrow,
+.kssTabsActive #app                 .down-arrow {
     display: none;
 }
 
@@ -146,6 +155,27 @@ div.sort-controls {
 
 * html #app .delete {
     margin-right:-4.7em;
+}
+
+/* Up & Down arrows */
+#app .up-arrow {
+    line-height: 1.8em;
+    font-size: 80%;
+    border: 0;
+    position: absolute;
+    right: 0;
+    margin-right: -6.7em;
+    color: #436976 !important;
+}
+
+#app .down-arrow {
+    line-height: 1.8em;
+    font-size: 80%;
+    border: 0;
+    position: absolute;
+    right: 0;
+    margin-right: -7.7em;
+    color: #436976 !important;
 }
 
 #app ul.csshover li {
@@ -271,8 +301,8 @@ div.field { margin-top:2em; }
 
 /*hover***************************************************/
 
-#app.viewing ul#tabslist.csshover li:hover,
-#app.viewing ul#tabslist.csshover li.onHover {
+.kssTabsActive #app.viewing ul#tabslist.csshover li:hover,
+.kssTabsActive #app.viewing ul#tabslist.csshover li.onHover {
     background-color: #FFFFDD;
     border: 1px inset threedface;
     cursor: text;
@@ -341,7 +371,7 @@ div.field { margin-top:2em; }
     display: block;
 }
 
-#app dl.collapsedBlock dd.contentAdvanced {
+.kssTabsActive #app dl.collapsedBlock dd.contentAdvanced {
     display: none;
 }
 

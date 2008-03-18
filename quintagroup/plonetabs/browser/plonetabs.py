@@ -61,8 +61,10 @@ class PloneTabsControlPanel(PloneKSSView):
             postback = self.manage_deleteAction(self.request, errors)
         #elif action == "visible_action":
                 #pass
-        elif action == "move_action":
-            pass
+        elif action == "moveup_action":
+            postback = self.manage_moveUpAction(self.request, errors)
+        elif action == "movedown_action":
+            postback = self.manage_moveDownAction(self.request, errors)
         elif action == "set_autogeneration":
             if submitted:
                 postback = self.manage_setAutogeneration(form, errors)
@@ -104,6 +106,8 @@ class PloneTabsControlPanel(PloneKSSView):
             changeProperties(disable_nonfolderish_sections=False)
         else:
             changeProperties(disable_nonfolderish_sections=True)
+        
+        IStatusMessage(self.request).addStatusMessage(_(u"Changes saved!"), type="info")
         
         self.redirect()
         
@@ -160,6 +164,7 @@ class PloneTabsControlPanel(PloneKSSView):
                     errors["id"] = _(u"%s" % str(e))
         
         if not errors:
+            IStatusMessage(self.request).addStatusMessage(_(u"'%s' action successfully added." % id), type="info")
             self.redirect(search="category=%s" % category)
             return False
         else:
@@ -167,7 +172,7 @@ class PloneTabsControlPanel(PloneKSSView):
             return True
     
     def manage_deleteAction(self, request, errors):
-        """ Server view for deletign action with given id/category """
+        """ Delete action with given id/category """
         portal_actions = getToolByName(self.context, "portal_actions")
 
         id = request.get("id", "")
@@ -181,7 +186,47 @@ class PloneTabsControlPanel(PloneKSSView):
                 IStatusMessage(self.request).addStatusMessage(_(u"'%s' action does not exist in '%s' category" % (id, category)), type="error")
             else:
                 cat_container.manage_delObjects(ids=[id,])
-                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action in '%s' category successfuly deleted" % (id, category)), type="info")
+                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action in '%s' category successfully deleted" % (id, category)), type="info")
+        
+        self.redirect(search="category=%s" % category)
+        return False
+    
+    def manage_moveUpAction(self, request, errors):
+        """ Move up given action by one position """
+        portal_actions = getToolByName(self.context, "portal_actions")
+
+        id = request.get("id", "")
+        category = request.get("category", "")
+        
+        if category not in portal_actions.objectIds():
+            IStatusMessage(self.request).addStatusMessage(_(u"Unexistent root portal actions category '%s'" % category), type="error")
+        else:
+            cat_container = portal_actions[category]
+            if id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
+                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action does not exist in '%s' category" % (id, category)), type="error")
+            else:
+                cat_container.moveObjectsUp([id,], 1)
+                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action in '%s' category moved up" % (id, category)), type="info")
+        
+        self.redirect(search="category=%s" % category)
+        return False
+    
+    def manage_moveDownAction(self, request, errors):
+        """ Move up given action by one position """
+        portal_actions = getToolByName(self.context, "portal_actions")
+
+        id = request.get("id", "")
+        category = request.get("category", "")
+        
+        if category not in portal_actions.objectIds():
+            IStatusMessage(self.request).addStatusMessage(_(u"Unexistent root portal actions category '%s'" % category), type="error")
+        else:
+            cat_container = portal_actions[category]
+            if id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
+                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action does not exist in '%s' category" % (id, category)), type="error")
+            else:
+                cat_container.moveObjectsDown([id,], 1)
+                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action in '%s' category moved down" % (id, category)), type="info")
         
         self.redirect(search="category=%s" % category)
         return False
