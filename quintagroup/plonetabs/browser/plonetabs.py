@@ -1,4 +1,4 @@
-import copy
+import copy, sys
 
 from Acquisition import aq_inner
 
@@ -8,9 +8,12 @@ from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
 from zope.exceptions import UserError
 
+from OFS.CopySupport import CopyError
+
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import IAction, IActionCategory
 from Products.CMFCore.ActionInformation import Action, ActionCategory
+from Products.CMFCore.Expression import Expression
 from Products.CMFEditions.setuphandlers import DEFAULT_POLICIES
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone import PloneMessageFactory as pmf
@@ -29,7 +32,7 @@ from kss.core import kssaction, KSSExplicitError
 from quintagroup.plonetabs.config import *
 from interfaces import IPloneTabsControlPanel
 
-ACTION_ATTRS = ["id", "visible", "description", "url_expr", "title", "available_expr"]
+ACTION_ATTRS = ["id", "visible", "url_expr", "title", "available_expr"]
 
 class PloneTabsControlPanel(PloneKSSView):
     
@@ -56,7 +59,7 @@ class PloneTabsControlPanel(PloneKSSView):
                 postback = self.manage_addAction(form, errors)
         elif action == "edit_action":
             if submitted:
-                pass
+                postback = self.manage_editAction(form, errors)
         elif action == "delete_action":
             postback = self.manage_deleteAction(self.request, errors)
         #elif action == "visible_action":
@@ -68,6 +71,8 @@ class PloneTabsControlPanel(PloneKSSView):
         elif action == "set_autogeneration":
             if submitted:
                 postback = self.manage_setAutogeneration(form, errors)
+        else:
+            postback = True
         
         if postback:
             return self.template(errors=errors)
@@ -140,7 +145,7 @@ class PloneTabsControlPanel(PloneKSSView):
                     
                     action._setPropValue(prop, value)
                 except Exception, e:
-                    errors[prop] = _(u"%s" % str(e))
+                    errors[prop] = "%s" % str(e)
         
         # if not errors find (or create) category and set action to it
         if not errors:
@@ -151,7 +156,7 @@ class PloneTabsControlPanel(PloneKSSView):
                 try:
                     portal_actions._setObject(category, ActionCategory(category))
                 except Exception, e:
-                    errors["select_category"] = _(u"%s" % str(e))
+                    errors["select_category"] = "%s" % str(e)
                 else:
                     cat_container = portal_actions[category]
             else:
@@ -161,7 +166,7 @@ class PloneTabsControlPanel(PloneKSSView):
                 try:
                     cat_container._setObject(id, action)
                 except Exception, e:
-                    errors["id"] = _(u"%s" % str(e))
+                    errors["id"] = "%s" % str(e)
         
         if not errors:
             IStatusMessage(self.request).addStatusMessage(_(u"'%s' action successfully added." % id), type="info")
@@ -170,6 +175,80 @@ class PloneTabsControlPanel(PloneKSSView):
         else:
             IStatusMessage(self.request).addStatusMessage(_(u"Please correct the indicated errors."), type="error")
             return True
+    
+    def manage_editAction(self, form, errors):
+        """ Add a new action to given category, if category doesn't exist, create it """
+        portal_actions = getToolByName(self.context, "portal_actions")
+        
+        # extract data from request's form
+        orig_id = form.get("orig_id")
+        new_id = form.get("id_%s" % orig_id)
+        category = form.get("category")
+        
+        # before updating action we validate action id/category
+        if category not in portal_actions.objectIds():
+            IStatusMessage(self.request).addStatusMessage(_(u"Unexistent root portal actions category '%s'" % category), type="error")
+        else:
+            cat_container = portal_actions[category]
+            if orig_id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
+                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action does not exist in '%s' category" % (orig_id, category)), type="error")
+            else:
+                # validate input
+                # id is required
+                if not new_id:
+                    errors["id_%s" % orig_id] = _(u"Id field is required")
+                
+                # title is required
+                if not form.get("title_%s" % orig_id):
+                    errors["title_%s" % orig_id] = _(u"Title field is required")
+                
+                # check action for valid tal expression
+                try:
+                    Expression(form.get("url_expr_%s" % orig_id))
+                except Exception, e:
+                    errors["url_expr_%s" % orig_id] = "%s" % str(e)
+                
+                # check condition for valid tal expression
+                try:
+                    Expression(form.get("available_expr_%s" % orig_id))
+                except Exception, e:
+                    errors["available_expr_%s" % orig_id] = "%s" % str(e)
+                
+                # check visible for integer
+                try:
+                    int(form.get("visible_%s" % orig_id, '0'))
+                except Exception, e:
+                    errors["visible_%s" % orig_id] = "%s" % str(e)
+                
+                # rename action if needed
+                if not errors:
+                    if new_id != orig_id:
+                        try:
+                            cat_container.manage_renameObject(orig_id, new_id)
+                        except CopyError, e:
+                            errors["id_%s" % orig_id] = _(u"Invalid id")
+                        except:
+                            exctype, v = sys.exc_info()[:2]
+                            errors["id_%s" % orig_id] = "%s" % str(v)
+                
+                if not errors:
+                    action = cat_container[new_id]
+                    
+                    for prop in ACTION_ATTRS:
+                        if prop != "id":
+                            if prop == "visible":
+                                value = int(form.get("%s_%s" % (prop, orig_id), '0'))
+                            else:
+                                value = form.get("%s_%s" % (prop, orig_id))
+                            action._setPropValue(prop, value)
+                    
+                    IStatusMessage(self.request).addStatusMessage(_(u"'%s' action saved." % new_id), type="info")
+                    self.redirect(search="category=%s" % category)
+                    
+                    return False
+        
+        IStatusMessage(self.request).addStatusMessage(_(u"Please correct the indicated errors."), type="error")
+        return True
     
     def manage_deleteAction(self, request, errors):
         """ Delete action with given id/category """
@@ -299,9 +378,9 @@ class PloneTabsControlPanel(PloneKSSView):
         site_properties = getToolByName(self.context, "portal_properties").site_properties
         return not site_properties.getProperty("disable_nonfolderish_sections", False)
     
-    def getActionsList(self, category="portal_tabs"):
+    def getActionsList(self, category="portal_tabs", errors={}):
         """ See interface """
-        return self.actionslist_template(category=category)
+        return self.actionslist_template(category=category, errors=errors)
     
     def getGeneratedTabs(self):
         """ See interface """

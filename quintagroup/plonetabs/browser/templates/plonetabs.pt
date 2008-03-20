@@ -80,7 +80,7 @@
 
   <ul class="csshover"
       id="tabslist"
-      tal:content="structure python:view.getActionsList(category=category)" />
+      tal:content="structure python:view.getActionsList(category=category, errors=errors)" />
 
   <form id="addaction"
         name="addaction_form"

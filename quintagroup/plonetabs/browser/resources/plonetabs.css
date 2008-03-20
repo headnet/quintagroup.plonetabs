@@ -39,7 +39,8 @@
 #app #addaction.adding              .field-condition,
 #app #addaction.adding              .add-controls,
 .kssTabsActive #app.viewing #tabslist li      .url-helper,
-.kssTabsActive #app.viewing #tabslist li      .tab-title {
+.kssTabsActive #app.viewing #tabslist li      .tab-title,
+.kssTabsActive #app                           .editcancel {
     display: block;
 }
 
@@ -68,7 +69,8 @@
 .kssTabsActive #app                 .add-controls,
 .kssTabsActive #app                 .change-button,
 .kssTabsActive #app                 .up-arrow,
-.kssTabsActive #app                 .down-arrow {
+.kssTabsActive #app                 .down-arrow,
+#app                                .editcancel {
     display: none;
 }
 

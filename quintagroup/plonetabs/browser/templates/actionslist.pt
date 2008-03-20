@@ -1,6 +1,7 @@
 <tal:tabs tal:define="test nocall:view/test;
                       dummy python:request.RESPONSE.setHeader('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
-                      category python:options.get('category', None) or 'portal_tabs'"
+                      category python:options.get('category', None) or 'portal_tabs';
+                      errors options/errors|nothing"
           tal:repeat="tab options/tabs|python:view.getPortalActions(category)">
 <li tal:define="id tab/id;
                 visible tab/visible;
@@ -12,12 +13,6 @@
                     class python:' '.join(klass)">
 
   <img class="drag-handle" src="++resource++drag.gif" alt="" height="11" width="25" />
-
-  <div class="bridge">
-    <input type="checkbox" class="visibility" value="1" name="visible" title="visibility"
-           tal:attributes="checked python:test(visible, 'checked', None);
-                           name string:${attrs/name}_${id}" />
-  </div>
 
   <a class="delete" href="#"
      tal:attributes="href string:${context/portal_url}/@@plonetabs-controlpanel?action=delete_action&category=${category}&id=${id}">Delete</a>
@@ -42,36 +37,67 @@
         tal:attributes="action string:${context/portal_url}/${attrs/action};
                         name string:${attrs/name}_${id}">
 
+      <input type="hidden" name="orig_id" value="orig_id" tal:attributes="value id" />
       <input type="hidden" name="action" value="edit_action" />
+      <input type="hidden" name="category" value="current_category" tal:attributes="value category" />
       <input type="hidden" name="form.submitted:boolean" value="True" />
 
-      <dl>
+      <div class="bridge">
+        <input type="checkbox" class="visibility" value="1" name="visible" title="visibility"
+               tal:define="name string:${attrs/name}_${id};
+                           submitted request/form.submitted|nothing;
+                           checked python:test(submitted, test(request.get(name, []) != [], 'checked', None), test(visible, 'checked', None))"
+               tal:attributes="checked checked;
+                               name name" />
+      </div>
+
+      <dl tal:define="name string:title_${id};
+                      error python:errors.get(name, '');
+                      tab_title tab/title"
+          tal:attributes="class python:test(error, 'error', '')">
         <dt><label>Name</label></dt>
-        <dd><input type="text" value="" name="title"
-                   tal:attributes="value tab/title;
-                                   name string:${attrs/name}_${id}" /></dd>
+        <dd>
+          <span tal:content="error">Validation error output</span>
+          <input type="text" value="" name="title"
+                 tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_title);
+                                 name name" /></dd>
       </dl>
 
       <dl class="collapseAdvanced collapsedBlock">
         <dt class="headerAdvanced">Advanced</dt>
         <dd class="contentAdvanced">
-          <dl>
+          <dl tal:define="name string:url_expr_${id};
+                          error python:errors.get(name, '');
+                          tab_url tab/url_expr"
+              tal:attributes="class python:test(error, 'error', '')">
             <dt><label>URL (Expression)</label></dt>
-            <dd><input type="text" value="" name="url_expr"     size="30"
-                       tal:attributes="value tab/url_expr;
-                                       name string:${attrs/name}_${id}" /></dd>
+            <dd>
+              <span tal:content="error">Validation error output</span>
+              <input type="text" value="" name="url_expr"     size="30"
+                     tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_url);
+                                     name name" /></dd>
           </dl>
-          <dl>
+          <dl tal:define="name string:id_${id};
+                          error python:errors.get(name, '');
+                          tab_id tab/id"
+              tal:attributes="class python:test(error, 'error', '')">
             <dt><label>Id</label></dt>
-            <dd><input type="text" value="" name="id"
-                       tal:attributes="value tab/id;
-                                       name string:${attrs/name}_${id}" /></dd>
+            <dd>
+              <span tal:content="error">Validation error output</span>
+              <input type="text" value="" name="id"
+                     tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_id);
+                                     name name" /></dd>
           </dl>
-          <dl>
+          <dl tal:define="name string:available_expr_${id};
+                          error python:errors.get(name, '');
+                          tab_cond tab/available_expr"
+              tal:attributes="class python:test(error, 'error', '')">
             <dt><label>Condition (Expression)</label></dt>
-            <dd><input type="text" value="" name="condition"  size="30"
-                       tal:attributes="value tab/available_expr;
-                                       name string:${attrs/name}_${id}" /></dd>
+            <dd>
+              <span tal:content="error">Validation error output</span>
+              <input type="text" value="" name="available_expr"  size="30"
+                     tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_cond);
+                                     name name" /></dd>
           </dl>
           <div class="visualClear"><!-- --></div>
         </dd>
@@ -80,6 +106,7 @@
       <div>
         <input type="submit" class="editsave"   i18n:attributes="value" value="Save"   />
         <input type="submit" class="editcancel" i18n:attributes="value" value="Cancel" />
+        <input type="reset"  class="editreset"  i18n:attributes="value" value="Reset"  />
       </div>
 
   </form>
