@@ -27,7 +27,8 @@
 
 .kssTabsActive #app.viewing             .reorder-controls,
 .kssTabsActive #app.sorting             .sort-controls,
-#app.viewing li.editing             .editform,
+/* #app.viewing li.editing             .editform, */
+#app.viewing li.editing             .edit-fields-wrapper,
 #app #addaction.adding              .field-visible,
 #app #addaction.adding              .field-name dt,
 #app #addaction.adding              .field-action,
@@ -49,16 +50,19 @@
 #app                                .reorder-controls,
 #app                                .sort-controls,
 
-/* fix for 'non js' version
-#app.viewing li.editing             .url-helper,
-#app.viewing li.editing             .tab-title, */
+/* fix for 'non js' version */
 #app.viewing #tabslist li           .url-helper,
 #app.viewing #tabslist li           .tab-title,
+.kssTabsActive #app.viewing #tabslist li.editing      .url-helper,
+.kssTabsActive #app.viewing #tabslist li.editing      .tab-title,
+/*#app.viewing #tabslist li           .url-helper,
+#app.viewing #tabslist li           .tab-title,*/
 
 #app                                .drag-handle,
 .kssTabsActive #app                 .delete,
 .kssTabsActive #app                 .visibility,
-.kssTabsActive #app                 .editform,
+/* .kssTabsActive #app                 .editform, */
+.kssTabsActive #app                 .edit-fields-wrapper,
 #app.sorting                        #addaction,
 .kssTabsActive #app                 .field-visible,
 .kssTabsActive #app                 .field-name dt,
@@ -310,7 +314,7 @@ div.field { margin-top:2em; }
     cursor: text;
 }
 
-#app.viewing ul#tabslist.csshover li.editing {
+.kssTabsActive #app.viewing ul#tabslist.csshover li.editing {
     background-color: White;
     border: 1px solid white;
     cursor: auto;

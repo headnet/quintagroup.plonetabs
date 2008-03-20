@@ -37,19 +37,21 @@
         tal:attributes="action string:${context/portal_url}/${attrs/action};
                         name string:${attrs/name}_${id}">
 
-      <input type="hidden" name="orig_id" value="orig_id" tal:attributes="value id" />
-      <input type="hidden" name="action" value="edit_action" />
-      <input type="hidden" name="category" value="current_category" tal:attributes="value category" />
-      <input type="hidden" name="form.submitted:boolean" value="True" />
+    <input type="hidden" name="orig_id" value="orig_id" tal:attributes="value id" />
+    <input type="hidden" name="action" value="edit_action" />
+    <input type="hidden" name="category" value="current_category" tal:attributes="value category" />
+    <input type="hidden" name="form.submitted:boolean" value="True" />
 
-      <div class="bridge">
-        <input type="checkbox" class="visibility" value="1" name="visible" title="visibility"
-               tal:define="name string:${attrs/name}_${id};
-                           submitted request/form.submitted|nothing;
-                           checked python:test(submitted, test(request.get(name, []) != [], 'checked', None), test(visible, 'checked', None))"
-               tal:attributes="checked checked;
-                               name name" />
-      </div>
+    <div class="bridge">
+      <input type="checkbox" class="visibility" value="1" name="visible" title="visibility"
+             tal:define="name string:${attrs/name}_${id};
+                         submitted request/form.submitted|nothing;
+                         checked python:test(submitted, test(request.get(name, []) != [], 'checked', None), test(visible, 'checked', None))"
+             tal:attributes="checked checked;
+                             name name" />
+    </div>
+
+    <span class="edit-fields-wrapper">
 
       <dl tal:define="name string:title_${id};
                       error python:errors.get(name, '');
@@ -108,6 +110,8 @@
         <input type="submit" class="editcancel" i18n:attributes="value" value="Cancel" />
         <input type="reset"  class="editreset"  i18n:attributes="value" value="Reset"  />
       </div>
+
+    </span>
 
   </form>
 
