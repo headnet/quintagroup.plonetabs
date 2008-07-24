@@ -15,5 +15,12 @@
         permission="cmf.ManagePortal"
         allowed_interface = ".interfaces.IPloneTabsControlPanel"
         />
+
+    <browser:page
+        name="plonetabs-header-macro"
+        for="*"
+        template="templates/plonetabs_header_macro.pt"
+        permission="zope.Public"
+        />
     
 </configure>

@@ -15,7 +15,7 @@
   addClass-value: kssTabsActive;
 }
 
-#actions_category:load {
+#select_category:load {
     action-client: setStateVar;
     setStateVar-varname: plonetabs-category;
     setStateVar-value: currentFormVar();
@@ -23,7 +23,8 @@
 
 #select_category:change {
     action-client: plonetabs-redirectTo;
-    plonetabs-redirectTo-search: currentFormVar();
+    plonetabs-redirectTo-searchparams: 'category';
+    plonetabs-redirectTo-searchvalues: currentFormVar();
 }
 
  /*Hovering for IE especially */

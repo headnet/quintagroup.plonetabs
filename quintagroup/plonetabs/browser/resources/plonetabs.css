@@ -59,7 +59,7 @@
 #app.viewing #tabslist li           .tab-title,*/
 
 #app                                .drag-handle,
-.kssTabsActive #app                 .delete,
+#app                                .delete,
 .kssTabsActive #app                 .visibility,
 /* .kssTabsActive #app                 .editform, */
 .kssTabsActive #app                 .edit-fields-wrapper,
@@ -72,15 +72,13 @@
 .kssTabsActive #app                 .field-condition,
 .kssTabsActive #app                 .add-controls,
 .kssTabsActive #app                 .change-button,
-.kssTabsActive #app                 .up-arrow,
-.kssTabsActive #app                 .down-arrow,
 #app                                .editcancel {
     display: none;
 }
 
 #app.working #busy,
-#app.viewing ul.csshover li:hover    .delete,
-#app.viewing ul.csshover li.onHover  .delete,
+.kssTabsActive #app.viewing ul.csshover li:hover    .delete,
+.kssTabsActive #app.viewing ul.csshover li.onHover  .delete,
 #app.viewing ul.csshover li:hover    .visibility,
 #app.viewing ul.csshover li.onHover  .visibility,
 #app ul#roottabs.csshover li:hover   .visibility,
