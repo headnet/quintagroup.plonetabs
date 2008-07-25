@@ -28,7 +28,7 @@
     
     <browser:page
         for="plone.app.kss.interfaces.IPortalObject"
-        attribute="deleteAction"
+        attribute="kss_deleteAction"
         class=".plonetabs.PloneTabsControlPanel"
         name="plonetabs-deleteAction"
         permission="cmf.ManagePortal"

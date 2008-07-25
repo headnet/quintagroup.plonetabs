@@ -29,7 +29,7 @@ from kss.core import kssaction, KSSExplicitError
 from quintagroup.plonetabs.config import *
 from interfaces import IPloneTabsControlPanel
 
-ACTION_ATTRS = ["id", "visible", "url_expr", "title", "available_expr"]
+ACTION_ATTRS = ["id", "title", "url_expr", "available_expr", "visible"]
 
 class PloneTabsControlPanel(PloneKSSView):
     
@@ -114,12 +114,12 @@ class PloneTabsControlPanel(PloneKSSView):
         return False
     
     def manage_addAction(self, form, errs):
-        """ Add a new action to given category, if category doesn't exist, create it """
+        """ Manage method to add a new action to given category,
+            if category doesn't exist, create it """
         cat_name = form['category']
         
-        # before checking for existence category we will validate all input data
-        # and issue errors if needed
-        errors = self.validateActionFields(form)
+        # validate posted data
+        errors = self.validateActionFields(cat_name, form)
         
         # if not errors find (or create) category and set action to it
         if not errors:
@@ -133,103 +133,42 @@ class PloneTabsControlPanel(PloneKSSView):
             return True
     
     def manage_editAction(self, form, errs):
-        """ Process after edit form post """
-        portal_actions = getToolByName(self.context, "portal_actions")
+        """ Manage Method to update action """
+        # extract posted data
+        id, cat_name, data = self.parseForm(form)
         
-        # extract data from request's form
-        orig_id = form.get("orig_id")
-        new_id = form.get("id_%s" % orig_id)
-        category = form.get("category")
+        # get category and action to edit
+        category = self.getActionCategory(cat_name)
+        action = category[id]
         
-        # before updating action we validate action id/category
-        if category not in portal_actions.objectIds():
-            IStatusMessage(self.request).addStatusMessage(_(u"Unexistent root portal actions category '%s'" % category), type="error")
+        # validate posted data
+        errors = self.validateActionFields(cat_name, data, allow_dup=True)
+        
+        if not errors:
+            action = self.updateAction(id, cat_name, data)
+            IStatusMessage(self.request).addStatusMessage(_(u"'%s' action saved." % action.id), type="info")
+            self.redirect(search="category=%s" % cat_name)
+            return False
         else:
-            cat_container = portal_actions[category]
-            if orig_id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
-                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action does not exist in '%s' category" % (orig_id, category)), type="error")
-            else:
-                # validate input
-                # id is required
-                if not new_id:
-                    errors["id_%s" % orig_id] = _(u"Id field is required")
-                
-                # title is required
-                if not form.get("title_%s" % orig_id):
-                    errors["title_%s" % orig_id] = _(u"Title field is required")
-                
-                # check action for valid tal expression
-                try:
-                    Expression(form.get("url_expr_%s" % orig_id))
-                except Exception, e:
-                    errors["url_expr_%s" % orig_id] = "%s" % str(e)
-                
-                # check condition for valid tal expression
-                try:
-                    Expression(form.get("available_expr_%s" % orig_id))
-                except Exception, e:
-                    errors["available_expr_%s" % orig_id] = "%s" % str(e)
-                
-                # check visible for integer
-                try:
-                    int(form.get("visible_%s" % orig_id, '0'))
-                except Exception, e:
-                    errors["visible_%s" % orig_id] = "%s" % str(e)
-                
-                # rename action if needed
-                if not errors:
-                    if new_id != orig_id:
-                        try:
-                            cat_container.manage_renameObject(orig_id, new_id)
-                        except CopyError, e:
-                            errors["id_%s" % orig_id] = _(u"Invalid id")
-                        except:
-                            exctype, v = sys.exc_info()[:2]
-                            errors["id_%s" % orig_id] = "%s" % str(v)
-                
-                if not errors:
-                    action = cat_container[new_id]
-                    
-                    for prop in ACTION_ATTRS:
-                        if prop != "id":
-                            if prop == "visible":
-                                value = int(form.get("%s_%s" % (prop, orig_id), '0'))
-                            else:
-                                value = form.get("%s_%s" % (prop, orig_id))
-                            action._setPropValue(prop, value)
-                    
-                    IStatusMessage(self.request).addStatusMessage(_(u"'%s' action saved." % new_id), type="info")
-                    self.redirect(search="category=%s" % category)
-                    
-                    return False
-        
-        IStatusMessage(self.request).addStatusMessage(_(u"Please correct the indicated errors."), type="error")
-        return True
+            errs.update(self.processErrors(errors, sufix='_%s' % id)) # add edit form sufix to error ids
+            IStatusMessage(self.request).addStatusMessage(_(u"Please correct the indicated errors."), type="error")
+            return True
     
-    def manage_deleteAction(self, form, errors):
-        """ Delete action with given id/category """
-        portal_actions = getToolByName(self.context, "portal_actions")
-
-        id = form.get("orig_id", "")
-        category = form.get("category", "")
+    def manage_deleteAction(self, form, errs):
+        """ Manage Method to delete action """
+        # extract posted data
+        id, cat_name, data = self.parseForm(form)
         
-        if category not in portal_actions.objectIds():
-            IStatusMessage(self.request).addStatusMessage(_(u"Unexistent root portal actions category '%s'" % category), type="error")
+        # get category and action to delete
+        category = self.getActionCategory(cat_name)
+        if id in category.objectIds():
+            self.deleteAction(id, cat_name)
+            IStatusMessage(self.request).addStatusMessage(_(u"'%s' action in '%s' category deleted." % (id, cat_name)), type="info")
+            self.redirect(search="category=%s" % cat_name)
+            return False
         else:
-            cat_container = portal_actions[category]
-            if id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
-                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action does not exist in '%s' category" % (id, category)), type="error")
-            else:
-                cat_container.manage_delObjects(ids=[id,])
-                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action in '%s' category successfully deleted" % (id, category)), type="info")
-                
-                # redirect to form after successfull deletion
-                self.redirect(search="category=%s" % category)
-                return False
-        
-        # return form with errors
-        return True
-
+            IStatusMessage(self.request).addStatusMessage(_(u"No '%s' action in '%s' category." % (id, cat_name)), type="error")
+            return True
     
     def manage_moveUpAction(self, form, errors):
         """ Move up given action by one position """
@@ -294,9 +233,10 @@ class PloneTabsControlPanel(PloneKSSView):
         
         self.request.response.redirect("%s%s%s" % (url, search, hash))
     
-    
     ###################################
-    ##  Methods - providers for templates
+    #
+    #  Methods - providers for templates
+    #
     ###################################
     
     def getPageTitle(self, category="portal_tabs"):
@@ -418,6 +358,10 @@ class PloneTabsControlPanel(PloneKSSView):
         portal_actions = getToolByName(self.context, "portal_actions")
         return portal_actions.objectIds()
     
+    #
+    # Methods to make this class looks like global sections viewlet
+    #
+    
     def test(self, condition, ifTrue, ifFalse):
         """ See interface """
         if condition:
@@ -443,7 +387,9 @@ class PloneTabsControlPanel(PloneKSSView):
         return selected_tabs['portal']
     
     ##########################
-    # kss server actions
+    #
+    # KSS Server Actions
+    #
     ##########################
     
     def validateAction(self, id, category, prefix="tabslist_"):
@@ -530,7 +476,7 @@ class PloneTabsControlPanel(PloneKSSView):
         self.updatePortalTabs()
     
     @kssaction
-    def deleteAction(self, id, category):
+    def kss_deleteAction(self, id, category):
         """ Delete portal action with given id & category """
         portal_actions = getToolByName(self.context, "portal_actions")
         cat_container, act_id = self.validateAction(id, category)
@@ -583,7 +529,9 @@ class PloneTabsControlPanel(PloneKSSView):
         
         ksscore.replaceHTML(ksscore.getHtmlIdSelector(replace_id), content)
     
+    #
     # Utility Methods
+    #
     
     def copyAction(self, action):
         """ Copyt action to dictionary """
@@ -592,33 +540,14 @@ class PloneTabsControlPanel(PloneKSSView):
             action_info[attr] = getattr(action, attr)
         return action_info
     
-    
-    
-        if not id:
-            errors["id"] = _(u"Id field is required")
-        if not form.get("title"):
-            errors["title"] = _(u"Title field is required")
-
-        action = Action(id)
-        for prop in ACTION_ATTRS:
-            if prop != "id":
-                try:
-                    if prop == "visible":
-                        value = int(form.get(prop, '0'))
-                    else:
-                        value = form.get(prop)
-                    
-                    action._setPropValue(prop, value)
-                except Exception, e:
-                    errors[prop] = "%s" % str(e)
-    
-    def validateActionFields(self, data):
+    def validateActionFields(self, cat_name, data, allow_dup=False):
         """ Check action fields on validity """
         errors = {}
         
-        # get or create (if necessary) actions category
-        cat_name = data['category']
-        category = self.getOrCreateCategory(cat_name)
+        if allow_dup:
+            category = ActionCategory(cat_name)           # create dummy category to avoid id duplication during action update
+        else:
+            category = self.getOrCreateCategory(cat_name) # get or create (if necessary) actions category
         
         # validate action id
         chooser = INameChooser(category)
@@ -629,7 +558,7 @@ class PloneTabsControlPanel(PloneKSSView):
         
         # validate action name
         if not data['title'].strip():
-            errors['title'] = 'Empty or invalid id specified'
+            errors['title'] = 'Empty or invalid title specified'
         
         # validate condition expression
         if data['available_expr']:
@@ -647,29 +576,86 @@ class PloneTabsControlPanel(PloneKSSView):
         
         return errors
     
+    def processErrors(self, errors, prefix='', sufix=''):
+        """ Add prefixes, sufixes to error ids 
+            This is necessary during edit form validation,
+            because every edit form on the page has it's own sufix (id) """
+        if not (prefix or sufix):
+            return errors
+        
+        result = {}
+        for key, value in errors.items():
+            result['%s%s%s' % (prefix, key, sufix)] = value
+        
+        return result
+    
+    def parseForm(self, form):
+        """ Extract all needed fields """
+        # get original id and category
+        info = {}
+        id = form['orig_id']
+        category = form['category']
+        
+        # preprocess 'visible' field (checkbox needs special checking)
+        if form.has_key('visible_%s' % id):
+            form['visible_%s' % id] = True
+        else:
+            form['visible_%s' % id] = False
+        
+        # collect all action fields
+        for attr in ACTION_ATTRS:
+            info[attr] = form['%s_%s' % (attr, id)]
+        
+        return (id, category, info)
+    
+    def getActionCategory(self, name):
+        portal_actions = getToolByName(self.context, 'portal_actions')
+        return portal_actions[name]
+    
     def getOrCreateCategory(self, name):
+        """ Get or create (if necessary) category """
         portal_actions = getToolByName(self.context, 'portal_actions')
         if name not in map(lambda x: x.id, filter(lambda x: IActionCategory.providedBy(x), portal_actions.objectValues())):
             portal_actions._setObject(name, ActionCategory(name))
-            category = portal_actions[name]
-        else:
-            category = portal_actions[name]
-        return category
+        return self.getActionCategory(name)
     
     def addAction(self, cat_name, data):
         """ Create and add new action to category with given name """
-        
-        # get or create category if it's necessary
         id = data.pop('id')
         category = self.getOrCreateCategory(cat_name)
-        
-        # add action
         action = Action(id, **data)
         category._setObject(id, action)
         return action
     
+    def updateAction(self, id, cat_name, data):
+        """ Update action with given id and category """
+        new_id = data.pop('id')
+        category = self.getActionCategory(cat_name)
+        
+        # rename action if necessary
+        if id != new_id:
+            category.manage_renameObject(id, new_id)
+        
+        # get action
+        action = category[new_id]
+        
+        # update action properties
+        for attr in ACTION_ATTRS:
+            if data.has_key(attr):
+                action._setPropValue(attr, data[attr])
+        
+        return action
+    
+    def deleteAction(self, id, cat_name):
+        """ Delete action with given id from given category """
+        category = self.getActionCategory(cat_name)
+        category.manage_delObjects(ids=[id,])
+        return True
+    
+    #
     # KSS Methods that are used to update different parts of the page
     # according to category
+    #
     
     def updatePage(self, category):
         """ Seek for according method in class and calls it if found
@@ -702,14 +688,5 @@ class PloneTabsControlPanel(PloneKSSView):
             self.getCommandSet("core").getHtmlIdSelector("portal-personaltools-wrapper"),
             "plone.portaltop",
             "plone.personal_bar")
-
-
-
-
-
-
-
-
-
 
 

@@ -34,10 +34,9 @@
     <div class="bridge">
       <input type="checkbox" class="visibility" value="1" name="visible" title="visibility"
              tal:define="name string:${attrs/name}_${id};
-                         submitted request/form.submitted|nothing;
-                         checked python:test(submitted, test(request.get(name, []) != [], 'checked', None), test(visible, 'checked', None))"
-             tal:attributes="checked checked;
-                             name name" />
+                         submitted python:test(request.get('form.submitted','') and request.get('orig_id','')==id, True, False)"
+             tal:attributes="name name;
+                             checked python:test(submitted, test(request.form.get(name, []) != [], 'checked', None), test(visible, 'checked', None))"/>
     </div>
 
     <span class="edit-fields-wrapper">
