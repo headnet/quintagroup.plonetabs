@@ -164,60 +164,44 @@ class PloneTabsControlPanel(PloneKSSView):
         category = self.getActionCategory(cat_name)
         if id in category.objectIds():
             self.deleteAction(id, cat_name)
-            IStatusMessage(self.request).addStatusMessage(_(u"'%s' action in '%s' category deleted." % (id, cat_name)), type="info")
+            IStatusMessage(self.request).addStatusMessage(_(u"'%s' action deleted." % id), type="info")
             self.redirect(search="category=%s" % cat_name)
             return False
         else:
             IStatusMessage(self.request).addStatusMessage(_(u"No '%s' action in '%s' category." % (id, cat_name)), type="error")
             return True
     
-    def manage_moveUpAction(self, form, errors):
-        """ Move up given action by one position """
-        portal_actions = getToolByName(self.context, "portal_actions")
+    def manage_moveUpAction(self, form, errs):
+        """ Manage Method for moving up given action by one position """
+        # extract posted data
+        id, cat_name, data = self.parseEditForm(form)
         
-        id = form.get("orig_id", "")
-        category = form.get("category", "")
-        
-        if category not in portal_actions.objectIds():
-            IStatusMessage(self.request).addStatusMessage(_(u"Unexistent root portal actions category '%s'" % category), type="error")
+        # get category and action to move
+        category = self.getActionCategory(cat_name)
+        if id in category.objectIds():
+            self.moveAction(id, cat_name, steps=1)
+            IStatusMessage(self.request).addStatusMessage(_(u"'%s' action moved up." % id), type="info")
+            self.redirect(search="category=%s" % cat_name)
+            return False
         else:
-            cat_container = portal_actions[category]
-            if id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
-                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action does not exist in '%s' category" % (id, category)), type="error")
-            else:
-                cat_container.moveObjectsUp([id,], 1)
-                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action in '%s' category moved up" % (id, category)), type="info")
-                
-                # redirect to form after successfull deletion
-                self.redirect(search="category=%s" % category)
-                return False
-        
-        # return form with errors
-        return True
+            IStatusMessage(self.request).addStatusMessage(_(u"No '%s' action in '%s' category." % (id, cat_name)), type="error")
+            return True
     
-    def manage_moveDownAction(self, form, errors):
-        """ Move up given action by one position """
-        portal_actions = getToolByName(self.context, "portal_actions")
+    def manage_moveDownAction(self, form, errs):
+        """ Manage Method for moving down given action by one position """
+        # extract posted data
+        id, cat_name, data = self.parseEditForm(form)
         
-        id = form.get("orig_id", "")
-        category = form.get("category", "")
-        
-        if category not in portal_actions.objectIds():
-            IStatusMessage(self.request).addStatusMessage(_(u"Unexistent root portal actions category '%s'" % category), type="error")
+        # get category and action to move
+        category = self.getActionCategory(cat_name)
+        if id in category.objectIds():
+            self.moveAction(id, cat_name, steps=-1)
+            IStatusMessage(self.request).addStatusMessage(_(u"'%s' action moved down." % id), type="info")
+            self.redirect(search="category=%s" % cat_name)
+            return False
         else:
-            cat_container = portal_actions[category]
-            if id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
-                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action does not exist in '%s' category" % (id, category)), type="error")
-            else:
-                cat_container.moveObjectsDown([id,], 1)
-                IStatusMessage(self.request).addStatusMessage(_(u"'%s' action in '%s' category moved down" % (id, category)), type="info")
-                
-                # redirect to form after successfull deletion
-                self.redirect(search="category=%s" % category)
-                return False
-        
-        # return form with errors
-        return True
+            IStatusMessage(self.request).addStatusMessage(_(u"No '%s' action in '%s' category." % (id, cat_name)), type="error")
+            return True
     
     def redirect(self, url="", search="", hash=""):
         """ Redirect to @@plonetabs-controlpanel configlet """
@@ -670,6 +654,17 @@ class PloneTabsControlPanel(PloneKSSView):
         category = self.getActionCategory(cat_name)
         category.manage_delObjects(ids=[id,])
         return True
+    
+    def moveAction(self, id, cat_name, steps=0):
+        """ Move action by a given steps """
+        if steps != 0:
+            category = self.getActionCategory(cat_name)
+            if steps > 0:
+                category.moveObjectsUp([id,], steps)
+            else:
+                category.moveObjectsDown([id,], abs(steps))
+            return True
+        return False
     
     #
     # KSS Methods that are used to update different parts of the page
