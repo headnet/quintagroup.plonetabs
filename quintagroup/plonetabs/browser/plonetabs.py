@@ -116,10 +116,11 @@ class PloneTabsControlPanel(PloneKSSView):
     def manage_addAction(self, form, errs):
         """ Manage method to add a new action to given category,
             if category doesn't exist, create it """
-        cat_name = form['category']
+        # extract posted data
+        id, cat_name, data = self.parseAddForm(form)
         
         # validate posted data
-        errors = self.validateActionFields(cat_name, form)
+        errors = self.validateActionFields(cat_name, data)
         
         # if not errors find (or create) category and set action to it
         if not errors:
@@ -135,7 +136,7 @@ class PloneTabsControlPanel(PloneKSSView):
     def manage_editAction(self, form, errs):
         """ Manage Method to update action """
         # extract posted data
-        id, cat_name, data = self.parseForm(form)
+        id, cat_name, data = self.parseEditForm(form)
         
         # get category and action to edit
         category = self.getActionCategory(cat_name)
@@ -157,7 +158,7 @@ class PloneTabsControlPanel(PloneKSSView):
     def manage_deleteAction(self, form, errs):
         """ Manage Method to delete action """
         # extract posted data
-        id, cat_name, data = self.parseForm(form)
+        id, cat_name, data = self.parseEditForm(form)
         
         # get category and action to delete
         category = self.getActionCategory(cat_name)
@@ -589,8 +590,8 @@ class PloneTabsControlPanel(PloneKSSView):
         
         return result
     
-    def parseForm(self, form):
-        """ Extract all needed fields """
+    def parseEditForm(self, form):
+        """ Extract all needed fields from edit form """
         # get original id and category
         info = {}
         id = form['orig_id']
@@ -605,6 +606,24 @@ class PloneTabsControlPanel(PloneKSSView):
         # collect all action fields
         for attr in ACTION_ATTRS:
             info[attr] = form['%s_%s' % (attr, id)]
+        
+        return (id, category, info)
+    
+    def parseAddForm(self, form):
+        """ Extract all needed fields from add form """
+        info = {}
+        id = form['id']
+        category = form['category']
+        
+        # preprocess 'visible' field (checkbox needs special checking)
+        if form.has_key('visible'):
+            form['visible'] = True
+        else:
+            form['visible'] = False
+        
+        # collect all action fields
+        for attr in ACTION_ATTRS:
+            info[attr] = form[attr]
         
         return (id, category, info)
     
