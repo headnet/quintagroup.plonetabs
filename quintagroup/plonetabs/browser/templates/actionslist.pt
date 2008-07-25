@@ -36,7 +36,7 @@
              tal:define="name string:${attrs/name}_${id};
                          submitted python:test(request.get('form.submitted','') and request.get('orig_id','')==id, True, False)"
              tal:attributes="name name;
-                             checked python:test(submitted, test(request.form.get(name, []) != [], 'checked', None), test(visible, 'checked', None))"/>
+                             checked python:test(submitted, test(request.form.get(name, False), 'checked', None), test(visible, 'checked', None))"/>
     </div>
 
     <span class="edit-fields-wrapper">
