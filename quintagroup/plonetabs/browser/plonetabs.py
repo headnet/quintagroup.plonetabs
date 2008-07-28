@@ -94,23 +94,20 @@ class PloneTabsControlPanel(PloneKSSView):
                     obj.update(excludeFromNav=True)
 
         # set disable_folder_sections property
-        changeProperties = getToolByName(self.context, "portal_properties").site_properties.manage_changeProperties
-        
         if int(generated_tabs) == 1:
-            changeProperties(disable_folder_sections=False)
+            self.setSiteProperties(disable_folder_sections=False)
         else:
-            changeProperties(disable_folder_sections=True)
+            self.setSiteProperties(disable_folder_sections=True)
         
         # set disable_nonfolderish_sections property
         if int(nonfolderish_tabs) == 1:
-            changeProperties(disable_nonfolderish_sections=False)
+            self.setSiteProperties(disable_nonfolderish_sections=False)
         else:
-            changeProperties(disable_nonfolderish_sections=True)
+            self.setSiteProperties(disable_nonfolderish_sections=True)
         
+        # after successfull form processing make redirect with good message
         IStatusMessage(self.request).addStatusMessage(_(u"Changes saved!"), type="info")
-        
         self.redirect()
-        
         return False
     
     def manage_addAction(self, form, errs):
@@ -665,6 +662,12 @@ class PloneTabsControlPanel(PloneKSSView):
                 category.moveObjectsDown([id,], abs(steps))
             return True
         return False
+    
+    def setSiteProperties(self, **kw):
+        """ Change site_properties """
+        site_properties = getToolByName(self.context, "portal_properties").site_properties
+        site_properties.manage_changeProperties(**kw)
+        return True
     
     #
     # KSS Methods that are used to update different parts of the page
