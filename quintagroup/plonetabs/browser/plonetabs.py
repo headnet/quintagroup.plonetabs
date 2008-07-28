@@ -200,20 +200,13 @@ class PloneTabsControlPanel(PloneKSSView):
             IStatusMessage(self.request).addStatusMessage(_(u"No '%s' action in '%s' category." % (id, cat_name)), type="error")
             return True
     
-    def redirect(self, url="", search="", hash=""):
+    def redirect(self, url="", search="", url_hash=""):
         """ Redirect to @@plonetabs-controlpanel configlet """
-        
-        if url == "":
-            portal_url =  getMultiAdapter((self.context, self.request), name=u"plone_portal_state").portal_url()
-            url = "%s/%s" % (portal_url, "@@plonetabs-controlpanel")
-        
-        if search != "":
-            search = "?%s" % search
-        
-        if hash != "":
-            hash = "#%s" % hash
-        
-        self.request.response.redirect("%s%s%s" % (url, search, hash))
+        portal_url =  getMultiAdapter((self.context, self.request), name=u"plone_portal_state").portal_url()
+        url = (url == "") and "%s/%s" % (portal_url, "@@plonetabs-controlpanel") or url
+        search = (search != "") and "?%s" % search or search
+        url_hash = (url_hash != "") and "#%s" % url_hash or url_hash
+        self.request.response.redirect("%s%s%s" % (url, search, url_hash))
     
     ###################################
     #
@@ -288,12 +281,11 @@ class PloneTabsControlPanel(PloneKSSView):
         # Build result dict
         result = []
         
-        # check whether we only want actions
+        # check whether tabs autogeneration is turned on
         if not self.isGeneratedTabs():
             return result
         
         query = {}
-        
         rootPath = getNavigationRoot(context)
         query['path'] = {'query' : rootPath, 'depth' : 1}
         query['portal_type'] = utils.typesToList(context)
@@ -619,6 +611,16 @@ class PloneTabsControlPanel(PloneKSSView):
             portal_actions._setObject(name, ActionCategory(name))
         return self.getActionCategory(name)
     
+    def setSiteProperties(self, **kw):
+        """ Change site_properties """
+        site_properties = getToolByName(self.context, "portal_properties").site_properties
+        site_properties.manage_changeProperties(**kw)
+        return True
+    
+    #
+    # Basic API to work with portal actions tool in a more pleasent way
+    #
+    
     def addAction(self, cat_name, data):
         """ Create and add new action to category with given name """
         id = data.pop('id')
@@ -663,15 +665,9 @@ class PloneTabsControlPanel(PloneKSSView):
             return True
         return False
     
-    def setSiteProperties(self, **kw):
-        """ Change site_properties """
-        site_properties = getToolByName(self.context, "portal_properties").site_properties
-        site_properties.manage_changeProperties(**kw)
-        return True
-    
     #
     # KSS Methods that are used to update different parts of the page
-    # according to category
+    # accordingly to category
     #
     
     def updatePage(self, category):
