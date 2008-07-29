@@ -8,19 +8,21 @@
 
 /* General stylesheet for Plone Tabs AJAX configlet */
 
-/* Add class to body to allow conditional styling when kss is available */
-
+/* Add 'kssTabsActive' class to application root element
+   to enable ajax styles when kss is available */
 #plonetabs_form:load {
   action-client: addClass;
   addClass-value: kssTabsActive;
 }
 
+/* Remember portal actions category */
 #select_category:load {
     action-client: setStateVar;
     setStateVar-varname: plonetabs-category;
     setStateVar-value: currentFormVar();
 }
 
+/* Change portal actions category page */
 #select_category:change {
     action-client: plonetabs-redirectTo;
     plonetabs-redirectTo-searchparams: 'category';
@@ -57,7 +59,8 @@
     action-server: plonetabs-toggleActionsVisibility;
     plonetabs-toggleActionsVisibility-id: nodeAttr(id, true);
     plonetabs-toggleActionsVisibility-checked: currentFormVar();
-    plonetabs-toggleActionsVisibility-category: stateVar(plonetabs-category);
+    plonetabs-toggleActionsVisibility-cat_name: stateVar(plonetabs-category);
+    plonetabs-toggleActionsVisibility-error: plonetabs-handleServerError;
 }
 
 #roottabs .visibility:click {

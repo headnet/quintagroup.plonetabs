@@ -12,7 +12,7 @@
     
     <browser:page
         for="plone.app.kss.interfaces.IPortalObject"
-        attribute="toggleActionsVisibility"
+        attribute="kss_toggleActionsVisibility"
         class=".plonetabs.PloneTabsControlPanel"
         name="plonetabs-toggleActionsVisibility"
         permission="cmf.ManagePortal"

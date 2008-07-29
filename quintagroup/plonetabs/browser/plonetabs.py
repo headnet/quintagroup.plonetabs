@@ -390,27 +390,6 @@ class PloneTabsControlPanel(PloneKSSView):
         self.updatePortalTabs()
     
     @kssaction
-    def toggleActionsVisibility(self, id, checked='0', category=None):
-        """ Toggle visibility for portal actions """
-        portal_actions = getToolByName(self.context, "portal_actions")
-        cat_container, act_id = self.validateAction(id, category)
-        
-        if checked == '1':
-            checked = True
-        else:
-            checked = False
-        
-        cat_container[act_id].visible = checked
-        
-        ksscore = self.getCommandSet("core")
-        if checked:
-            ksscore.removeClass(ksscore.getHtmlIdSelector(id), value="invisible")
-        else:
-            ksscore.addClass(ksscore.getHtmlIdSelector(id), value="invisible")
-        
-        self.updatePage(cat_name)
-    
-    @kssaction
     def toggleRootsVisibility(self, id, checked='0'):
         """ Toggle visibility for portal root objects (exclude_from_nav) """
         portal = getMultiAdapter((aq_inner(self.context), self.request), name='plone_portal_state').portal()
@@ -438,6 +417,19 @@ class PloneTabsControlPanel(PloneKSSView):
         self.updatePortalTabs()
     
     @kssaction
+    def kss_toggleActionsVisibility(self, id, checked='0', cat_name=None):
+        """ Toggle visibility for portal actions """
+        # validate input
+        act_id, category, action = self.kss_validateAction(id, cat_name)
+        self.updateAction(act_id, cat_name, {'id': act_id, 'visible': (checked == '1') or False})
+        
+        # update client
+        ksscore = self.getCommandSet("core")
+        method = (checked == '1') and ksscore.removeClass or ksscore.addClass
+        method(ksscore.getHtmlIdSelector(id), value="invisible")
+        self.updatePage(cat_name)
+    
+    @kssaction
     def kss_deleteAction(self, id, cat_name):
         """ Delete portal action with given id & category """
         # validate input
@@ -446,9 +438,9 @@ class PloneTabsControlPanel(PloneKSSView):
         
         # update client
         ksscore = self.getCommandSet("core")
+        # XXX TODO: fade effect during removing, to do this we need kukit js action/command plugin
         ksscore.deleteNode(ksscore.getHtmlIdSelector(id))
         self.kss_checkReorderControls(category)
-        # XXX TODO: fade effect during removing, for this kukit js action/command plugin needed
         self.updatePage(cat_name)
     
     @kssaction
@@ -665,7 +657,7 @@ class PloneTabsControlPanel(PloneKSSView):
         action = category[new_id]
         
         # update action properties
-        for attr in ACTION_ATTRS:
+        for attr in data.keys():
             if data.has_key(attr):
                 action._setPropValue(attr, data[attr])
         
