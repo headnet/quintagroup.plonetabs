@@ -8,14 +8,12 @@
                 editing tab/editing|nothing;
                 klass python:test(visible, [], ['invisible']);
                 klass python:test(editing, klass + ['editing'], klass)"
-    tal:attributes="id string:tabslist_${id};
+    tal:attributes="id string:${view/prefix}${id};
                     title tab/description;
                     class python:' '.join(klass)">
 
   <img class="drag-handle" src="++resource++drag.gif" alt="" height="11" width="25" />
-
-  <a class="delete" href="#"
-     tal:attributes="href string:${context/portal_url}/@@plonetabs-controlpanel?action=delete_action&category=${category}&id=${id}">Delete</a>
+  <a class="delete" href="#">Delete</a>
 
   <span class="url-helper" tal:content="tab/url_expr">Tab Action</span>
   <span class="tab-title" tal:content="tab/title">Tab Name</span>

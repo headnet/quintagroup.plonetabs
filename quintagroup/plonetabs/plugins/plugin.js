@@ -57,4 +57,8 @@ kukit.actionsGlobalRegistry.register("plonetabs-toggleCollapsible", function(ope
 
 kukit.commandsGlobalRegistry.registerFromAction("plonetabs-toggleCollapsible", kukit.cr.makeSelectorCommand);
 
-
+kukit.actionsGlobalRegistry.register("plonetabs-handleServerError", function(oper) {
+    oper.componentName = "[plonetabs-handleServerError] action";
+    oper.evaluateParameters([], {"message" : kukit.E});
+    alert(oper.parms.message);
+});

@@ -23,5 +23,12 @@
         params_mandatory=""
         params_optional="collapsed expanded"
         />
+
+    <kss:action
+        name="plonetabs-handleServerError"
+        jsfile="plugin.js"
+        params_mandatory=""
+        params_optional="message"
+        />        
     
 </configure>

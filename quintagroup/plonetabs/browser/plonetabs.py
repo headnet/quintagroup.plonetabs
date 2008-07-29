@@ -42,6 +42,10 @@ class PloneTabsControlPanel(PloneKSSView):
     # custom templates used to update page sections
     sections_template = ViewPageTemplateFile("templates/sections.pt")
     
+    # configuration variables
+    prefix = "tabslist_"
+    sufix = ""
+    
     def __call__(self):
         """ Perform the update and redirect if necessary, or render the page """
         postback = True
@@ -366,22 +370,6 @@ class PloneTabsControlPanel(PloneKSSView):
     #
     ##########################
     
-    def validateAction(self, id, category, prefix="tabslist_"):
-        """ If action with given id and category doesn't exist - raise kss exception """
-        portal_actions = getToolByName(self.context, "portal_actions")
-        
-        # remove prefix, added for making ids on configlet unique ("tabslist_")
-        act_id = id[len("tabslist_"):]
-        
-        if category not in portal_actions.objectIds():
-            raise KSSExplicitError, "Unexistent root portal actions category %s" % category
-        
-        cat_container = portal_actions[category]
-        if act_id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
-            raise KSSExplicitError, "%s action does not exist in %s category" % (act_id, category)
-        
-        return (cat_container, act_id)
-    
     @kssaction
     def toggleGeneratedTabs(self, field, checked='0'):
         """ Toggle autogenaration setting on configlet """
@@ -420,7 +408,7 @@ class PloneTabsControlPanel(PloneKSSView):
         else:
             ksscore.addClass(ksscore.getHtmlIdSelector(id), value="invisible")
         
-        self.updatePage(category)
+        self.updatePage(cat_name)
     
     @kssaction
     def toggleRootsVisibility(self, id, checked='0'):
@@ -450,25 +438,18 @@ class PloneTabsControlPanel(PloneKSSView):
         self.updatePortalTabs()
     
     @kssaction
-    def kss_deleteAction(self, id, category):
+    def kss_deleteAction(self, id, cat_name):
         """ Delete portal action with given id & category """
-        portal_actions = getToolByName(self.context, "portal_actions")
-        cat_container, act_id = self.validateAction(id, category)
+        # validate input
+        act_id, category, action = self.kss_validateAction(id, cat_name)
+        self.deleteAction(act_id, cat_name)
         
-        cat_container.manage_delObjects(ids=[act_id,])
-        
-        # update action list on client
+        # update client
         ksscore = self.getCommandSet("core")
-        
         ksscore.deleteNode(ksscore.getHtmlIdSelector(id))
-        
-        # add "noitems" class to Reorder controls to hide it
-        if not filter(lambda x: IAction.providedBy(x), cat_container.objectValues()):
-            ksscore.addClass(ksscore.getHtmlIdSelector("reorder"), value="noitems")
-        
+        self.kss_checkReorderControls(category)
         # XXX TODO: fade effect during removing, for this kukit js action/command plugin needed
-        
-        self.updatePage(category)
+        self.updatePage(cat_name)
     
     @kssaction
     def oldAddAction(self, id, name, action='', category='portal_tabs', condition='', visible=False):
@@ -616,6 +597,48 @@ class PloneTabsControlPanel(PloneKSSView):
         site_properties = getToolByName(self.context, "portal_properties").site_properties
         site_properties.manage_changeProperties(**kw)
         return True
+    
+    #
+    # Utility methods for the kss actions management
+    #
+    
+    def kss_checkReorderControls(self, category):
+        """ Add "noitems" class to Reorder controls to hide them if category is empty """
+        if not filter(lambda x: IAction.providedBy(x), category.objectValues()):
+            ksscore = self.getCommandSet('core')
+            ksscore.addClass(ksscore.getHtmlIdSelector("reorder"), value="noitems")
+    
+    def kss_validateAction(self, id, cat_name):
+        """ Check whether action with given id exists in cat_name category """
+        try:
+            category = self.getActionCategory(cat_name)
+        except Exception:
+            raise KSSExplicitError, "'%s' action category does not exist" % cat_name
+        
+        # extract action id from given list item id on client
+        action_id = self.sufix and id[len(self.prefix):-len(self.sufix)] or id[len(self.prefix):]
+        try:
+            action = category[action_id]
+        except Exception:
+            raise KSSExplicitError, "No '%s' action in '%s' category." % (action_id, cat_name)
+        
+        return (action_id, category, action)
+    
+    def validateAction(self, id, category, prefix="tabslist_"):
+        """ If action with given id and category doesn't exist - raise kss exception """
+        portal_actions = getToolByName(self.context, "portal_actions")
+        
+        # remove prefix, added for making ids on configlet unique self.prefix
+        act_id = id[len(self.prefix):]
+        
+        if category not in portal_actions.objectIds():
+            raise KSSExplicitError, "Unexistent root portal actions category %s" % category
+        
+        cat_container = portal_actions[category]
+        if act_id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
+            raise KSSExplicitError, "%s action does not exist in %s category" % (act_id, category)
+        
+        return (cat_container, act_id)
     
     #
     # Basic API to work with portal actions tool in a more pleasent way

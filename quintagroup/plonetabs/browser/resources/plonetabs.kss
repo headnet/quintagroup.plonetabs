@@ -71,7 +71,8 @@
     evt-click-preventdefault: true;
     action-server: plonetabs-deleteAction;
     plonetabs-deleteAction-id: nodeAttr(id, true);
-    plonetabs-deleteAction-category: stateVar(plonetabs-category);
+    plonetabs-deleteAction-cat_name: stateVar(plonetabs-category);
+    plonetabs-deleteAction-error: plonetabs-handleServerError;
 }
 
 /* Actions edit */
