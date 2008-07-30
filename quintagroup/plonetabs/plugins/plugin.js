@@ -41,21 +41,44 @@ kukit.commandsGlobalRegistry.registerFromAction("plonetabs-redirectTo", kukit.cr
 
 kukit.actionsGlobalRegistry.register("plonetabs-toggleCollapsible", function(oper) {
 ;;; oper.componentName = "[plonetabs-toggleCollapsible] action";
-    oper.evaluateParameters([], {"collapsed" : "collapsedBlock", "expanded" : "expandedBlock"});
+    oper.evaluateParameters([], {"collapsed" : "collapsedBlock",
+                                 "expanded" : "expandedBlock",
+                                 "collapse": "none"});
 
     var node = oper.node.parentNode;  // collapsible section
 
-    if (hasClassName(node, oper.parms.collapsed)) {
-        removeClassName(node, oper.parms.collapsed);
-        addClassName(node, oper.parms.expanded);
+    if (oper.parms.collapse != "none") {
+        if (oper.parms.collapse == "true") {
+            removeClassName(node, oper.parms.expanded);
+            addClassName(node, oper.parms.collapsed);
+        } else {
+            removeClassName(node, oper.parms.collapsed);
+            addClassName(node, oper.parms.expanded);
+        }
     } else {
-        removeClassName(node, oper.parms.expanded);
-        addClassName(node, oper.parms.collapsed);
+        if (hasClassName(node, oper.parms.collapsed)) {
+            removeClassName(node, oper.parms.collapsed);
+            addClassName(node, oper.parms.expanded);
+        } else {
+            removeClassName(node, oper.parms.expanded);
+            addClassName(node, oper.parms.collapsed);
+        }
     }
 
 });
 
 kukit.commandsGlobalRegistry.registerFromAction("plonetabs-toggleCollapsible", kukit.cr.makeSelectorCommand);
+
+kukit.actionsGlobalRegistry.register("plonetabs-resetForm", function(oper) {
+;;; oper.componentName = "[plonetabs-resetForm] action";
+    oper.evaluateParameters([], {});
+
+    var form = oper.node;
+    alert(form.name + 'form reseted');
+
+});
+
+kukit.commandsGlobalRegistry.registerFromAction("plonetabs-resetForm", kukit.cr.makeSelectorCommand);
 
 kukit.actionsGlobalRegistry.register("plonetabs-handleServerError", function(oper) {
     oper.componentName = "[plonetabs-handleServerError] action";

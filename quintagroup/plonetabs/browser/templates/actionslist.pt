@@ -45,7 +45,7 @@
           tal:attributes="class python:test(error, 'error', '')">
         <dt><label>Name</label></dt>
         <dd>
-          <span tal:content="error">Validation error output</span>
+          <span class="error-container" tal:content="error">Validation error output</span>
           <input type="text" value="" name="title"
                  tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_title);
                                  name name" /></dd>
@@ -60,7 +60,7 @@
               tal:attributes="class python:test(error, 'error', '')">
             <dt><label>URL (Expression)</label></dt>
             <dd>
-              <span tal:content="error">Validation error output</span>
+              <span class="error-container" tal:content="error">Validation error output</span>
               <input type="text" value="" name="url_expr"     size="30"
                      tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_url);
                                      name name" /></dd>
@@ -71,7 +71,7 @@
               tal:attributes="class python:test(error, 'error', '')">
             <dt><label>Id</label></dt>
             <dd>
-              <span tal:content="error">Validation error output</span>
+              <span class="error-container" tal:content="error">Validation error output</span>
               <input type="text" value="" name="id"
                      tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_id);
                                      name name" /></dd>
@@ -82,7 +82,7 @@
               tal:attributes="class python:test(error, 'error', '')">
             <dt><label>Condition (Expression)</label></dt>
             <dd>
-              <span tal:content="error">Validation error output</span>
+              <span class="error-container" tal:content="error">Validation error output</span>
               <input type="text" value="" name="available_expr"  size="30"
                      tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_cond);
                                      name name" /></dd>

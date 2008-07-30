@@ -25,9 +25,9 @@
 ***************************************************************************************************
 */
 
-.kssTabsActive #app.viewing             .reorder-controls,
-.kssTabsActive #app.sorting             .sort-controls,
-/* #app.viewing li.editing             .editform, */
+.kssTabsActive #app.viewing         .reorder-controls,
+.kssTabsActive #app.sorting         .sort-controls,
+/* #app.viewing li.editing          .editform, */
 #app.viewing li.editing             .edit-fields-wrapper,
 #app #addaction.adding              .field-visible,
 #app #addaction.adding              .field-name dt,
@@ -35,7 +35,7 @@
 /* fix for 'non js' version 
 #app #addaction.adding              .field-action label,*/
 #app #addaction                     .field-action label,
-#app #addaction.adding              .advanced,
+#app #addaction.adding              .collapseAdvanced,
 #app #addaction.adding              .field-id,
 #app #addaction.adding              .field-condition,
 #app #addaction.adding              .add-controls,
@@ -67,7 +67,7 @@
 .kssTabsActive #app                 .field-visible,
 .kssTabsActive #app                 .field-name dt,
 .kssTabsActive #app                 .field-action,
-.kssTabsActive #app                 .advanced,
+.kssTabsActive #app                 .collapseAdvanced,
 .kssTabsActive #app                 .field-id,
 .kssTabsActive #app                 .field-condition,
 .kssTabsActive #app                 .add-controls,
@@ -367,7 +367,7 @@ div.field { margin-top:2em; }
     background: transparent url(++resource++treeCollapsed.gif) no-repeat 6px 50%;
  }
 
-#app dl.advanced { 
+#app dl.collapseAdvanced { 
     clear: both;
 }
 

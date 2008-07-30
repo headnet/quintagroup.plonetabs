@@ -22,6 +22,14 @@
     setStateVar-value: currentFormVar();
 }
 
+/* Collapse expanded sections on load */
+.collapseAdvanced:load {
+    action-client: removeClass;
+    removeClass-value: expandedBlock;
+    action-client: addClass;
+    addClass-value: collapsedBlock;
+}
+
 /* Change portal actions category page */
 #select_category:change {
     action-client: plonetabs-redirectTo;
@@ -78,6 +86,31 @@
     plonetabs-deleteAction-error: plonetabs-handleServerError;
 }
 
+/* Add form rules */
+#actname:focus {
+    action-client: addClass;
+    addClass-kssSelector: htmlid(addaction);
+    addClass-value: adding;
+}
+
+#buttoncancel:click {
+    evt-click-preventdefault: true;
+    action-client: removeClass;
+    removeClass-kssSelector: htmlid(addaction);
+    removeClass-value: adding;
+    action-client: plonetabs-toggleCollapsible;
+    plonetabs-toggleCollapsible-kssSelector: css('#addaction .collapseAdvanced .headerAdvanced');
+    plonetabs-toggleCollapsible-collapse: true;
+}
+
+#buttonadd:click,
+#addaction:submit {
+    evt-click-preventdefault: true;
+    action-server: plonetabs-addAction;
+    plonetabs-addAction-kssSubmitForm: currentForm();
+    plonetabs-addAction-error: plonetabs-handleServerError;
+}
+
 /* Actions edit */
 #tabslist .tab-title:click {
     action-server: plonetabs-editAction;
@@ -106,7 +139,6 @@
     evt-click-preventdefault: true;
     action-server: plonetabs-editSave;
     plonetabs-editSave-id: nodeAttr(id, true);
-    
     plonetabs-editSave-category: stateVar(plonetabs-category);
 }
 

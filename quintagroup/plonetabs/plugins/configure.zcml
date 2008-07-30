@@ -21,7 +21,7 @@
         command_factory="selector"
         jsfile="plugin.js"
         params_mandatory=""
-        params_optional="collapsed expanded"
+        params_optional="collapsed expanded collapse"
         />
 
     <kss:action
@@ -29,6 +29,15 @@
         jsfile="plugin.js"
         params_mandatory=""
         params_optional="message"
-        />        
+        />
+    
+    <kss:action
+        name="plonetabs-resetForm"
+        command_factory="selector"
+        jsfile="plugin.js"
+        params_mandatory=""
+        params_optional=""
+        />
+
     
 </configure>

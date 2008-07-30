@@ -97,51 +97,51 @@
     </dl>
     <dl class="field-name"
         tal:define="error errors/title|nothing"
-        tal:attributes="class python:test(error, 'field-name error', 'field-name')">
+        tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
       <dt>
         <label>Name</label>
       </dt>
       <dd>
-        <span tal:content="error">Validation error output</span>
+        <span class="error-container" tal:content="error">Validation error output</span>
         <input id="actname" type="text" value="" name="title"
                tal:attributes="value request/title|nothing"/>
       </dd>
     </dl>
     <dl class="field-action"
         tal:define="error errors/url_expr|nothing"
-        tal:attributes="class python:test(error, 'field-action error', 'field-action')">
+        tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
       <dt>
         <label>URL (Expression)</label>
       </dt>
       <dd>
-        <span tal:content="error">Validation error output</span>
+        <span class="error-container" tal:content="error">Validation error output</span>
         <input id="actaction" type="text" value="" size="30" name="url_expr"
                tal:attributes="value request/url_expr|nothing"/>
       </dd>
     </dl>
-    <dl class="advanced collapseAdvanced expandedBlock">
+    <dl class="collapseAdvanced expandedBlock">
       <dt class="headerAdvanced">Advanced</dt>
       <dd class="contentAdvanced">
         <dl class="field-id"
             tal:define="error errors/id|nothing"
-            tal:attributes="class python:test(error, 'field-id error', 'field-id')">
+            tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
           <dt>
             <label>Id</label>
           </dt>
           <dd>
-            <span tal:content="error">Validation error output</span>
+            <span class="error-container" tal:content="error">Validation error output</span>
             <input id="actid" type="text" value="" name="id"
                    tal:attributes="value request/id|nothing" />
           </dd>
         </dl>
         <dl class="field-condition"
             tal:define="error errors/available_expr|nothing"
-            tal:attributes="class python:test(error, 'field-condition error', 'field-condition')">
+            tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
           <dt>
             <label>Condition (Expression)</label>
           </dt>
           <dd>
-            <span tal:content="error">Validation error output</span>
+            <span class="error-container" tal:content="error">Validation error output</span>
             <input id="actcondition" type="text" value="" size="30" name="available_expr"
                    tal:attributes="value request/available_expr|nothing" />
           </dd>
