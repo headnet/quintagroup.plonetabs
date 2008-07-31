@@ -453,7 +453,7 @@ class PloneTabsControlPanel(PloneKSSView):
         self.kss_checkReorderControls(cat_name)
         self.updatePage(cat_name)
     
-    #@kssaction
+    @kssaction
     def kss_addAction(self, id, category, title, url_expr, available_expr, visible=False):
         """ KSS method to add new portal action """
         # extract posted data
@@ -503,8 +503,6 @@ class PloneTabsControlPanel(PloneKSSView):
         
         # update errors on client fomr
         self.kss_issueErrors(errors)
-
-        return self.render()
     
     @kssaction
     def editAction(self, id, category):
