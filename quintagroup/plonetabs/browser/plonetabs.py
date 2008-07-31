@@ -450,7 +450,7 @@ class PloneTabsControlPanel(PloneKSSView):
         ksscore = self.getCommandSet("core")
         # XXX TODO: fade effect during removing, to do this we need kukit js action/command plugin
         ksscore.deleteNode(ksscore.getHtmlIdSelector(id))
-        self.kss_checkReorderControls(category)
+        self.kss_checkReorderControls(cat_name)
         self.updatePage(cat_name)
     
     #@kssaction
@@ -468,15 +468,18 @@ class PloneTabsControlPanel(PloneKSSView):
         errors = self.validateActionFields(cat_name, data)
         
         # if not errors find (or create) category and set action to it
+        ksscore = self.getCommandSet('core')
         kssplone = self.getCommandSet('plone')
         if not errors:
             action = self.addAction(cat_name, data)
             
             # update client
             # add one more action to actions list
-            ksscore = self.getCommandSet('core')
             content = self.getActionsList(category=cat_name, tabs=[action,])
             ksscore.insertHTMLAsLastChild(ksscore.getHtmlIdSelector('tabslist'), content)
+            
+            # update reorder controls
+            self.kss_checkReorderControls(cat_name)
             
             # hide adding form
             ksscore.removeClass(ksscore.getHtmlIdSelector('addaction'), 'adding')
@@ -491,6 +494,10 @@ class PloneTabsControlPanel(PloneKSSView):
             # update page
             self.updatePage(cat_name)
         else:
+            # expand advanced section if there are errors in id or condition
+            if errors.has_key('id') or errors.has_key('available_expr'):
+                self.kss_toggleCollapsible(ksscore.getCssSelector('#addaction .collapseAdvanced .headerAdvanced'), collapse='false')
+            
             # send error message
             kssplone.issuePortalMessage(_(u"Please correct the indicated errors."), msgtype="error")
         
@@ -646,11 +653,15 @@ class PloneTabsControlPanel(PloneKSSView):
     # Utility methods for the kss actions management
     #
     
-    def kss_checkReorderControls(self, category):
+    def kss_checkReorderControls(self, cat_name):
         """ Add "noitems" class to Reorder controls to hide them if category is empty """
-        if not filter(lambda x: IAction.providedBy(x), category.objectValues()):
-            ksscore = self.getCommandSet('core')
-            ksscore.addClass(ksscore.getHtmlIdSelector("reorder"), value="noitems")
+        ksscore = self.getCommandSet('core')
+        selector = ksscore.getHtmlIdSelector("reorder")
+        category = self.getActionCategory(cat_name)
+        if filter(lambda x: IAction.providedBy(x), category.objectValues()):
+            ksscore.removeClass(selector, value="noitems")
+        else:
+            ksscore.addClass(selector, value="noitems")
     
     def kss_validateAction(self, id, cat_name):
         """ Check whether action with given id exists in cat_name category """

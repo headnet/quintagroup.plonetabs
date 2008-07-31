@@ -73,8 +73,11 @@ kukit.actionsGlobalRegistry.register("plonetabs-resetForm", function(oper) {
 ;;; oper.componentName = "[plonetabs-resetForm] action";
     oper.evaluateParameters([], {});
 
-    var form = oper.node;
-    alert(form.name + 'form reseted');
+    if (typeof(oper.node.reset) == "function") {
+        oper.node.reset();
+    } else {
+        kukit.logWarning("plonetabs-resetForm: reset could only be executed on form element");
+    }
 
 });
 
@@ -84,4 +87,25 @@ kukit.actionsGlobalRegistry.register("plonetabs-handleServerError", function(ope
     oper.componentName = "[plonetabs-handleServerError] action";
     oper.evaluateParameters([], {"message" : kukit.E});
     alert(oper.parms.message);
+});
+
+var PLONETABS_ADD_PATTERN = new RegExp('[^a-zA-Z0-9-_~,.\\$\\(\\)# ]','g');
+
+kukit.actionsGlobalRegistry.register("plonetabs-generateId", function(oper) {
+    oper.componentName = "[plonetabs-generateId] action";
+    oper.evaluateParameters(["target"], {});
+
+    var source = oper.node;
+    var target = document.getElementById(oper.parms.target);
+
+    if (target == null) {
+        kukit.logWarning("plonetabs-generateId: target element ('" + oper.parms.target + "') not found");
+        return ;
+    }
+
+    if (target.value == kukit.engine.stateVariables['plonetabs-addingTitle'].replace(PLONETABS_ADD_PATTERN, '')) {
+        target.value = source.value.replace(PLONETABS_ADD_PATTERN, '');
+    }
+    kukit.engine.stateVariables['plonetabs-addingTitle'] = source.value;
+
 });

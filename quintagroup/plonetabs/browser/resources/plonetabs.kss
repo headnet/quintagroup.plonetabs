@@ -30,6 +30,13 @@
     addClass-value: collapsedBlock;
 }
 
+/* Save initial value of title field on adding form */
+#actname:load {
+    action-client: setStateVar;
+    setStateVar-varname: plonetabs-addingTitle;
+    setStateVar-value: currentFormVar();
+}
+
 /* Change portal actions category page */
 #select_category:change {
     action-client: plonetabs-redirectTo;
@@ -109,6 +116,12 @@
     action-server: plonetabs-addAction;
     plonetabs-addAction-kssSubmitForm: currentForm();
     plonetabs-addAction-error: plonetabs-handleServerError;
+}
+
+/* autogenerate value for id field */
+#actname:keyup {
+    action-client: plonetabs-generateId;
+    plonetabs-generateId-target: actid;
 }
 
 /* Actions edit */
