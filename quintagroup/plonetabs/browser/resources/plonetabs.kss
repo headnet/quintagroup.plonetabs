@@ -15,6 +15,16 @@
   addClass-value: kssTabsActive;
 }
 
+.add-controls input:load {
+    action-client: addClass;
+    addClass-value: allowMultiSubmit;
+}
+
+.edit-controls input:load {
+    action-client: addClass;
+    addClass-value: allowMultiSubmit;
+}
+
 /* Remember portal actions category */
 #select_category:load {
     action-client: setStateVar;
@@ -122,13 +132,15 @@
 #actname:keyup {
     action-client: plonetabs-generateId;
     plonetabs-generateId-target: actid;
+    plonetabs-generateId-var_name: plonetabs-addingTitle;
 }
 
 /* Actions edit */
 #tabslist .tab-title:click {
-    action-server: plonetabs-editAction;
-    plonetabs-editAction-id: nodeAttr(id, true);
-    plonetabs-editAction-category: stateVar(plonetabs-category);
+    action-server: plonetabs-showEditForm;
+    plonetabs-showEditForm-id: nodeAttr(id, true);
+    plonetabs-showEditForm-cat_name: stateVar(plonetabs-category);
+    plonetabs-showEditForm-error: plonetabs-handleServerError;
 }
 
 /*#tabslist .url-helper:click {
@@ -142,17 +154,18 @@
 /* Edit cancel button */
 #tabslist .editcancel:click {
     evt-click-preventdefault: true;
-    action-server: plonetabs-editCancel;
-    plonetabs-editCancel-id: nodeAttr(id, true);
-    plonetabs-editCancel-category: stateVar(plonetabs-category);
+    action-server: plonetabs-hideEditForm;
+    plonetabs-hideEditForm-id: nodeAttr(id, true);
+    plonetabs-hideEditForm-cat_name: stateVar(plonetabs-category);
+    plonetabs-hideEditForm-error: plonetabs-handleServerError;
 }
 
 /* Edit save button */
 #tabslist .editsave:click {
     evt-click-preventdefault: true;
-    action-server: plonetabs-editSave;
-    plonetabs-editSave-id: nodeAttr(id, true);
-    plonetabs-editSave-category: stateVar(plonetabs-category);
+    action-server: plonetabs-editAction;
+    plonetabs-editAction-kssSubmitForm: currentForm();
+    plonetabs-editAction-error: plonetabs-handleServerError;
 }
 
 /* Collapsible sections */

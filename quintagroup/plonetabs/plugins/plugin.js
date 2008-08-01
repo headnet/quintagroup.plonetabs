@@ -93,9 +93,11 @@ var PLONETABS_ADD_PATTERN = new RegExp('[^a-zA-Z0-9-_~,.\\$\\(\\)# ]','g');
 
 kukit.actionsGlobalRegistry.register("plonetabs-generateId", function(oper) {
     oper.componentName = "[plonetabs-generateId] action";
-    oper.evaluateParameters(["target"], {});
+    oper.evaluateParameters(["target", "var_name"], {});
 
     var source = oper.node;
+    var var_name = oper.parms.var_name;
+    var initialValue = typeof(kukit.engine.stateVariables[var_name]) != "undefined" ? kukit.engine.stateVariables[var_name] : '';
     var target = document.getElementById(oper.parms.target);
 
     if (target == null) {
@@ -103,9 +105,9 @@ kukit.actionsGlobalRegistry.register("plonetabs-generateId", function(oper) {
         return ;
     }
 
-    if (target.value == kukit.engine.stateVariables['plonetabs-addingTitle'].replace(PLONETABS_ADD_PATTERN, '')) {
+    if (target.value == initialValue.replace(PLONETABS_ADD_PATTERN, '')) {
         target.value = source.value.replace(PLONETABS_ADD_PATTERN, '');
     }
-    kukit.engine.stateVariables['plonetabs-addingTitle'] = source.value;
+    kukit.engine.stateVariables[var_name] = source.value;
 
 });

@@ -450,19 +450,21 @@ class PloneTabsControlPanel(PloneKSSView):
         ksscore = self.getCommandSet("core")
         # XXX TODO: fade effect during removing, to do this we need kukit js action/command plugin
         ksscore.deleteNode(ksscore.getHtmlIdSelector(id))
+        
+        # check reorder controls, whether we should hide them
         self.kss_checkReorderControls(cat_name)
+        
+        # issue portal message
+        self.getCommandSet('plone').issuePortalMessage(_(u"'%s' action successfully deleted." % act_id), msgtype="info")
+        
+        # update different sections of page depending on actions category
         self.updatePage(cat_name)
     
     @kssaction
-    def kss_addAction(self, id, category, title, url_expr, available_expr, visible=False):
+    def kss_addAction(self):
         """ KSS method to add new portal action """
         # extract posted data
-        id, cat_name, data = self.parseAddForm({'id':id,
-                                                'category': category,
-                                                'title': title,
-                                                'url_expr': url_expr,
-                                                'available_expr': available_expr,
-                                                'visible': visible})
+        id, cat_name, data = self.parseAddForm(self.request.form)
         
         # validate posted data
         errors = self.validateActionFields(cat_name, data)
@@ -485,6 +487,9 @@ class PloneTabsControlPanel(PloneKSSView):
             ksscore.removeClass(ksscore.getHtmlIdSelector('addaction'), 'adding')
             self.kss_toggleCollapsible(ksscore.getCssSelector('#addaction .collapseAdvanced .headerAdvanced'), collapse='true')
             
+            # set client state var 'plonetabs-addingTitle' to empty string for correct id autogeneration functionality
+            ksscore.setStateVar('plonetabs-addingTitle', '')
+            
             # reset adding form
             self.kss_resetForm(ksscore.getHtmlIdSelector('addaction'))
             
@@ -501,37 +506,74 @@ class PloneTabsControlPanel(PloneKSSView):
             # send error message
             kssplone.issuePortalMessage(_(u"Please correct the indicated errors."), msgtype="error")
         
-        # update errors on client fomr
+        # update errors on client form
         self.kss_issueErrors(errors)
     
     @kssaction
-    def editAction(self, id, category):
+    def kss_showEditForm(self, id, cat_name):
         """ Show edit form for given action """
-        cat_container, act_id = self.validateAction(id, category)
+        act_id, category, action = self.kss_validateAction(id, cat_name)
         
-        # collect data
-        action_info = self.copyAction(cat_container[act_id])
+        # fetch data
+        action_info = self.copyAction(action)
         action_info["editing"] = True
         
+        # update client
         ksscore = self.getCommandSet("core")
         content = self.actionslist_template(tabs=[action_info,])
-        replace_id = id
-        
-        ksscore.replaceHTML(ksscore.getHtmlIdSelector(replace_id), content)
+        ksscore.replaceHTML(ksscore.getHtmlIdSelector(id), content)
         
         # focus name field
-        ksscore.focus(ksscore.getCssSelector("#%s input[name=name_%s]" % (id, act_id)))
+        ksscore.focus(ksscore.getCssSelector("#%s input[name=title_%s]" % (id, act_id)))
     
     @kssaction
-    def editCancel(self, id, category):
+    def kss_hideEditForm(self, id, cat_name):
         """ Hide edit form for given action """
-        cat_container, act_id = self.validateAction(id, category)
+        act_id, category, action = self.kss_validateAction(id, cat_name)
         
+        # update client
         ksscore = self.getCommandSet("core")
-        content = self.actionslist_template(tabs=[cat_container[act_id],])
-        replace_id = id
+        content = self.actionslist_template(tabs=[action,])
+        ksscore.replaceHTML(ksscore.getHtmlIdSelector(id), content)
+    
+    @kssaction
+    def kss_editAction(self):
+        """ KSS Method to update action """
+        id, cat_name, data = self.parseEditForm(self.request.form)
         
-        ksscore.replaceHTML(ksscore.getHtmlIdSelector(replace_id), content)
+        # get category and action to edit
+        category = self.getActionCategory(cat_name)
+        action = category[id]
+        
+        # validate posted data
+        errors = self.validateActionFields(cat_name, data, allow_dup=True)
+        
+        html_id = '%s%s%s' % (self.prefix, id, self.sufix)
+        ksscore = self.getCommandSet('core')
+        kssplone = self.getCommandSet('plone')
+        if not errors:
+            action = self.updateAction(id, cat_name, data)
+            
+            # update client
+            # replace action item with updated one
+            content = self.getActionsList(category=cat_name, tabs=[action,])
+            ksscore.replaceHTML(ksscore.getHtmlIdSelector(html_id), content)
+            
+            # issue portal message
+            kssplone.issuePortalMessage(_(u"'%s' action saved." % action.id), msgtype="info")
+            
+            # update page
+            self.updatePage(cat_name)
+        else:
+            # issue error messages
+            self.kss_issueErrors(errors, editform=id)
+            
+            # expand advanced section if there are errors in id, action url or condition
+            if errors.has_key('id') or errors.has_key('available_expr') or errors.has_key('url_expr'):
+                self.kss_toggleCollapsible(ksscore.getCssSelector('#%s .headerAdvanced' % html_id), collapse='false')
+            
+            # send error message
+            kssplone.issuePortalMessage(_(u"Please correct the indicated errors."), msgtype="error")
     
     #
     # Utility Methods
@@ -539,7 +581,7 @@ class PloneTabsControlPanel(PloneKSSView):
     
     def copyAction(self, action):
         """ Copyt action to dictionary """
-        action_info = {}
+        action_info = {'description':action.description}
         for attr in ACTION_ATTRS:
             action_info[attr] = getattr(action, attr)
         return action_info
@@ -677,16 +719,22 @@ class PloneTabsControlPanel(PloneKSSView):
         
         return (action_id, category, action)
     
-    def kss_issueErrors(self, errors, fields=ACTION_ATTRS):
+    def kss_issueErrors(self, errors, editform=False, fields=ACTION_ATTRS):
         """ Display error messages on the client """
         ksscore = self.getCommandSet('core')
         for field in fields:
-            self.kss_issueFieldError(ksscore, field, errors.get(field, False))
+            self.kss_issueFieldError(ksscore, field, errors.get(field, False), editform)
     
-    def kss_issueFieldError(self, ksscore, name, error):
+    def kss_issueFieldError(self, ksscore, name, error, editform):
         """ Issue this error message for the field """
-        field_selector = ksscore.getCssSelector('#addaction .field-%s' % UI_ATTRS.get(name, name))
-        field_error_selector = ksscore.getCssSelector('#addaction .field-%s .error-container' % UI_ATTRS.get(name, name))
+        if editform:
+            id = '%s%s%s' % (self.prefix, editform, self.sufix)
+            field_selector = ksscore.getCssSelector('#%s .edit-field-%s' % (id, UI_ATTRS.get(name, name)))
+            field_error_selector = ksscore.getCssSelector('#%s .edit-field-%s .error-container' % (id, UI_ATTRS.get(name, name)))
+        else:
+            field_selector = ksscore.getCssSelector('#addaction .field-%s' % UI_ATTRS.get(name, name))
+            field_error_selector = ksscore.getCssSelector('#addaction .field-%s .error-container' % UI_ATTRS.get(name, name))
+
         if error:
             ksscore.replaceInnerHTML(field_error_selector, _(error))
             ksscore.addClass(field_selector, 'error')

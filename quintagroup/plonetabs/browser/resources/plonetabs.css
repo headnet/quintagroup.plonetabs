@@ -35,7 +35,7 @@
 /* fix for 'non js' version 
 #app #addaction.adding              .field-action label,*/
 #app #addaction                     .field-action label,
-#app #addaction.adding              .collapseAdvanced,
+.kssTabsActive #app #addaction.adding              .collapseAdvanced,
 #app #addaction.adding              .field-id,
 #app #addaction.adding              .field-condition,
 #app #addaction.adding              .add-controls,
@@ -55,19 +55,19 @@
 #app.viewing #tabslist li           .tab-title,
 .kssTabsActive #app.viewing #tabslist li.editing      .url-helper,
 .kssTabsActive #app.viewing #tabslist li.editing      .tab-title,
-/*#app.viewing #tabslist li           .url-helper,
-#app.viewing #tabslist li           .tab-title,*/
 
 #app                                .drag-handle,
 #app                                .delete,
 .kssTabsActive #app                 .visibility,
 /* .kssTabsActive #app                 .editform, */
 .kssTabsActive #app                 .edit-fields-wrapper,
+.kssTabsActive #app                 .editdelete,
+.kssTabsActive #app                 .editreset,
 #app.sorting                        #addaction,
 .kssTabsActive #app                 .field-visible,
 .kssTabsActive #app                 .field-name dt,
 .kssTabsActive #app                 .field-action,
-.kssTabsActive #app                 .collapseAdvanced,
+.kssTabsActive #app #addaction                 .collapseAdvanced,
 .kssTabsActive #app                 .field-id,
 .kssTabsActive #app                 .field-condition,
 .kssTabsActive #app                 .add-controls,

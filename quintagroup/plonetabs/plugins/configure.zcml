@@ -43,7 +43,7 @@
         name="plonetabs-generateId"
         command_factory="selector"
         jsfile="plugin.js"
-        params_mandatory="target"
+        params_mandatory="target var_name"
         params_optional=""
         />
 

@@ -44,17 +44,25 @@
     
     <browser:page
         for="plone.app.kss.interfaces.IPortalObject"
-        attribute="editAction"
+        attribute="kss_showEditForm"
         class=".plonetabs.PloneTabsControlPanel"
-        name="plonetabs-editAction"
+        name="plonetabs-showEditForm"
         permission="cmf.ManagePortal"
         />
     
     <browser:page
         for="plone.app.kss.interfaces.IPortalObject"
-        attribute="editCancel"
+        attribute="kss_hideEditForm"
         class=".plonetabs.PloneTabsControlPanel"
-        name="plonetabs-editCancel"
+        name="plonetabs-hideEditForm"
+        permission="cmf.ManagePortal"
+        />
+    
+    <browser:page
+        for="plone.app.kss.interfaces.IPortalObject"
+        attribute="kss_editAction"
+        class=".plonetabs.PloneTabsControlPanel"
+        name="plonetabs-editAction"
         permission="cmf.ManagePortal"
         />
     
