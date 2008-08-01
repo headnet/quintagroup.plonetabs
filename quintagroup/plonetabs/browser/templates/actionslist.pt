@@ -12,7 +12,6 @@
                     title tab/description;
                     class python:' '.join(klass)">
 
-  <img class="drag-handle" src="++resource++drag.gif" alt="" height="11" width="25" />
   <a class="delete" href="#">Delete</a>
 
   <span class="url-helper" tal:content="tab/url_expr">Tab Action</span>
@@ -30,6 +29,7 @@
     <input type="hidden" name="form.submitted:boolean" value="True" />
 
     <div class="bridge">
+      <img class="drag-handle" src="++resource++drag.gif" alt="" height="11" width="25" />
       <input type="checkbox" class="visibility" value="1" name="visible" title="visibility"
              tal:define="name string:${attrs/name}_${id};
                          submitted python:test(request.get('form.submitted','') and request.get('orig_id','')==id, True, False)"

@@ -81,9 +81,11 @@
 .kssTabsActive #app.viewing ul.csshover li.onHover  .delete,
 #app.viewing ul.csshover li:hover    .visibility,
 #app.viewing ul.csshover li.onHover  .visibility,
+.kssTabsActive #app.viewing ul.csshover li:hover    .drag-handle,
+.kssTabsActive #app.viewing ul.csshover li.onHover  .drag-handle,
 #app ul#roottabs.csshover li:hover   .visibility,
-#app ul#roottabs.csshover li.onHover .visibility,
-#app.sorting                         .drag-handle {
+#app ul#roottabs.csshover li.onHover .visibility
+/* #app.sorting                         .drag-handle*/ {
     display: inline;
 }
 
@@ -111,7 +113,7 @@
 
 /**********************************************************/
 
-#app.sorting #tabslist img.drag-handle {
+#app #tabslist img.drag-handle {
     cursor: move;
 }
 
@@ -136,7 +138,8 @@ div.sort-controls {
 
 .drag-handle {
     float:left;
-    margin:0.5em 0.5em 0 0;
+/*    margin:0.5em 0.5em 0 0; */
+    margin-right: 0.2em;
 }
 
 #app ul {
@@ -262,6 +265,11 @@ div.sort-controls {
     left:-1.5em;
     top:0.2em;
     width:3em;
+}
+
+.kssTabsActive #app .bridge {
+    left: -3.5em;
+    width: 3.5em;
 }
 
 * html #app div.bridge {

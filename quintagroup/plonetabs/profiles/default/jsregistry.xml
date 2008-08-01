@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts" meta_type="JavaScripts Registry">
+ <javascript cacheable="True" compression="safe" cookable="True"
+    enabled="True" expression="" id="++resource++prototype.js" inline="False" />
+ <javascript cacheable="True" compression="safe" cookable="True"
+    enabled="True" expression="" id="++resource++effects.js" inline="False" />
+ <javascript cacheable="True" compression="safe" cookable="True" enabled="True"
+    expression="" id="++resource++sa_dragdrop.js" inline="False" insert-after="++resource++effects.js" />
+ </object>

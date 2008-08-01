@@ -3,7 +3,6 @@
      xmlns:kss="http://namespaces.zope.org/kss"
      >
      
-    
     <!-- plugin registration -->    
 
     <!-- kss client actions -->

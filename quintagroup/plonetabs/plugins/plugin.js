@@ -1,7 +1,7 @@
 
 kukit.plonetabs = {};
 
-/* Base kukit plugins for plonetabs */
+/* KSS plugins for plonetabs */
 
 kukit.actionsGlobalRegistry.register("plonetabs-redirectTo", function(oper) {
 ;;; oper.componentName = "[plonetabs-redirectTo] action";
@@ -39,6 +39,7 @@ kukit.actionsGlobalRegistry.register("plonetabs-redirectTo", function(oper) {
 
 kukit.commandsGlobalRegistry.registerFromAction("plonetabs-redirectTo", kukit.cr.makeSelectorCommand);
 
+
 kukit.actionsGlobalRegistry.register("plonetabs-toggleCollapsible", function(oper) {
 ;;; oper.componentName = "[plonetabs-toggleCollapsible] action";
     oper.evaluateParameters([], {"collapsed" : "collapsedBlock",
@@ -69,6 +70,7 @@ kukit.actionsGlobalRegistry.register("plonetabs-toggleCollapsible", function(ope
 
 kukit.commandsGlobalRegistry.registerFromAction("plonetabs-toggleCollapsible", kukit.cr.makeSelectorCommand);
 
+
 kukit.actionsGlobalRegistry.register("plonetabs-resetForm", function(oper) {
 ;;; oper.componentName = "[plonetabs-resetForm] action";
     oper.evaluateParameters([], {});
@@ -83,11 +85,13 @@ kukit.actionsGlobalRegistry.register("plonetabs-resetForm", function(oper) {
 
 kukit.commandsGlobalRegistry.registerFromAction("plonetabs-resetForm", kukit.cr.makeSelectorCommand);
 
+
 kukit.actionsGlobalRegistry.register("plonetabs-handleServerError", function(oper) {
     oper.componentName = "[plonetabs-handleServerError] action";
     oper.evaluateParameters([], {"message" : kukit.E});
     alert(oper.parms.message);
 });
+
 
 var PLONETABS_ADD_PATTERN = new RegExp('[^a-zA-Z0-9-_~,.\\$\\(\\)# ]','g');
 
