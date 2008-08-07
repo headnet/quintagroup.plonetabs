@@ -28,13 +28,6 @@
     addClass-value: allowMultiSubmit;
 }*/
 
-/* Remember portal actions category */
-#select_category:load {
-    action-client: setStateVar;
-    setStateVar-varname: plonetabs-category;
-    setStateVar-value: currentFormVar();
-}
-
 /* Collapse expanded sections on load */
 .collapseAdvanced:load {
     action-client: removeClass;
@@ -43,11 +36,18 @@
     addClass-value: collapsedBlock;
 }
 
+/* Remember portal actions category */
+#select_category:load {
+    action-client: setStateVar;
+    setStateVar-varname: plonetabs-category;
+    setStateVar-value: currentFormVar();
+}
+
 /* Change portal actions category page */
 #select_category:change {
-    action-client: plonetabs-redirectTo;
-    plonetabs-redirectTo-searchparams: 'category';
-    plonetabs-redirectTo-searchvalues: currentFormVar();
+    action-server: plonetabs-changeCategory;
+    plonetabs-changeCategory-cat_name: currentFormVar();
+    plonetabs-changeCategory-error: plonetabs-handleServerError;
 }
 
  /*Hovering for IE especially */

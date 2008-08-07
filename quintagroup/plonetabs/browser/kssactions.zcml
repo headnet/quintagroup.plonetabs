@@ -73,5 +73,12 @@
         name="plonetabs-orderActions"
         permission="cmf.ManagePortal"
         />
+    <browser:page
+        for="plone.app.kss.interfaces.IPortalObject"
+        attribute="kss_changeCategory"
+        class=".plonetabs.PloneTabsControlPanel"
+        name="plonetabs-changeCategory"
+        permission="cmf.ManagePortal"
+        />
     
 </configure>
