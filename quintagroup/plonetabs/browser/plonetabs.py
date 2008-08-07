@@ -1,4 +1,7 @@
-import copy, sys
+import copy
+import sys
+import urllib
+
 from Acquisition import aq_inner
 from OFS.CopySupport import CopyError
 
@@ -35,6 +38,8 @@ UI_ATTRS = {"id": "id",
             "url_expr": "action",
             "available_expr": "condition",
             "visible": "visible"}
+
+bad_id = re.compile(r'[^a-zA-Z0-9-_~,.$\(\)# @]').search
 
 class PloneTabsControlPanel(PloneKSSView):
     
@@ -538,7 +543,7 @@ class PloneTabsControlPanel(PloneKSSView):
     
     @kssaction
     def kss_editAction(self):
-        """ KSS Method to update action """
+        """ Update action's properties """
         id, cat_name, data = self.parseEditForm(self.request.form)
         
         # get category and action to edit
@@ -574,6 +579,26 @@ class PloneTabsControlPanel(PloneKSSView):
             
             # send error message
             kssplone.issuePortalMessage(_(u"Please correct the indicated errors."), msgtype="error")
+    
+    @kssaction
+    def kss_orderActions(self):
+        """ Update actions order in the given category """
+        form = self.request.form
+        cat_name = form['cat_name']
+        category = self.getActionCategory(cat_name)
+        
+        # decode URI components and collect ids from request
+        components = urllib.unquote(form['actions']).split('&')
+        if self.sufix == '':
+            ids = [component[len(self.prefix):] for component in components]
+        else:
+            ids = [component[len(self.prefix):-len(self.sufix)] for component in components]
+        
+        # do actual sorting
+        category.moveObjectsByDelta(ids, -len(category.objectIds()))
+        
+        # update client
+        self.updatePage(cat_name)
     
     #
     # Utility Methods

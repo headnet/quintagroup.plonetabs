@@ -66,4 +66,12 @@
         permission="cmf.ManagePortal"
         />
     
+    <browser:page
+        for="plone.app.kss.interfaces.IPortalObject"
+        attribute="kss_orderActions"
+        class=".plonetabs.PloneTabsControlPanel"
+        name="plonetabs-orderActions"
+        permission="cmf.ManagePortal"
+        />
+    
 </configure>

@@ -15,15 +15,18 @@
   addClass-value: kssTabsActive;
 }
 
+
+/* Add allowMultiSubmit class to submit buttons
+   to avoid those annoying warnings about form 'multisubmittion' */
 .add-controls input:load {
     action-client: addClass;
     addClass-value: allowMultiSubmit;
 }
 
-.edit-controls input:load {
+/*.edit-controls input:load {
     action-client: addClass;
     addClass-value: allowMultiSubmit;
-}
+}*/
 
 /* Remember portal actions category */
 #select_category:load {
@@ -173,5 +176,13 @@
     action-client: plonetabs-toggleCollapsible;
 }
 
+/* Reordering rules */
+#tabslist:load {
+    action-client: plonetabs-createSortable;
+    plonetabs-createSortable-handle: 'drag-handle';
+}
 
-
+#tabslist li:load {
+    action-client: plonetabs-updateSortable;
+    plonetabs-updateSortable-handle: 'drag-handle';
+}

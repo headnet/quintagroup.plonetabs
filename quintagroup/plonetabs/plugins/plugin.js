@@ -3,53 +3,53 @@ kukit.plonetabs = {};
 
 /* KSS plugins for plonetabs */
 
-kukit.actionsGlobalRegistry.register("plonetabs-redirectTo", function(oper) {
-;;; oper.componentName = "[plonetabs-redirectTo] action";
+kukit.actionsGlobalRegistry.register('plonetabs-redirectTo', function(oper) {
+;;; oper.componentName = '[plonetabs-redirectTo] action';
     var wl = window.location;
-    oper.evaluateParameters([], {"protocol"     : wl.protocol,
-                                 "host"         : wl.host,
-                                 "pathname"     : wl.pathname,
-                                 "search"       : wl.search,
-                                 "searchparams" : "",
-                                 "searchvalues" : "",
-                                 "hash"         : wl.hash});
+    oper.evaluateParameters([], {'protocol'     : wl.protocol,
+                                 'host'         : wl.host,
+                                 'pathname'     : wl.pathname,
+                                 'search'       : wl.search,
+                                 'searchparams' : '',
+                                 'searchvalues' : '',
+                                 'hash'         : wl.hash});
 
     // normalize parameters
-    var protocol = oper.parms.protocol + (oper.parms.protocol[oper.parms.protocol.length - 1] == ":") ?  "" : ":";
+    var protocol = oper.parms.protocol + (oper.parms.protocol[oper.parms.protocol.length - 1] == ':') ?  '' : ':';
     var host = oper.parms.host;
     var pathname = oper.parms.pathname;
     if ((params = oper.parms.searchparams) && (values = oper.parms.searchvalues)) {
-        search = "?";
-        params = params.split(",");
-        values = values.split(",");
+        search = '?';
+        params = params.split(',');
+        values = values.split(',');
         for (var i = 0; i < params.length; i++) {
             search += params[i] + '=' + values[i] + '&';
         }
         search = (search.slice(search.length - 1) == '&') ? search.slice(0, search.length - 1) : search;
     } else {
         search = oper.parms.search;
-        search = (search && search.substr(0, 1) == "?") ? search : (search ? "?" + search : "");
+        search = (search && search.substr(0, 1) == '?') ? search : (search ? '?' + search : '');
     }
-    var hash = (oper.parms.hash.length > 1) ? ((oper.parms.hash.substr(0, 1) == "#" ? "" : "#") + oper.parms.hash) : "";
+    var hash = (oper.parms.hash.length > 1) ? ((oper.parms.hash.substr(0, 1) == '#' ? '' : '#') + oper.parms.hash) : '';
 
-    url = protocol + "//" + host + pathname + search + hash;
+    url = protocol + '//' + host + pathname + search + hash;
     window.location.replace(url);
 
 });
 
-kukit.commandsGlobalRegistry.registerFromAction("plonetabs-redirectTo", kukit.cr.makeSelectorCommand);
+kukit.commandsGlobalRegistry.registerFromAction('plonetabs-redirectTo', kukit.cr.makeSelectorCommand);
 
 
-kukit.actionsGlobalRegistry.register("plonetabs-toggleCollapsible", function(oper) {
-;;; oper.componentName = "[plonetabs-toggleCollapsible] action";
-    oper.evaluateParameters([], {"collapsed" : "collapsedBlock",
-                                 "expanded" : "expandedBlock",
-                                 "collapse": "none"});
+kukit.actionsGlobalRegistry.register('plonetabs-toggleCollapsible', function(oper) {
+;;; oper.componentName = '[plonetabs-toggleCollapsible] action';
+    oper.evaluateParameters([], {'collapsed' : 'collapsedBlock',
+                                 'expanded' : 'expandedBlock',
+                                 'collapse': 'none'});
 
     var node = oper.node.parentNode;  // collapsible section
 
-    if (oper.parms.collapse != "none") {
-        if (oper.parms.collapse == "true") {
+    if (oper.parms.collapse != 'none') {
+        if (oper.parms.collapse == 'true') {
             removeClassName(node, oper.parms.expanded);
             addClassName(node, oper.parms.collapsed);
         } else {
@@ -68,44 +68,44 @@ kukit.actionsGlobalRegistry.register("plonetabs-toggleCollapsible", function(ope
 
 });
 
-kukit.commandsGlobalRegistry.registerFromAction("plonetabs-toggleCollapsible", kukit.cr.makeSelectorCommand);
+kukit.commandsGlobalRegistry.registerFromAction('plonetabs-toggleCollapsible', kukit.cr.makeSelectorCommand);
 
 
-kukit.actionsGlobalRegistry.register("plonetabs-resetForm", function(oper) {
-;;; oper.componentName = "[plonetabs-resetForm] action";
+kukit.actionsGlobalRegistry.register('plonetabs-resetForm', function(oper) {
+;;; oper.componentName = '[plonetabs-resetForm] action';
     oper.evaluateParameters([], {});
 
-    if (typeof(oper.node.reset) == "function") {
+    if (typeof(oper.node.reset) == 'function') {
         oper.node.reset();
     } else {
-        kukit.logWarning("plonetabs-resetForm: reset could only be executed on form element");
+        kukit.logWarning('plonetabs-resetForm: reset could only be executed on form element');
     }
 
 });
 
-kukit.commandsGlobalRegistry.registerFromAction("plonetabs-resetForm", kukit.cr.makeSelectorCommand);
+kukit.commandsGlobalRegistry.registerFromAction('plonetabs-resetForm', kukit.cr.makeSelectorCommand);
 
 
-kukit.actionsGlobalRegistry.register("plonetabs-handleServerError", function(oper) {
-    oper.componentName = "[plonetabs-handleServerError] action";
-    oper.evaluateParameters([], {"message" : kukit.E});
+kukit.actionsGlobalRegistry.register('plonetabs-handleServerError', function(oper) {
+    oper.componentName = '[plonetabs-handleServerError] action';
+    oper.evaluateParameters([], {'message' : kukit.E});
     alert(oper.parms.message);
 });
 
 
 var PLONETABS_ADD_PATTERN = new RegExp('[^a-zA-Z0-9-_~,.\\$\\(\\)# ]','g');
 
-kukit.actionsGlobalRegistry.register("plonetabs-generateId", function(oper) {
-    oper.componentName = "[plonetabs-generateId] action";
-    oper.evaluateParameters(["target", "var_name"], {});
+kukit.actionsGlobalRegistry.register('plonetabs-generateId', function(oper) {
+    oper.componentName = '[plonetabs-generateId] action';
+    oper.evaluateParameters(['target', 'var_name'], {});
 
     var source = oper.node;
     var var_name = oper.parms.var_name;
-    var initialValue = typeof(kukit.engine.stateVariables[var_name]) != "undefined" ? kukit.engine.stateVariables[var_name] : '';
+    var initialValue = typeof(kukit.engine.stateVariables[var_name]) != 'undefined' ? kukit.engine.stateVariables[var_name] : '';
     var target = document.getElementById(oper.parms.target);
 
     if (target == null) {
-        kukit.logWarning("plonetabs-generateId: target element ('" + oper.parms.target + "') not found");
+        kukit.logWarning('plonetabs-generateId: target element ("' + oper.parms.target + '") not found');
         return ;
     }
 
@@ -115,3 +115,50 @@ kukit.actionsGlobalRegistry.register("plonetabs-generateId", function(oper) {
     kukit.engine.stateVariables[var_name] = source.value;
 
 });
+
+function plonetabs_notifySortableUpdate(element, oper) {
+    var draggables = element.getElementsByTagName('LI');
+    var ids = [];
+    for (var i = 0, o; o = draggables[i]; i++) {
+        ids.push(o.id);
+    }
+    oper.parms = {'actions': ids.join('&'), 'cat_name': kukit.engine.stateVariables['plonetabs-category']};
+    oper.executeServerAction('plonetabs-orderActions');
+}
+
+kukit.actionsGlobalRegistry.register('plonetabs-createSortable', function(oper) {
+    oper.componentName = '[plonetabs-createSortable] action';
+    oper.evaluateParameters([], {}, '', true);
+    var parms = oper.clone().parms;
+
+    var new_oper = oper.clone();
+    parms['onUpdate'] = function(element){plonetabs_notifySortableUpdate(element, new_oper);};
+    Sortable.create(oper.node, parms);
+});
+
+kukit.actionsGlobalRegistry.register('plonetabs-updateSortable', function(oper) {
+    oper.componentName = '[plonetabs-updateSortable] action';
+    oper.evaluateParameters([], {}, '', true);
+    var parms = oper.clone().parms;
+    var node = oper.node;
+    var sort_list = node.parentNode;
+    var options_ = Sortable.sortables[sort_list.id];
+
+    if (typeof(options_) != 'undefined') {
+        // check whether node element isn't already registered as draggables
+        for (var i = 0, drag; drag = options_.draggables[i]; i++) {
+            if (node == drag.element) {
+                return false;
+            }
+        }
+        // destroy sortable list
+        Sortable.destroy(sort_list.id);
+    }
+
+    var new_oper = oper.clone();
+    parms['onUpdate'] = function(element){plonetabs_notifySortableUpdate(element, new_oper);};
+    Sortable.create(sort_list, parms);
+});
+
+kukit.commandsGlobalRegistry.registerFromAction('plonetabs-updateSortable', kukit.cr.makeSelectorCommand);
+

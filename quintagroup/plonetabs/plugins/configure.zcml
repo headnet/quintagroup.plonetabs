@@ -11,7 +11,6 @@
         name="plonetabs-redirectTo"
         command_factory="selector"
         jsfile="plugin.js"
-        params_mandatory=""
         params_optional="protocol host pathname search searchparams searchvalues hash"
         />
     
@@ -19,14 +18,12 @@
         name="plonetabs-toggleCollapsible"
         command_factory="selector"
         jsfile="plugin.js"
-        params_mandatory=""
         params_optional="collapsed expanded collapse"
         />
 
     <kss:action
         name="plonetabs-handleServerError"
         jsfile="plugin.js"
-        params_mandatory=""
         params_optional="message"
         />
     
@@ -34,8 +31,6 @@
         name="plonetabs-resetForm"
         command_factory="selector"
         jsfile="plugin.js"
-        params_mandatory=""
-        params_optional=""
         />
     
     <kss:action
@@ -43,8 +38,18 @@
         command_factory="selector"
         jsfile="plugin.js"
         params_mandatory="target var_name"
-        params_optional=""
         />
-
+    
+    <kss:action
+        name="plonetabs-createSortable"
+        command_factory="selector"
+        jsfile="plugin.js"
+        />
+    
+    <kss:action
+        name="plonetabs-updateSortable"
+        command_factory="selector"
+        jsfile="plugin.js"
+        />
     
 </configure>
