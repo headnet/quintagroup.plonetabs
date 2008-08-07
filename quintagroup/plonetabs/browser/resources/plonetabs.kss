@@ -43,13 +43,6 @@
     addClass-value: collapsedBlock;
 }
 
-/* Save initial value of title field on adding form */
-#actname:load {
-    action-client: setStateVar;
-    setStateVar-varname: plonetabs-addingTitle;
-    setStateVar-value: currentFormVar();
-}
-
 /* Change portal actions category page */
 #select_category:change {
     action-client: plonetabs-redirectTo;
@@ -74,12 +67,14 @@
     action-server: plonetabs-toggleGeneratedTabs;
     plonetabs-toggleGeneratedTabs-field: disable_folder_sections;
     plonetabs-toggleGeneratedTabs-checked: currentFormVar();
+    plonetabs-toggleGeneratedTabs-error: plonetabs-handleServerError;
 }
 
 #nonfolderish_tabs:click {
     action-server: plonetabs-toggleGeneratedTabs;
     plonetabs-toggleGeneratedTabs-field: disable_nonfolderish_sections;
     plonetabs-toggleGeneratedTabs-checked: currentFormVar();
+    plonetabs-toggleGeneratedTabs-error: plonetabs-handleServerError;
 }
 
 /* Visibility switching */
@@ -95,6 +90,7 @@
     action-server: plonetabs-toggleRootsVisibility;
     plonetabs-toggleRootsVisibility-id: nodeAttr(id, true);
     plonetabs-toggleRootsVisibility-checked: currentFormVar();
+    plonetabs-toggleRootsVisibility-error: plonetabs-handleServerError;
 }
 
 /* Delete action link */
@@ -107,6 +103,14 @@
 }
 
 /* Add form rules */
+
+/* Save initial value of title field on adding form */
+#actname:load {
+    action-client: setStateVar;
+    setStateVar-varname: plonetabs-addingTitle;
+    setStateVar-value: currentFormVar();
+}
+
 #actname:focus {
     action-client: addClass;
     addClass-kssSelector: htmlid(addaction);

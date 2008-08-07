@@ -1,6 +1,7 @@
 import copy
 import sys
 import urllib
+import re
 
 from Acquisition import aq_inner
 from OFS.CopySupport import CopyError
@@ -386,21 +387,18 @@ class PloneTabsControlPanel(PloneKSSView):
     @kssaction
     def kss_toggleGeneratedTabs(self, field, checked='0'):
         """ Toggle autogenaration setting on configlet """
-        
-        changeProperties = getToolByName(self.context, "portal_properties").site_properties.manage_changeProperties
         if checked == '1':
-            changeProperties(**{field : False})
+            self.setSiteProperties(**{field: False})
         else:
-            changeProperties(**{field : True})
+            self.setSiteProperties(**{field: True})
         
+        # update client
         ksscore = self.getCommandSet("core")
-        replace_id = "roottabs"
         content = self.getGeneratedTabs()
-        
-        ksscore.replaceInnerHTML(ksscore.getHtmlIdSelector(replace_id), content, withKssSetup="True")
+        ksscore.replaceInnerHTML(ksscore.getHtmlIdSelector('roottabs'), content)
         
         # update global-sections viewlet
-        self.updatePortalTabs()
+        self.updatePortalTabsPageSection()
     
     @kssaction
     def kss_toggleRootsVisibility(self, id, checked='0'):
@@ -420,6 +418,7 @@ class PloneTabsControlPanel(PloneKSSView):
         
         portal[obj_id].update(excludeFromNav=not checked)
         
+        # update client
         ksscore = self.getCommandSet("core")
         if checked:
             ksscore.removeClass(ksscore.getHtmlIdSelector(id), value="invisible")
@@ -427,7 +426,7 @@ class PloneTabsControlPanel(PloneKSSView):
             ksscore.addClass(ksscore.getHtmlIdSelector(id), value="invisible")
         
         # update global-sections viewlet
-        self.updatePortalTabs()
+        self.updatePortalTabsPageSection()
     
     @kssaction
     def kss_toggleActionsVisibility(self, id, checked='0', cat_name=None):
@@ -718,16 +717,6 @@ class PloneTabsControlPanel(PloneKSSView):
     # Utility methods for the kss actions management
     #
     
-    def kss_checkReorderControls(self, cat_name):
-        """ Add "noitems" class to Reorder controls to hide them if category is empty """
-        ksscore = self.getCommandSet('core')
-        selector = ksscore.getHtmlIdSelector("reorder")
-        category = self.getActionCategory(cat_name)
-        if filter(lambda x: IAction.providedBy(x), category.objectValues()):
-            ksscore.removeClass(selector, value="noitems")
-        else:
-            ksscore.addClass(selector, value="noitems")
-    
     def kss_validateAction(self, id, cat_name):
         """ Check whether action with given id exists in cat_name category """
         try:
@@ -780,22 +769,6 @@ class PloneTabsControlPanel(PloneKSSView):
     def kss_resetForm(self, selector):
         """ KSS Server command to reset form on client """
         command = self.commands.addCommand('plonetabs-resetForm', selector)
-    
-    def validateAction(self, id, category, prefix="tabslist_"):
-        """ If action with given id and category doesn't exist - raise kss exception """
-        portal_actions = getToolByName(self.context, "portal_actions")
-        
-        # remove prefix, added for making ids on configlet unique self.prefix
-        act_id = id[len(self.prefix):]
-        
-        if category not in portal_actions.objectIds():
-            raise KSSExplicitError, "Unexistent root portal actions category %s" % category
-        
-        cat_container = portal_actions[category]
-        if act_id not in map(lambda x: x.id, filter(lambda x: IAction.providedBy(x), cat_container.objectValues())):
-            raise KSSExplicitError, "%s action does not exist in %s category" % (act_id, category)
-        
-        return (cat_container, act_id)
     
     #
     # Basic API to work with portal actions tool in a more pleasent way
@@ -853,7 +826,7 @@ class PloneTabsControlPanel(PloneKSSView):
     def updatePage(self, category):
         """ Seek for according method in class and calls it if found
             Example of making up method's name:
-                portal_tabs => updatePortalTabs """
+                portal_tabs => updatePortalTabsPageSection """
         method_name = 'update%sPageSection' % ''.join(map(lambda x: x.capitalize(), category.split('_')))
         if hasattr(self, method_name):
             getattr(self, method_name)()

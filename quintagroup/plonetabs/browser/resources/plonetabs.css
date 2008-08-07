@@ -249,7 +249,7 @@
     width:3em;
 }
 
-.kssTabsActive #app .bridge {
+.kssTabsActive #app #tabslist .bridge {
     left: -3.5em;
     width: 3.5em;
 }
