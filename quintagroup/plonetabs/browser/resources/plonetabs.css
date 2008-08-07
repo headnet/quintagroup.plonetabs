@@ -4,6 +4,8 @@
 /*
 ***************************************************************************************************
 *                                                                                                 *
+*   This doc is outdated now, don't read it!!!                                                    *
+*                                                                                                 *
 *   There are two global self-excluding classes: 'viewing' and 'sorting',                         *
 *   one local class 'editing' for menu items which are expanded for editing,                      *
 *   and one more local class 'adding' for adding form when it's in open state.                    *
@@ -25,72 +27,61 @@
 ***************************************************************************************************
 */
 
-.kssTabsActive #app.viewing         .reorder-controls,
-.kssTabsActive #app.sorting         .sort-controls,
-/* #app.viewing li.editing          .editform, */
-#app.viewing li.editing             .edit-fields-wrapper,
-#app #addaction.adding              .field-visible,
-#app #addaction.adding              .field-name dt,
-#app #addaction.adding              .field-action,
-/* fix for 'non js' version 
-#app #addaction.adding              .field-action label,*/
-#app #addaction                     .field-action label,
-.kssTabsActive #app #addaction.adding              .collapseAdvanced,
-#app #addaction.adding              .field-id,
-#app #addaction.adding              .field-condition,
-#app #addaction.adding              .add-controls,
-.kssTabsActive #app.viewing #tabslist li      .url-helper,
-.kssTabsActive #app.viewing #tabslist li      .tab-title,
-.kssTabsActive #app                           .editcancel {
+#app li.editing                            .edit-fields-wrapper,
+#app #addaction                            .field-action label,
+#app #addaction.adding                     .field-visible,
+#app #addaction.adding                     .field-name dt,
+#app #addaction.adding                     .field-action,
+#app #addaction.adding                     .field-id,
+#app #addaction.adding                     .field-condition,
+#app #addaction.adding                     .add-controls,
+
+.kssTabsActive #app                        .editcancel,
+.kssTabsActive #app #tabslist li           .url-helper,
+.kssTabsActive #app #tabslist li           .tab-title,
+.kssTabsActive #app #addaction.adding      .collapseAdvanced {
     display: block;
 }
 
-#app                                #busy,
-#app.viewing                        .noitems,
-#app                                .reorder-controls,
-#app                                .sort-controls,
 
-/* fix for 'non js' version */
-#app.viewing #tabslist li           .url-helper,
-#app.viewing #tabslist li           .tab-title,
-.kssTabsActive #app.viewing #tabslist li.editing      .url-helper,
-.kssTabsActive #app.viewing #tabslist li.editing      .tab-title,
+#app                                       .drag-handle,
+#app                                       .delete,
+#app                                       .editcancel,
+#app #tabslist li                          .url-helper,
+#app #tabslist li                          .tab-title,
 
-#app                                .drag-handle,
-#app                                .delete,
-.kssTabsActive #app                 .visibility,
-/* .kssTabsActive #app                 .editform, */
-.kssTabsActive #app                 .edit-fields-wrapper,
-.kssTabsActive #app                 .editdelete,
-.kssTabsActive #app                 .editreset,
-#app.sorting                        #addaction,
-.kssTabsActive #app                 .field-visible,
-.kssTabsActive #app                 .field-name dt,
-.kssTabsActive #app                 .field-action,
-.kssTabsActive #app #addaction                 .collapseAdvanced,
-.kssTabsActive #app                 .field-id,
-.kssTabsActive #app                 .field-condition,
-.kssTabsActive #app                 .add-controls,
-.kssTabsActive #app                 .change-button,
-#app                                .editcancel {
+.kssTabsActive #app                        .visibility,
+.kssTabsActive #app                        .edit-fields-wrapper,
+.kssTabsActive #app                        .editdelete,
+.kssTabsActive #app                        .editreset,
+.kssTabsActive #app                        .field-visible,
+.kssTabsActive #app                        .field-name dt,
+.kssTabsActive #app                        .field-action,
+.kssTabsActive #app                        .field-id,
+.kssTabsActive #app                        .field-condition,
+.kssTabsActive #app                        .add-controls,
+.kssTabsActive #app                        .change-button,
+.kssTabsActive #app #addaction             .collapseAdvanced,
+.kssTabsActive #app #tabslist li.editing   .url-helper,
+.kssTabsActive #app #tabslist li.editing   .tab-title {
     display: none;
 }
 
-#app.working #busy,
-.kssTabsActive #app.viewing ul.csshover li:hover    .delete,
-.kssTabsActive #app.viewing ul.csshover li.onHover  .delete,
-#app.viewing ul.csshover li:hover    .visibility,
-#app.viewing ul.csshover li.onHover  .visibility,
-.kssTabsActive #app.viewing ul.csshover li:hover    .drag-handle,
-.kssTabsActive #app.viewing ul.csshover li.onHover  .drag-handle,
-#app ul#roottabs.csshover li:hover   .visibility,
-#app ul#roottabs.csshover li.onHover .visibility
-/* #app.sorting                         .drag-handle*/ {
+
+#app ul.csshover li:hover                  .visibility,
+#app ul.csshover li.onHover                .visibility,
+#app ul#roottabs.csshover li:hover         .visibility,
+#app ul#roottabs.csshover li.onHover       .visibility,
+
+.kssTabsActive #app ul.csshover li:hover   .delete,
+.kssTabsActive #app ul.csshover li.onHover .delete,
+.kssTabsActive #app ul.csshover li:hover   .drag-handle,
+.kssTabsActive #app ul.csshover li.onHover .drag-handle {
     display: inline;
 }
 
 /**********************************************************/
-/* Additional style for functionality withou javascript   */
+/* Additional style for functionality without javascript   */
 .kssTabsActive #autogeneration_controls {
     display: none;
 }
@@ -118,7 +109,7 @@
 }
 
 #app .invisible span.tab-title {
-    color:#aaa;
+    color: #aaa;
 }
 
 /*common***************************************************/
@@ -131,11 +122,6 @@
     margin-top: 1em;
 }
 
-div.reorder-controls,
-div.sort-controls {
-    float:left;
-}
-
 .drag-handle {
     float:left;
 /*    margin:0.5em 0.5em 0 0; */
@@ -145,7 +131,7 @@ div.sort-controls {
 #app ul {
     list-style-type: none;
     list-style-image: none;
-    margin:2.5em 0 0 1.7em;
+    margin-left: 1.7em;
 }
 
 #app .delete {
@@ -222,10 +208,6 @@ div.sort-controls {
     padding:0;
     margin: 0;
     width:36em;
-}
-
-#app.sorting ul.csshover li.editing {
-    padding: 0 0.5em;
 }
 
 #app li.editing form {
@@ -313,14 +295,14 @@ div.field { margin-top:2em; }
 
 /*hover***************************************************/
 
-.kssTabsActive #app.viewing ul#tabslist.csshover li:hover,
-.kssTabsActive #app.viewing ul#tabslist.csshover li.onHover {
+.kssTabsActive #app ul#tabslist.csshover li:hover,
+.kssTabsActive #app ul#tabslist.csshover li.onHover {
     background-color: #FFFFDD;
     border: 1px inset threedface;
     cursor: text;
 }
 
-.kssTabsActive #app.viewing ul#tabslist.csshover li.editing {
+.kssTabsActive #app ul#tabslist.csshover li.editing {
     background-color: White;
     border: 1px solid white;
     cursor: auto;

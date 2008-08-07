@@ -19,13 +19,12 @@
 
 <div id="plonetabs_form">
 
-<div id="app" class="viewing">
+<div id="app">
 
   <h1 class="documentFirstHeading">
     <span i18n:translate="heading_plonetabs">
       <tal:title replace="python:view.getPageTitle(category)">Plone Tabs</tal:title>
     </span>
-    <span id="busy"><img src="++resource++busy_icon.gif" alt="" tal:attributes="src string:${portal_url}/${attrs/src}" /></span>
   </h1>
 
   <a href=""
@@ -62,17 +61,6 @@
         <input class="change-button" type="submit" name="category.change" value="Change" />
       </div>
     </form>
-  </div>
-
-  <div class="reorder-controls"
-       tal:define="notempty python:view.hasActions(category)">
-    <a href="#" id="reorder" class=""
-       tal:attributes="class python:test(notempty, '', 'noitems')">Reorder</a>
-  </div>
-
-  <div class="sort-controls">
-    <a href="#" id="save">Save</a> |
-    <a href="#" id="cancel">Cancel</a>
   </div>
 
   <ul class="csshover"

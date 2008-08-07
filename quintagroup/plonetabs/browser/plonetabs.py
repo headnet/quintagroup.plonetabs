@@ -457,7 +457,7 @@ class PloneTabsControlPanel(PloneKSSView):
         ksscore.deleteNode(ksscore.getHtmlIdSelector(id))
         
         # check reorder controls, whether we should hide them
-        self.kss_checkReorderControls(cat_name)
+        #self.kss_checkReorderControls(cat_name)
         
         # issue portal message
         self.getCommandSet('plone').issuePortalMessage(_(u"'%s' action successfully deleted." % act_id), msgtype="info")
@@ -486,7 +486,7 @@ class PloneTabsControlPanel(PloneKSSView):
             ksscore.insertHTMLAsLastChild(ksscore.getHtmlIdSelector('tabslist'), content)
             
             # update reorder controls
-            self.kss_checkReorderControls(cat_name)
+            #self.kss_checkReorderControls(cat_name)
             
             # hide adding form
             ksscore.removeClass(ksscore.getHtmlIdSelector('addaction'), 'adding')
