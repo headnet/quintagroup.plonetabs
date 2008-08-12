@@ -156,7 +156,7 @@ class PloneTabsControlPanel(PloneKSSView):
         action = category[id]
         
         # validate posted data
-        errors = self.validateActionFields(cat_name, data, allow_dup=True)
+        errors = self.validateActionFields(cat_name, data, allow_dup=(id == data['id']))
         
         if not errors:
             action = self.updateAction(id, cat_name, data)
@@ -575,7 +575,7 @@ class PloneTabsControlPanel(PloneKSSView):
         action = category[id]
         
         # validate posted data
-        errors = self.validateActionFields(cat_name, data, allow_dup=True)
+        errors = self.validateActionFields(cat_name, data, allow_dup=(id == data['id']))
         
         html_id = '%s%s%s' % (self.prefix, id, self.sufix)
         ksscore = self.getCommandSet('core')
