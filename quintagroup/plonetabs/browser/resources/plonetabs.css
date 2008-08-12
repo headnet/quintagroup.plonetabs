@@ -62,6 +62,7 @@
 .kssTabsActive #app                        .add-controls,
 .kssTabsActive #app                        .change-button,
 .kssTabsActive #app #addaction             .collapseAdvanced,
+.kssTabsActive #app #addaction             .error-container,
 .kssTabsActive #app #tabslist li.editing   .url-helper,
 .kssTabsActive #app #tabslist li.editing   .tab-title {
     display: none;
@@ -76,7 +77,8 @@
 .kssTabsActive #app ul.csshover li:hover   .delete,
 .kssTabsActive #app ul.csshover li.onHover .delete,
 .kssTabsActive #app ul.csshover li:hover   .drag-handle,
-.kssTabsActive #app ul.csshover li.onHover .drag-handle {
+.kssTabsActive #app ul.csshover li.onHover .drag-handle,
+.kssTabsActive #app #addaction.adding      .error-container {
     display: inline;
 }
 
