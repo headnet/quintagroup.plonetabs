@@ -54,6 +54,8 @@
 .kssTabsActive #app                        .edit-fields-wrapper,
 .kssTabsActive #app                        .editdelete,
 .kssTabsActive #app                        .editreset,
+.kssTabsActive #app                        .editmoveup,
+.kssTabsActive #app                        .editmovedown,
 .kssTabsActive #app                        .field-visible,
 .kssTabsActive #app                        .field-name dt,
 .kssTabsActive #app                        .field-action,
