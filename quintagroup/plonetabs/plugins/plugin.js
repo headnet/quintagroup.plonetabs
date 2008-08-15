@@ -162,3 +162,35 @@ kukit.actionsGlobalRegistry.register('plonetabs-updateSortable', function(oper) 
 
 kukit.commandsGlobalRegistry.registerFromAction('plonetabs-updateSortable', kukit.cr.makeSelectorCommand);
 
+kukit.actionsGlobalRegistry.register('plonetabs-replaceOrAppend', function(oper) {
+    oper.componentName = '[plonetabs-replaceOrAppend] action';
+    oper.evaluateParameters(['selector', 'html'], {'withKssSetup':true, 'alternative_html':''});
+
+    var parentNode = oper.node;
+
+    var 
+
+    var parms = oper.clone().parms;
+    var node = oper.node;
+    var sort_list = node.parentNode;
+    var options_ = Sortable.sortables[sort_list.id];
+
+    if (typeof(options_) != 'undefined') {
+        // check whether node element isn't already registered as draggables
+        for (var i = 0, drag; drag = options_.draggables[i]; i++) {
+            if (node == drag.element) {
+                return false;
+            }
+        }
+        // destroy sortable list
+        Sortable.destroy(sort_list.id);
+    }
+
+    var new_oper = oper.clone();
+    parms['onUpdate'] = function(element){plonetabs_notifySortableUpdate(element, new_oper);};
+    Sortable.create(sort_list, parms);
+});
+
+kukit.commandsGlobalRegistry.registerFromAction('plonetabs-replaceOrAppend', kukit.cr.makeSelectorCommand);
+
+

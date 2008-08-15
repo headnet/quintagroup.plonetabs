@@ -858,11 +858,17 @@ class PloneTabsControlPanel(PloneKSSView):
     
     def updatePortalTabsPageSection(self):
         """ Method for updating global-sections on client """
-        ksscore = self.getCommandSet("core")
-        ksscore.replaceHTML(
-            ksscore.getHtmlIdSelector("portal-globalnav"),
-            self.sections_template(),
-            withKssSetup="False")
+        #ksscore = self.getCommandSet("core")
+        #ksscore.replaceHTML(
+            #ksscore.getHtmlIdSelector("portal-globalnav"),
+            #self.sections_template(),
+            #withKssSetup="False")
+            
+        ksszope = self.getCommandSet("zope")
+        ksszope.refreshViewlet(
+            self.getCommandSet("core").getHtmlIdSelector("portal-globalnav"),
+            "plone.portalheader",
+            "plone.global_sections")
     
     def updateSiteActionsPageSection(self):
         """ Method for updating site action on client """
