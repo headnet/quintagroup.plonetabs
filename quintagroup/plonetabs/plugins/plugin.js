@@ -162,35 +162,44 @@ kukit.actionsGlobalRegistry.register('plonetabs-updateSortable', function(oper) 
 
 kukit.commandsGlobalRegistry.registerFromAction('plonetabs-updateSortable', kukit.cr.makeSelectorCommand);
 
-kukit.actionsGlobalRegistry.register('plonetabs-replaceOrAppend', function(oper) {
-    oper.componentName = '[plonetabs-replaceOrAppend] action';
-    oper.evaluateParameters(['selector', 'html'], {'withKssSetup':true, 'alternative_html':''});
-
+kukit.actionsGlobalRegistry.register('plonetabs-replaceOrInsert', function(oper) {
+    oper.componentName = '[plonetabs-replaceOrInsert] action';
+    var defaultSelectorType = kukit.selectorTypesGlobalRegistry.defaultSelectorType
+    oper.evaluateParameters(['selector', 'html'], {'alternativeHTML': '',
+                                                   'selectorType': defaultSelectorType,
+                                                   'position': 'last', // can be one of the following: first, last, after, before
+                                                   'positionSelector': '', // work together with position=after|before
+                                                   'positionSelectorType': defaultSelectorType,
+                                                   'withKssSetup': true});
+    oper.evalBool('withKssSetup');
     var parentNode = oper.node;
-
-    var 
-
-    var parms = oper.clone().parms;
-    var node = oper.node;
-    var sort_list = node.parentNode;
-    var options_ = Sortable.sortables[sort_list.id];
-
-    if (typeof(options_) != 'undefined') {
-        // check whether node element isn't already registered as draggables
-        for (var i = 0, drag; drag = options_.draggables[i]; i++) {
-            if (node == drag.element) {
-                return false;
+    var nodes = kukit.selectorTypesGlobalRegistry.get(oper.parms.selectorType)(oper.parms.selector, parentNode);
+    if (nodes.length > 0) {
+        var content = oper.parms.html;
+        var new_node = nodes[0];
+        var action_ = 'replaceHTML';
+    } else {
+        var content = oper.parms.alternativeHTML ? oper.parms.alternativeHTML : oper.parms.html;
+        var action_ = 'insertHTMLAsLastChild';
+        var new_node = parentNode;
+        var position = oper.parms.position;
+        if (position == 'first') {
+            action_ = 'insertHTMLAsFirstChild';
+        } else if (position == 'after' || position == 'before') {
+            var posSelector = kukit.selectorTypesGlobalRegistry.get(oper.parms.positionSelectorType);
+            nodes = posSelector(oper.parms.positionSelector, new_node);
+            if (nodes.length > 0) {
+                new_node = nodes[0];
+                action_ = (position == 'after') ? 'insertHTMLAfter' : 'insertHTMLBefore';
             }
         }
-        // destroy sortable list
-        Sortable.destroy(sort_list.id);
     }
-
-    var new_oper = oper.clone();
-    parms['onUpdate'] = function(element){plonetabs_notifySortableUpdate(element, new_oper);};
-    Sortable.create(sort_list, parms);
+    var new_oper = new kukit.op.Oper({'node': new_node,
+                                      'parms': {'html': content,
+                                                'withKssSetup': oper.parms.withKssSetup}});
+    kukit.actionsGlobalRegistry.get(action_)(new_oper);
 });
 
-kukit.commandsGlobalRegistry.registerFromAction('plonetabs-replaceOrAppend', kukit.cr.makeSelectorCommand);
+kukit.commandsGlobalRegistry.registerFromAction('plonetabs-replaceOrInsert', kukit.cr.makeSelectorCommand);
 
 

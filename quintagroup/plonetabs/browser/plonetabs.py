@@ -12,6 +12,7 @@ from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
 from zope.exceptions import UserError
 from zope.app.container.interfaces import INameChooser
+from zope.viewlet.interfaces import IViewletManager, IViewlet
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import IAction, IActionCategory
@@ -795,6 +796,32 @@ class PloneTabsControlPanel(PloneKSSView):
         """ KSS Server command to reset form on client """
         command = self.commands.addCommand('plonetabs-resetForm', selector)
     
+    def kss_replaceOrInsert(self, selector, parentSelector, html, withKssSetup='True', alternativeHTML='', selectorType='',
+                                  position='', positionSelector='', positionSelectorType=''):
+        """ KSS Server command to execute replaceOrInsert client action """
+        command = self.commands.addCommand('plonetabs-replaceOrInsert', selector)
+        data = command.addParam('selector', parentSelector)
+        data = command.addHtmlParam('html', html)
+        data = command.addParam('withKssSetup', withKssSetup)
+        if alternativeHTML:
+            data = command.addHtmlParam('alternativeHTML', alternativeHTML)
+        if selectorType:
+            data = command.addParam('selectorType', selectorType)
+        if position:
+            data = command.addParam('position', position)
+        if positionSelector:
+            data = command.addParam('positionSelector', positionSelector)
+        if positionSelectorType:
+            data = command.addParam('positionSelectorType', positionSelectorType)
+    
+    def renderViewlet(self, manager, name):
+        if isinstance(manager, basestring):
+            manager = getMultiAdapter((self.context, self.request, self,), IViewletManager, name=manager)
+        renderer = getMultiAdapter((self.context, self.request, self, manager), IViewlet, name=name)
+        renderer = renderer.__of__(self.context)
+        renderer.update()
+        return renderer.render()
+    
     #
     # Basic API to work with portal actions tool in a more pleasent way
     #
@@ -858,25 +885,30 @@ class PloneTabsControlPanel(PloneKSSView):
     
     def updatePortalTabsPageSection(self):
         """ Method for updating global-sections on client """
-        #ksscore = self.getCommandSet("core")
-        #ksscore.replaceHTML(
-            #ksscore.getHtmlIdSelector("portal-globalnav"),
-            #self.sections_template(),
-            #withKssSetup="False")
-            
-        ksszope = self.getCommandSet("zope")
-        ksszope.refreshViewlet(
-            self.getCommandSet("core").getHtmlIdSelector("portal-globalnav"),
-            "plone.portalheader",
-            "plone.global_sections")
+        ksscore = self.getCommandSet("core")
+        self.kss_replaceOrInsert(ksscore.getHtmlIdSelector("portal-header"),
+                                 "portal-globalnav",
+                                 self.sections_template(),
+                                 withKssSetup='False',
+                                 selectorType='htmlid')
     
     def updateSiteActionsPageSection(self):
         """ Method for updating site action on client """
-        ksszope = self.getCommandSet("zope")
-        ksszope.refreshViewlet(
-            self.getCommandSet("core").getHtmlIdSelector("portal-siteactions"),
-            "plone.portalheader",
-            "plone.site_actions")
+        ksscore = self.getCommandSet("core")
+        self.kss_replaceOrInsert(ksscore.getHtmlIdSelector("portal-header"),
+                                 "portal-siteactions",
+                                 self.renderViewlet("plone.portalheader", "plone.site_actions"),
+                                 withKssSetup='False',
+                                 selectorType='htmlid',
+                                 position="before",
+                                 positionSelector="portal-searchbox",
+                                 positionSelectorType="htmlid")
+        
+        #ksszope = self.getCommandSet("zope")
+        #ksszope.refreshViewlet(
+            #self.getCommandSet("core").getHtmlIdSelector("portal-siteactions"),
+            #"plone.portalheader",
+            #"plone.site_actions")
     
     def updateUserPageSection(self):
         """ Method for updating site action on client """

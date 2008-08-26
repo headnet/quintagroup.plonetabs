@@ -52,4 +52,12 @@
         jsfile="plugin.js"
         />
     
+    <kss:action
+        name="plonetabs-replaceOrInsert"
+        command_factory="selector"
+        jsfile="plugin.js"
+        params_mandatory="selector html"
+        params_optional="alternativeHTML selectorType position positionSelector positionSelectorType withKssSetup"
+        />
+    
 </configure>
