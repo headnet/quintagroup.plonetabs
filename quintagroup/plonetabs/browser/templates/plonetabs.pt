@@ -76,7 +76,7 @@
     <input type="hidden" name="category" value="category" tal:attributes="value category" />
     <dl class="field-visible bridge">
       <dt>
-        <label>Visible</label>
+        <label for="actvisible">Visible</label>
       </dt>
       <dd>
         <input id="actvisible" type="checkbox" value="1" checked="checked" title="visibility" name="visible"
@@ -87,7 +87,7 @@
         tal:define="error errors/title|nothing"
         tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
       <dt>
-        <label>Name</label>
+        <label for="actname">Name</label>
       </dt>
       <dd>
         <span class="error-container" tal:content="error">Validation error output</span>
@@ -99,7 +99,7 @@
         tal:define="error errors/url_expr|nothing"
         tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
       <dt>
-        <label>URL (Expression)</label>
+        <label for="actaction">URL (Expression)</label>
       </dt>
       <dd>
         <span class="error-container" tal:content="error">Validation error output</span>
@@ -114,7 +114,7 @@
             tal:define="error errors/id|nothing"
             tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
           <dt>
-            <label>Id</label>
+            <label for="actid">Id</label>
           </dt>
           <dd>
             <span class="error-container" tal:content="error">Validation error output</span>
@@ -126,7 +126,7 @@
             tal:define="error errors/available_expr|nothing"
             tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
           <dt>
-            <label>Condition (Expression)</label>
+            <label for="actcondition">Condition (Expression)</label>
           </dt>
           <dd>
             <span class="error-container" tal:content="error">Validation error output</span>

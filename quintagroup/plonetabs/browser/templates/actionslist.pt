@@ -44,12 +44,13 @@
                       error python:errors.get(name, '');
                       tab_title tab/title"
           tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
-        <dt><label>Name</label></dt>
+        <dt><label tal:attributes="for name">Name</label></dt>
         <dd>
           <span class="error-container" tal:content="error">Validation error output</span>
           <input type="text" value="" name="title"
                  tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_title);
-                                 name name" /></dd>
+                                 name name;
+                                 id name" /></dd>
       </dl>
 
       <dl class="collapseAdvanced collapsedBlock">
@@ -60,36 +61,39 @@
                           error python:errors.get(name, '');
                           tab_url tab/url_expr"
               tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
-            <dt><label>URL (Expression)</label></dt>
+            <dt><label tal:attributes="for name">URL (Expression)</label></dt>
             <dd>
               <span class="error-container" tal:content="error">Validation error output</span>
               <input type="text" value="" name="url_expr"     size="30"
                      tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_url);
-                                     name name" /></dd>
+                                     name name;
+                                     id name" /></dd>
           </dl>
           <dl class="edit-field-id"
               tal:define="name string:id_${id};
                           error python:errors.get(name, '');
                           tab_id tab/id"
               tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
-            <dt><label>Id</label></dt>
+            <dt><label tal:attributes="for name">Id</label></dt>
             <dd>
               <span class="error-container" tal:content="error">Validation error output</span>
               <input type="text" value="" name="id"
                      tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_id);
-                                     name name" /></dd>
+                                     name name;
+                                     id name" /></dd>
           </dl>
           <dl class="edit-field-condition"
               tal:define="name string:available_expr_${id};
                           error python:errors.get(name, '');
                           tab_cond tab/available_expr"
               tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
-            <dt><label>Condition (Expression)</label></dt>
+            <dt><label tal:attributes="for name">Condition (Expression)</label></dt>
             <dd>
               <span class="error-container" tal:content="error">Validation error output</span>
               <input type="text" value="" name="available_expr"  size="30"
                      tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_cond);
-                                     name name" /></dd>
+                                     name name;
+                                     id name" /></dd>
           </dl>
           <div class="visualClear"><!-- --></div>
         </dd>
