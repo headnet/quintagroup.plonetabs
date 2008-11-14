@@ -6,7 +6,7 @@
 */
 
 
-/* General stylesheet for Plone Tabs AJAX configlet */
+/* General sheet for Plone Tabs AJAX configlet */
 
 /* Add 'kssTabsActive' class to application root element
    to enable ajax styles when kss is available */
