@@ -390,7 +390,7 @@ class PloneTabsControlPanel(PloneKSSView):
     #
     ##########################
     
-    #@kssaction
+    @kssaction
     def kss_changeCategory(self, cat_name):
         """ Change action category to manage """
         ksscore = self.getCommandSet('core')
@@ -408,7 +408,9 @@ class PloneTabsControlPanel(PloneKSSView):
         
         # update state variable 'plonetabs-category' on client 
         ksscore.setStateVar('plonetabs-category', cat_name)
-        return self.render()
+        
+        # hide portal status message
+        IStatusMessage(self.request).addStatusMessage("")
     
     @kssaction
     def kss_toggleGeneratedTabs(self, field, checked='0'):
@@ -630,7 +632,7 @@ class PloneTabsControlPanel(PloneKSSView):
     #
     
     def copyAction(self, action):
-        """ Copyt action to dictionary """
+        """ Copy action to dictionary """
         action_info = {'description':action.description}
         for attr in ACTION_ATTRS:
             action_info[attr] = getattr(action, attr)

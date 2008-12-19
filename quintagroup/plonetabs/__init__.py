@@ -1,4 +1,2 @@
-    
 def initialize(context):
-    
     pass
