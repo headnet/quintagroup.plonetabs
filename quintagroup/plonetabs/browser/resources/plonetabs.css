@@ -178,7 +178,7 @@
 #app ul.csshover li {
     border: 1px solid transparent;
     border-right:0;
-    padding: 0 0.5em;
+padding:0;
     margin: 0.1em 0;
     width:35em;
     margin-right:6.5em;
@@ -215,7 +215,7 @@
 }
 
 #app li.editing form {
-    margin:-0.1em;
+margin:-0.1em -0.1em -0.1em 42px;
 }
 
 * html #app li.editing form {
@@ -243,7 +243,8 @@
 }
 
 #app input[type="text"] {
-    width: 99.5%;
+width:99.5%;
+text-indent:5px;
 }
 
 #app .bridge {
@@ -254,8 +255,8 @@
 }
 
 .kssTabsActive #app #tabslist .bridge {
-    left: -3.5em;
-    width: 3.5em;
+    left: 0;
+    width: 42px;
 }
 
 * html #app div.bridge {
@@ -286,7 +287,7 @@
 
 #app div input {
     width:auto;
-    padding: 0.05em 0.5em;
+    padding:1px 0;
     float:left;
     margin:0 0.1em 0 0;
 }
@@ -299,12 +300,51 @@ div.field { margin-top:2em; }
 
 /*hover***************************************************/
 
-.kssTabsActive #app ul#tabslist.csshover li:hover,
+.kssTabsActive #app ul#tabslist.csshover li .titleWrapper:hover,
 .kssTabsActive #app ul#tabslist.csshover li.onHover {
     background-color: #FFFFDD;
     border: 1px inset threedface;
     cursor: text;
+padding:0 4px;
 }
+.titleWrapper {
+margin-left:42px;
+padding:1px 5px;
+/*position:relative;*/
+/*z-index:1;*/
+  }
+.tab-title {
+position:relative;
+z-index:1;
+  }
+.tab-title span {
+background-color:#fff;
+display:inline !important;
+padding-right:0.5em;
+  }
+.kssTabsActive #app ul#tabslist.csshover li .testWrapper:hover .tab-title span {
+background-color:#FFD;
+  }
+.tab-title:hover {
+/*background-color:#FFD;*/
+  }
+
+#tabslist .tab-title {
+  float:left;
+  min-width:35%;
+  padding-right:0.5em;
+  position:relative;
+  z-index:1;
+  }
+#app ul#tabslist li span.url-helper {
+margin-left:0;
+padding-right:0.5em;
+position:static;
+right:0;
+text-align:left;
+width:auto;
+}
+
 
 .kssTabsActive #app ul#tabslist.csshover li.editing {
     background-color: White;
@@ -420,6 +460,5 @@ div.field { margin-top:2em; }
     width:1.7em;
     left:-2em;
 }
-
 
 /* </dtml-with> (do not remove this either :) */

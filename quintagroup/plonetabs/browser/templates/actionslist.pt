@@ -13,10 +13,10 @@
                     class python:' '.join(klass)">
 
   <a class="delete" href="#">Delete</a>
-
-  <span class="url-helper" tal:content="tab/url_expr">Tab Action</span>
+<div class="titleWrapper">
   <span class="tab-title" tal:content="tab/title">Tab Name</span>
-
+  <span class="url-helper" tal:content="tab/url_expr">Tab Action</span>
+</div>
   <form class="editform"
         method="post"
         action="@@plonetabs-controlpanel"
@@ -29,7 +29,7 @@
     <input type="hidden" name="form.submitted:boolean" value="True" />
 
     <div class="bridge">
-      <img class="drag-handle" src="++resource++drag.gif" alt="" height="11" width="25" />
+      <img class="drag-handle" src="++resource++drag.gif" alt="" height="11" width="11" />
       <input type="checkbox" class="visibility" value="1" name="visible" title="visibility"
              tal:define="name string:${attrs/name}_${id};
                          submitted python:test(request.get('form.submitted','') and request.get('orig_id','')==id, True, False)"
@@ -37,7 +37,7 @@
                              checked python:test(submitted, test(request.form.get(name, False), 'checked', None), test(visible, 'checked', None))"/>
     </div>
 
-    <span class="edit-fields-wrapper">
+    <div class="edit-fields-wrapper">
 
       <dl class="edit-field-name"
           tal:define="name string:title_${id};
@@ -110,7 +110,7 @@
                tal:condition="not:repeat/tab/end" />
       </div>
 
-    </span>
+    </div>
 
   </form>
 

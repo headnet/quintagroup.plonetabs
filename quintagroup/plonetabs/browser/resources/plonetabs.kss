@@ -143,11 +143,18 @@
 }
 
 /* Actions edit */
-#tabslist .tab-title:click {
+#tabslist .titleWrapper:click {
+    evt-click-allowbubbling: true;
     action-client: addClass;
     addClass-kssSelector: parentnode('#tabslist li');
     addClass-value: editing;
 }
+
+/*#tabslist .tab-title:click {
+    action-client: addClass;
+    addClass-kssSelector: parentnode('#tabslist li');
+    addClass-value: editing;
+}*/
 
 /*#tabslist .tab-title:click {
     action-server: plonetabs-showEditForm;
