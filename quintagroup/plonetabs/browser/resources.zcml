@@ -54,5 +54,10 @@
         name="sa_dragdrop.js"
         file="./resources/dragdrop.js"
         />
+
+    <browser:resource
+        name="pt_effects.js"
+        file="./resources/effects.js"
+        />
     
 </configure>

@@ -1,6 +1,3 @@
-
-kukit.plonetabs = {};
-
 /* KSS plugins for plonetabs */
 
 kukit.actionsGlobalRegistry.register('plonetabs-redirectTo', function(oper) {

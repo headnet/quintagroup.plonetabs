@@ -410,7 +410,7 @@ class PloneTabsControlPanel(PloneKSSView):
         ksscore.setStateVar('plonetabs-category', cat_name)
         
         # hide portal status message
-        IStatusMessage(self.request).addStatusMessage("")
+#        IStatusMessage(self.request).addStatusMessage("")
     
     @kssaction
     def kss_toggleGeneratedTabs(self, field, checked='0'):

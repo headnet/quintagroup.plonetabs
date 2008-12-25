@@ -150,27 +150,6 @@
     addClass-value: editing;
 }
 
-/*#tabslist .tab-title:click {
-    action-client: addClass;
-    addClass-kssSelector: parentnode('#tabslist li');
-    addClass-value: editing;
-}*/
-
-/*#tabslist .tab-title:click {
-    action-server: plonetabs-showEditForm;
-    plonetabs-showEditForm-id: nodeAttr(id, true);
-    plonetabs-showEditForm-cat_name: stateVar(plonetabs-category);
-    plonetabs-showEditForm-error: plonetabs-handleServerError;
-}*/
-
-/*#tabslist .url-helper:click {
-    action-client: executeCommand;
-    executeCommand-name: addClass;
-    executeCommand-selector: #tabslist li;
-    executeCommand-selectorType: parentnode;
-    executeCommand-value: editing;
-}*/
-
 /* Edit cancel button */
 #tabslist .editcancel:click {
     evt-click-preventdefault: true;
