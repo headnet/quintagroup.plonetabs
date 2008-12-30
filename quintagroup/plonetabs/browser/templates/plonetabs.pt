@@ -19,7 +19,7 @@
 
 <div id="plonetabs_form">
 
-<div id="app">
+<div id="app" class="qPloneTabs">
 
   <h1 class="documentFirstHeading">
     <span i18n:translate="heading_plonetabs">
@@ -58,7 +58,7 @@
                     tal:condition="python: cat != category" />
           </tal:options>
         </select>
-        <input class="change-button" type="submit" name="category.change" value="Change" />
+        <input class="change-button kssHidden" type="submit" name="category.change" value="Change" />
       </div>
     </form>
   </div>
@@ -138,8 +138,8 @@
       </dd>
     </dl>
     <div class="add-controls">
-      <input type="submit" id="buttonadd" i18n:attributes="value" name="add.add" value="Add" />
-      <input type="submit" id="buttoncancel" i18n:attributes="value" name="add.cancel" value="Cancel" />
+      <input type="submit" id="buttonadd" class="context" i18n:attributes="value" name="add.add" value="Add" />
+      <input type="submit" id="buttoncancel" class="standalone" i18n:attributes="value" name="add.cancel" value="Cancel" />
     </div>
   </form>
 

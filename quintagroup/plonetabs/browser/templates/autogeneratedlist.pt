@@ -12,7 +12,7 @@
            tal:attributes="name id;
                            checked python:view.test(visible, 'checked', None)" />
   </div>
-  <span class="url-helper" tal:content="tab/url">Tab Action</span>
   <span class="tab-title"  tal:content="tab/name">Tab Name</span>
+  <span class="url-helper" tal:content="tab/url">Tab Action</span>
 </li>
 </tal:tabs>

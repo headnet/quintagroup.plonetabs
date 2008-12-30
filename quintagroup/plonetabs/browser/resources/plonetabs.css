@@ -27,438 +27,303 @@
 ***************************************************************************************************
 */
 
-#app li.editing                            .edit-fields-wrapper,
-#app #addaction                            .field-action label,
-#app #addaction.adding                     .field-visible,
-#app #addaction.adding                     .field-name dt,
-#app #addaction.adding                     .field-action,
-#app #addaction.adding                     .field-id,
-#app #addaction.adding                     .field-condition,
-#app #addaction.adding                     .add-controls,
+/*---------- QUINTAGROUP PLONE TABS LAYOUT ----------*/
+.qPloneTabs ul {
+  list-style-type:none;
+  list-style-image:none;
+  margin-left:15px;
+  }
+.kssTabsActive ul {
+  margin-left:0;
+  }
+/*----- Select Category Section -----*/
 
-.kssTabsActive #app                        .editcancel,
-.kssTabsActive #app #tabslist li           .url-helper,
-.kssTabsActive #app #tabslist li           .tab-title,
-.kssTabsActive #app #addaction.adding      .collapseAdvanced {
-    display: block;
-}
+/*----- Items List Section -----*/
+#tabslist li {
+  margin:0.1em 6.5em 0.1em 0;
+  position:relative;
+  width:35em;
+  }
+.kssTabsActive #tabslist li {
+  margin-left:-15px;
+  }
+#tabslist li span {
+  display:block;
+  }
+.qPloneTabs .delete {
+  background:url(++resource++trash.gif) 5px 50% no-repeat;
+  border:0;
+  font-size:80%;
+  left:100%;
+  line-height:1.8em;
+  padding:0 0 0 18px;
+  position:absolute;
+  }
+.qPloneTabs .editing form {
+  margin:0 0 0 30px;
+  }
+.qPloneTabs dl {
+  margin:0;
+  padding:0;
+  }
+.qPloneTabs dl label {
+  display:none;
+  }
+.qPloneTabs dl dl label {
+  display:block;
+  } 
+.qPloneTabs dd {
+  margin:0;
+  }
+.qPloneTabs dd dl {
+  margin:0.5em 0;
+  }
+.qPloneTabs input[type="text"] {
+  padding:2px 0;
+  text-indent:3px;
+  width:99.5%;
+  }
+.qPloneTabs input:focus {
+  border:1px inset threedface !important;
+  }
+.qPloneTabs form div {
+  line-height:1.4em;
+  }
+.qPloneTabs div input {
+  margin:0 0.1em 0 0;
+  width:auto;
+  }
+.edit-controls,
+.add-controls {
+  margin:0.25em 0;
+  }
 
-
-#app                                       .drag-handle,
-#app                                       .delete,
-#app                                       .editcancel,
-#app #tabslist li                          .url-helper,
-#app #tabslist li                          .tab-title,
-
-.kssTabsActive #app                        .visibility,
-.kssTabsActive #app                        .edit-fields-wrapper,
-.kssTabsActive #app                        .editdelete,
-.kssTabsActive #app                        .editreset,
-.kssTabsActive #app                        .editmoveup,
-.kssTabsActive #app                        .editmovedown,
-.kssTabsActive #app                        .field-visible,
-.kssTabsActive #app                        .field-name dt,
-.kssTabsActive #app                        .field-action,
-.kssTabsActive #app                        .field-id,
-.kssTabsActive #app                        .field-condition,
-.kssTabsActive #app                        .add-controls,
-.kssTabsActive #app                        .change-button,
-.kssTabsActive #app #addaction             .collapseAdvanced,
-.kssTabsActive #app #addaction             .error-container,
-.kssTabsActive #app #tabslist li.editing   .url-helper,
-.kssTabsActive #app #tabslist li.editing   .tab-title {
-    display: none;
-}
-
-
-#app ul.csshover li:hover                  .visibility,
-#app ul.csshover li.onHover                .visibility,
-#app ul#roottabs.csshover li:hover         .visibility,
-#app ul#roottabs.csshover li.onHover       .visibility,
-
-.kssTabsActive #app ul.csshover li:hover   .delete,
-.kssTabsActive #app ul.csshover li.onHover .delete,
-.kssTabsActive #app ul.csshover li:hover   .drag-handle,
-.kssTabsActive #app ul.csshover li.onHover .drag-handle,
-.kssTabsActive #app #addaction.adding      .error-container {
-    display: inline;
-}
-
-/**********************************************************/
-/* Additional style for functionality without javascript   */
-.kssTabsActive #autogeneration_controls {
-    display: none;
-}
-
-#app dl.collapseAdvanced dt.headerAdvanced {
-    display: none;
-}
-
-.kssTabsActive #app dl.collapseAdvanced dt.headerAdvanced {
-    display: block;
-}
-
-#app input#buttoncancel {
-    display: none;
-}
-
-.kssTabsActive #app #buttoncancel {
-    display: block;
-}
-
-/**********************************************************/
-
-#app #tabslist img.drag-handle {
-    cursor: move;
-}
-
-#app .invisible span.tab-title {
-    color: #aaa;
-}
-
-/*common***************************************************/
-
-#app input.change-button {
-    float: none;
-}
-
-#app #autogeneration_section {
-    margin-top: 1em;
-}
-
-.drag-handle {
-    float:left;
-/*    margin:0.5em 0.5em 0 0; */
-    margin-right: 0.2em;
-}
-
-#app ul {
-    list-style-type: none;
-    list-style-image: none;
-    margin-left: 1.7em;
-}
-
-#app .delete {
-    background: url(++resource++trash.gif) 12px 50% no-repeat;
-    padding: 0 0 0 25px;
-    line-height:1.8em;
-    font-size:80%;
-    border:0;
-    position:absolute;
-    right:0;
-    margin-right:-5.7em;
-    color: #436976 !important;
-}
-
-* html #app .delete {
-    margin-right:-4.7em;
-}
-
-/* Up & Down arrows */
-#app .up-arrow {
-    line-height: 1.8em;
-    font-size: 80%;
-    border: 0;
-    position: absolute;
-    right: 0;
-    margin-right: -6.7em;
-    color: #436976 !important;
-}
-
-#app .down-arrow {
-    line-height: 1.8em;
-    font-size: 80%;
-    border: 0;
-    position: absolute;
-    right: 0;
-    margin-right: -7.7em;
-    color: #436976 !important;
-}
-
-#app ul.csshover li {
-    border: 1px solid transparent;
-    border-right:0;
-padding:0;
-    margin: 0.1em 0;
-    width:35em;
-    margin-right:6.5em;
-    line-height:1.5em;
-    clear:left;
-    position:relative;
-}
-
-* html #app ul.csshover li {
-    border-color:white;
-}
-
-#app ul.csshover li span {
-    display:block;
-}
-
-#app ul.csshover li span.url-helper {
-    position:absolute;
-    right:0;
-    margin-left:20%;
-    padding-right:0.5em;
-    overflow:hidden;
-    font-size:80%;
-    color:#aaa;
-    text-align: right;
-    width: 80%;
-
-}
-
-#app ul.csshover li.editing {
-    padding:0;
-    margin: 0;
-    width:36em;
-}
-
-#app li.editing form {
-margin:-0.1em -0.1em -0.1em 42px;
-}
-
-* html #app li.editing form {
-    margin: -0.2em 0 0 0;
-}
-
-#app dl {
-    margin:0;
-}
-
-#app dl label {
-    display:none;
-}
-
-#app dl dl label {
-    display:block;
-} 
-
-#app dd {
-    margin:0;
-}
-
-#app dd dl {
-    margin:0.5em 0;
-}
-
-#app input[type="text"] {
-width:99.5%;
-text-indent:5px;
-}
-
-#app .bridge {
-    position:absolute;
-    left:-1.5em;
-    top:0.2em;
-    width:3em;
-}
-
-.kssTabsActive #app #tabslist .bridge {
-    left: 0;
-    width: 42px;
-}
-
-* html #app div.bridge {
-    top:0;
-    left:-2em;
-}
-
-#app input:focus {
-    border:  1px inset threedface !important;
-}
-
-* html #app input {
-    width:97.3%;
-    padding: 0.1em 0.4em;
-}
-
-#app form div {
-    line-height:1.4em;
-    margin-top:0.1em;
-    min-height:1.6em;
-}
-
-* html #app form div {
-    margin-top:-0.2em;
-    position:relative;
-    height:1%;
-}
-
-#app div input {
-    width:auto;
-    padding:1px 0;
-    float:left;
-    margin:0 0.1em 0 0;
-}
-
-* html #app div input {
-    padding: 0 0.3em;
-}
-
-div.field { margin-top:2em; }
-
-/*hover***************************************************/
-
-.kssTabsActive #app ul#tabslist.csshover li .titleWrapper:hover,
-.kssTabsActive #app ul#tabslist.csshover li.onHover {
-    background-color: #FFFFDD;
-    border: 1px inset threedface;
-    cursor: text;
-padding:0 4px;
-}
+/*--- Title Wrapper ---*/
 .titleWrapper {
-margin-left:26px;
-padding:1px 5px;
-/*position:relative;*/
-/*z-index:1;*/
+  margin-left:30px;
+  padding:1px 5px;
+  white-space:nowrap;
+  }
+.titleWrapper:hover {
+  background-color:#FFFFDD;
+  border:1px inset threedface;
+  cursor:text;
+  padding:0 4px;
   }
 .tab-title {
-position:relative;
-z-index:1;
-  }
-.tab-title span {
-background-color:#fff;
-display:inline !important;
-padding-right:0.5em;
-  }
-.kssTabsActive #app ul#tabslist.csshover li .testWrapper:hover .tab-title span {
-background-color:#FFD;
-  }
-.tab-title:hover {
-/*background-color:#FFD;*/
-  }
-
-#tabslist .tab-title {
   float:left;
   min-width:35%;
   padding-right:0.5em;
   position:relative;
   z-index:1;
   }
-#app ul#tabslist li span.url-helper {
-margin-left:0;
-padding-right:0.5em;
-position:static;
-right:0;
-text-align:left;
-width:auto;
-}
+#app .invisible span.tab-title {
+  color:#aaa;
+  }
+.url-helper {
+  color:#aaa;
+  font-size:80%;
+  overflow:hidden;
+  padding-right:0.5em;
+  }
 
+/*--- Bridge ---*/
+.qPloneTabs .bridge {
+  left:-1.5em;
+  position:absolute;
+  top:0.2em;
+  width:3em;
+  }
+.kssTabsActive .qPloneTabs .bridge {
+  left:0;
+  width:30px;
+  }
+.drag-handle {
+  cursor:move;
+  float:left;
+  margin-right: 0.2em;
+  }
 
-.kssTabsActive #app ul#tabslist.csshover li.editing {
-    background-color: White;
-    border: 1px solid white;
-    cursor: auto;
-}
-
-#app ul#roottabs.csshover li:hover,
-#app ul#roottabs.csshover li.onHover {
-    background-color: #FFFFDD;
-/*    border:  1px inset threedface;*/
-    cursor: default;
-}
-
-/*edit*****************************************************/
-
+/*----- Edit Item Section -----*/
 #app dl.collapseAdvanced {
-    margin-top:0.15em;
-    position:relative;
-    padding:0;
-    border:0 !important;
-    height:auto;
-    line-height:1em;
-}
-
+  line-height:1em;
+  position:relative;
+  }
 #app dl.collapseAdvanced dt.headerAdvanced {
-    cursor: pointer;
-    font-size: 90%;
-    font-weight:normal;
-    position:absolute;
-    padding-right:0.5em;
-/*     display:block; */
-    margin:0;
-    top:0;
-    right:0;
-    color: #436976;
-    line-height:2em;
-    background-color:transparent;
-}
-
-#app dl.collapseAdvanced dd.contentAdvanced {
-    padding:1em 1.5em 0 1.5em;
-    border:0;
-    background-color:#dee7ec;
-}
-
+  background:url(++resource++treeCollapsed.gif) no-repeat 6px 50%;
+  color:#436976;
+  cursor:pointer;
+  font-size: 90%;
+  font-weight:normal;
+  line-height:2em;
+  margin:0;
+  padding: 0 6px 0 22px;
+  position:absolute;
+  right:0;
+  top:0;
+  }
 #app dl.expandedBlock dt.headerAdvanced {
-    padding: 0 6px 0 22px;
-    background: transparent url(++resource++treeExpanded.gif) no-repeat 6px 50%;
-}
-
-#app dl.collapsedBlock dt.headerAdvanced {
-    padding: 0 0 0 22px;
-    background: transparent url(++resource++treeCollapsed.gif) no-repeat 6px 50%;
- }
-
-#app dl.collapseAdvanced { 
-    clear: both;
-}
-
+  background-image:url(++resource++treeExpanded.gif);
+  }
+#app dl.collapseAdvanced dd.contentAdvanced {
+  background-color:#dee7ec;
+  padding:1px 1.5em 0.5em;
+  }
 #app dl.expandedBlock dd.contentAdvanced {
-    display: block;
-}
+  display: block;
+  }
 
-.kssTabsActive #app dl.collapsedBlock dd.contentAdvanced {
-    display: none;
-}
+/*----- Add Action Section -----*/
+#addaction {
+  margin-left:15px;
+  position:relative;
+  width:35em;
+  }
+.kssTabsActive #addaction {
+  width:32.5em;
+  }
+#addaction .field-action {
+  position:relative;
+  }
+#addaction .field-action label {
+  bottom:0;
+  color: #8cacbb;
+  font-size:80%;
+  font-weight:normal;
+  line-height:2.1em;
+  position:absolute;
+  right:0.5em;
+  }
+#addaction.adding .field-action input {
+  margin-top:0.1em; 
+  padding-right:9em;
+  width:23.3em;
+  }
+#addaction .bridge {
+  left:-16px;
+  top:0;
+  }
+  
+/*----- Autogenerated Section -----*/
+#autogeneration_section {
+  margin-top:1em;
+  }
+#roottabs {
+  margin-left:18px;
+  }
+#roottabs li {
+  margin:0.1em 6.5em 0.1em 0;
+  position:relative;
+  width:35em;
+  }
+#roottabs li:hover {
+  background-color:#FFD;
+  cursor:default;
+  }
+#roottabs li:hover .bridge {
+  display:block;
+  left:-18px;
+  }
 
-/****************************************************************/
+/*----- Error Messeges -----*/
+.qPloneTabs dl.error {
+  border:1px solid #D80;
+  font-size:0.91em;
+  margin:2px 0 0;
+  }
+.collapseAdvanced dl.error {
+  margin-top:2em !important;  
+  }
+.qPloneTabs dl.error dt {
+  color:#fff;
+  float:left;
+  line-height:1.5em;
+  margin-right:0.5em;
+  padding:0 0.5em;
+  }
+.qPloneTabs dl.error dd {
+  padding:0 0.5em;
+  }
+.qPloneTabs dl.error input[type="text"] {
+  margin:0 -0.5em;
+  width:102.5%;
+  }
+#addaction.adding .error #actaction {
+  width:26.4em;
+  }
+/* Need to be rewiev */
 
-#app #addaction {
-    margin-left:1.7em;
-    width:36.2em;
-    position:relative;
-}
+/*#app                                       .editcancel,*/
+/*#app #tabslist li                          .url-helper,*/
+/*#app #tabslist li                          .tab-title,*/
+/*.kssTabsActive #app                        .field-visible,*/
+/*.kssTabsActive #app                        .field-name dt,*/
+/*.kssTabsActive #app                        .field-id,*/
+/*.kssTabsActive #app                        .field-condition,*/
+/*.kssTabsActive #app #addaction             .error-container,*/
+/*.kssTabsActive #app #tabslist li.editing   .url-helper,
+.kssTabsActive #app #tabslist li.editing   .tab-title */
 
-* html #app #addaction {
-    width:36.15em;
-}
+.titleWrapper,
+.kssTabsActive .editing .titleWrapper,
+.qPloneTabs .delete,
+.kssTabsActive .edit-fields-wrapper,
+.kssTabsActive .bridge,
+.qPloneTabs .drag-handle,
+.kssTabsActive .field-action,
+.kssTabsActive .collapsedBlock .contentAdvanced,
+#addaction .headerAdvanced,
+.qPloneTabs .headerAdvanced,
+.kssTabsActive .add-controls,
+.kssTabsActive .kssHidden {
+  display:none;
+  }
 
-/* fixed for work in 'without js' version
-   removed .adding class from selector
-#app #addaction.adding .field-action label {  */
+.kssTabsActive .titleWrapper,
+.kssTabsActive li.editing .edit-fields-wrapper,
+.kssTabsActive .adding .bridge,
+.adding .field-action,
+.adding .collapseAdvanced,
+.kssTabsActive .headerAdvanced,
+.kssTabsActive #addaction.adding .headerAdvanced,
+.adding .add-controls,
+.kssTabsActive .expandedBlock .contentAdvanced,
+.kssTabsActive .field-action label
+/*#app #addaction.adding                     .field-name dt,*/
+/*#app #addaction.adding                     .field-id,*/
+/*#app #addaction.adding                     .field-condition,*/
+/*.kssTabsActive #app                        .editcancel,*/
+/*.kssTabsActive #app #tabslist li           .url-helper,*/
+/*.kssTabsActive #app #tabslist li           .tab-title*/ {
+  display:block;
+  }
 
-#app #addaction .field-action label {
-    position:absolute;
-    line-height:2.1em;
-    font-size:80%;
-    color: #8cacbb;
-    right:0.5em;
-    font-weight:normal;
-    background-color:transparent;
-}
+.kssTabsActive li:hover .bridge,
+.kssTabsActive li:hover .delete,
+.kssTabsActive li:hover .drag-handle,
+/*#app ul.csshover li:hover                  .visibility,*/
+/*#app ul.csshover li.onHover                .visibility,*/
+/*#app ul#roottabs.csshover li:hover         .visibility,*/
+/*#app ul#roottabs.csshover li.onHover       .visibility,*/
 
-#app #addaction.adding .field-action input {
-    margin-top:0.1em; 
-    padding-right:9em;
-    width:27em;
-}
+/*.kssTabsActive #app ul.csshover li:hover   .delete,*/
+/*.kssTabsActive #app ul.csshover li.onHover .delete,*/
+/*.kssTabsActive #app ul.csshover li:hover   .drag-handle,*/
+/*.kssTabsActive #app ul.csshover li.onHover .drag-handle,*/
+.kssTabsActive #app #addaction.adding      .error-container {
+  display:inline;
+  }
 
-* html #app #addaction.adding .field-action input {
-    padding-right:0.5em;
-    width:96.8%;
-    margin-top:-0.05em;
-}
-
-#app #addaction .bridge {
-    left:-1.8em;
-    top:0em;
-}
-
-* html #app #addaction .bridge {
-    width:1.7em;
-    left:-2em;
-}
+/**********************************************************/
+/* Additional style for functionality without javascript   */
+.kssTabsActive #autogeneration_controls {
+  display:none;
+  }
+#app input#buttoncancel {
+  display:none;
+  }
+.kssTabsActive #app #buttoncancel {
+  display:inline;
+  }
 
 /* </dtml-with> (do not remove this either :) */

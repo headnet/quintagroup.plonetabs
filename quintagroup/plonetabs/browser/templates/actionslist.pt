@@ -13,10 +13,10 @@
                     class python:' '.join(klass)">
 
   <a class="delete" href="#">Delete</a>
-<div class="titleWrapper">
-  <span class="tab-title" tal:content="tab/title">Tab Name</span>
-  <span class="url-helper" tal:content="tab/url_expr">Tab Action</span>
-</div>
+  <div class="titleWrapper kssHidden">
+    <span class="tab-title" tal:content="tab/title">Tab Name</span>
+    <span class="url-helper" tal:content="tab/url_expr">Tab Action</span>
+  </div>
   <form class="editform"
         method="post"
         action="@@plonetabs-controlpanel"
@@ -100,13 +100,13 @@
       </dl>
 
       <div class="edit-controls">
-        <input type="submit" class="editsave"   i18n:attributes="value" name="edit.save" value="Save" />
-        <input type="submit" class="editcancel" i18n:attributes="value" name="edit.cancel" value="Cancel" />
-        <input type="reset"  class="editreset"  i18n:attributes="value" name="edit.reset" value="Reset" />
-        <input type="submit"  class="editdelete"  i18n:attributes="value" name="edit.delete" value="Delete" />
-        <input type="submit"  class="editmoveup"  i18n:attributes="value" name="edit.moveup" value="Move Up"
+        <input type="submit" class="editsave context"   i18n:attributes="value" name="edit.save" value="Save" />
+        <input type="submit" class="editcancel standalone" i18n:attributes="value" name="edit.cancel" value="Cancel" />
+        <input type="reset"  class="editreset kssHidden context"  i18n:attributes="value" name="edit.reset" value="Reset" />
+        <input type="submit" class="editdelete kssHidden context"  i18n:attributes="value" name="edit.delete" value="Delete" />
+        <input type="submit" class="editmoveup kssHidden context"  i18n:attributes="value" name="edit.moveup" value="Move Up"
                tal:condition="not:repeat/tab/start" />
-        <input type="submit"  class="editmovedown"  i18n:attributes="value" name="edit.movedown" value="Move Down"
+        <input type="submit"  class="editmovedown kssHidden context"  i18n:attributes="value" name="edit.movedown" value="Move Down"
                tal:condition="not:repeat/tab/end" />
       </div>
 
