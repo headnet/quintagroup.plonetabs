@@ -36,7 +36,39 @@
 .kssTabsActive ul {
   margin-left:0;
   }
-/*----- Select Category Section -----*/
+.titleWrapper,
+.kssTabsActive .editing .titleWrapper,
+.qPloneTabs .delete,
+.kssTabsActive .edit-fields-wrapper,
+.kssTabsActive .bridge,
+.qPloneTabs .drag-handle,
+.kssTabsActive .field-action,
+.kssTabsActive .collapsedBlock .contentAdvanced,
+#addaction .headerAdvanced,
+.qPloneTabs .headerAdvanced,
+.kssTabsActive .add-controls,
+.kssTabsActive .kssHidden,
+.kssTabsActive #autogeneration_controls {
+  display:none;
+  }
+.kssTabsActive .titleWrapper,
+.kssTabsActive li.editing .edit-fields-wrapper,
+.kssTabsActive .adding .bridge,
+.adding .field-action,
+.adding .collapseAdvanced,
+.kssTabsActive .headerAdvanced,
+.kssTabsActive #addaction.adding .headerAdvanced,
+.adding .add-controls,
+.kssTabsActive .expandedBlock .contentAdvanced,
+.kssTabsActive .field-action label {
+  display:block;
+  }
+.kssTabsActive li:hover .bridge,
+.kssTabsActive li:hover .delete,
+.kssTabsActive li:hover .drag-handle,
+.kssTabsActive #app #addaction.adding      .error-container {
+  display:inline;
+  }
 
 /*----- Items List Section -----*/
 #tabslist li {
@@ -250,80 +282,6 @@
   }
 #addaction.adding .error #actaction {
   width:26.4em;
-  }
-/* Need to be rewiev */
-
-/*#app                                       .editcancel,*/
-/*#app #tabslist li                          .url-helper,*/
-/*#app #tabslist li                          .tab-title,*/
-/*.kssTabsActive #app                        .field-visible,*/
-/*.kssTabsActive #app                        .field-name dt,*/
-/*.kssTabsActive #app                        .field-id,*/
-/*.kssTabsActive #app                        .field-condition,*/
-/*.kssTabsActive #app #addaction             .error-container,*/
-/*.kssTabsActive #app #tabslist li.editing   .url-helper,
-.kssTabsActive #app #tabslist li.editing   .tab-title */
-
-.titleWrapper,
-.kssTabsActive .editing .titleWrapper,
-.qPloneTabs .delete,
-.kssTabsActive .edit-fields-wrapper,
-.kssTabsActive .bridge,
-.qPloneTabs .drag-handle,
-.kssTabsActive .field-action,
-.kssTabsActive .collapsedBlock .contentAdvanced,
-#addaction .headerAdvanced,
-.qPloneTabs .headerAdvanced,
-.kssTabsActive .add-controls,
-.kssTabsActive .kssHidden {
-  display:none;
-  }
-
-.kssTabsActive .titleWrapper,
-.kssTabsActive li.editing .edit-fields-wrapper,
-.kssTabsActive .adding .bridge,
-.adding .field-action,
-.adding .collapseAdvanced,
-.kssTabsActive .headerAdvanced,
-.kssTabsActive #addaction.adding .headerAdvanced,
-.adding .add-controls,
-.kssTabsActive .expandedBlock .contentAdvanced,
-.kssTabsActive .field-action label
-/*#app #addaction.adding                     .field-name dt,*/
-/*#app #addaction.adding                     .field-id,*/
-/*#app #addaction.adding                     .field-condition,*/
-/*.kssTabsActive #app                        .editcancel,*/
-/*.kssTabsActive #app #tabslist li           .url-helper,*/
-/*.kssTabsActive #app #tabslist li           .tab-title*/ {
-  display:block;
-  }
-
-.kssTabsActive li:hover .bridge,
-.kssTabsActive li:hover .delete,
-.kssTabsActive li:hover .drag-handle,
-/*#app ul.csshover li:hover                  .visibility,*/
-/*#app ul.csshover li.onHover                .visibility,*/
-/*#app ul#roottabs.csshover li:hover         .visibility,*/
-/*#app ul#roottabs.csshover li.onHover       .visibility,*/
-
-/*.kssTabsActive #app ul.csshover li:hover   .delete,*/
-/*.kssTabsActive #app ul.csshover li.onHover .delete,*/
-/*.kssTabsActive #app ul.csshover li:hover   .drag-handle,*/
-/*.kssTabsActive #app ul.csshover li.onHover .drag-handle,*/
-.kssTabsActive #app #addaction.adding      .error-container {
-  display:inline;
-  }
-
-/**********************************************************/
-/* Additional style for functionality without javascript   */
-.kssTabsActive #autogeneration_controls {
-  display:none;
-  }
-#app input#buttoncancel {
-  display:none;
-  }
-.kssTabsActive #app #buttoncancel {
-  display:inline;
   }
 
 /* </dtml-with> (do not remove this either :) */
