@@ -19,4 +19,4 @@ Tested on:
 
   * Firefox
 
-  * IE 5.5 - 7
+  * IE 6,7

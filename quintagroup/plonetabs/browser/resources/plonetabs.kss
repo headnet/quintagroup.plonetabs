@@ -23,10 +23,10 @@
     addClass-value: allowMultiSubmit;
 }
 
-/*.edit-controls input:load {
+.edit-controls input:load {
     action-client: addClass;
     addClass-value: allowMultiSubmit;
-}*/
+}
 
 /* Collapse expanded sections on load */
 .collapseAdvanced:load {
@@ -119,12 +119,8 @@
 
 #buttoncancel:click {
     evt-click-preventdefault: true;
-    action-client: removeClass;
-    removeClass-kssSelector: htmlid(addaction);
-    removeClass-value: adding;
-    action-client: plonetabs-toggleCollapsible;
-    plonetabs-toggleCollapsible-kssSelector: css('#addaction .collapseAdvanced .headerAdvanced');
-    plonetabs-toggleCollapsible-collapse: true;
+    action-server: plonetabs-hideAddForm;
+    plonetabs-hideAddForm-error: plonetabs-handleServerError;
 }
 
 #buttonadd:click,

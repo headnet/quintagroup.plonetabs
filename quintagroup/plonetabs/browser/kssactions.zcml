@@ -60,6 +60,14 @@
     
     <browser:page
         for="plone.app.kss.interfaces.IPortalObject"
+        attribute="kss_hideAddForm"
+        class=".plonetabs.PloneTabsControlPanel"
+        name="plonetabs-hideAddForm"
+        permission="cmf.ManagePortal"
+        />
+    
+    <browser:page
+        for="plone.app.kss.interfaces.IPortalObject"
         attribute="kss_editAction"
         class=".plonetabs.PloneTabsControlPanel"
         name="plonetabs-editAction"

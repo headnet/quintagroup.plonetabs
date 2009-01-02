@@ -21,11 +21,10 @@
 
 <div id="app" class="qPloneTabs">
 
-  <h1 class="documentFirstHeading">
-    <span i18n:translate="heading_plonetabs">
-      <tal:title replace="python:view.getPageTitle(category)">Plone Tabs</tal:title>
-    </span>
-  </h1>
+  <h1 id="plonetabs-form-title"
+      class="documentFirstHeading"
+      i18n:translate=""
+      tal:content="python:view.getPageTitle(category)">Plone Tabs</h1>
 
   <a href=""
      class="link-parent"
