@@ -519,6 +519,9 @@ class PloneTabsControlPanel(PloneKSSView):
             # reset adding form
             self.kss_resetForm(ksscore.getHtmlIdSelector('addaction'))
             
+            # remove focus from name input
+            self.kss_blur(ksscore.getHtmlIdSelector('actname'))
+            
             # issue portal message
             kssplone.issuePortalMessage(_(u"'%s' action successfully added." % action.id), msgtype="info")
             
@@ -825,6 +828,10 @@ class PloneTabsControlPanel(PloneKSSView):
     def kss_resetForm(self, selector):
         """ KSS Server command to reset form on client """
         command = self.commands.addCommand('plonetabs-resetForm', selector)
+    
+    def kss_blur(self, selector):
+        """ KSS Server command to remove focus from input """
+        command = self.commands.addCommand('plonetabs-blur', selector)
     
     def kss_replaceOrInsert(self, selector, parentSelector, html, withKssSetup='True', alternativeHTML='', selectorType='',
                                   position='', positionSelector='', positionSelectorType=''):

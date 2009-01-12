@@ -82,6 +82,25 @@ kukit.actionsGlobalRegistry.register('plonetabs-resetForm', function(oper) {
 
 kukit.commandsGlobalRegistry.registerFromAction('plonetabs-resetForm', kukit.cr.makeSelectorCommand);
 
+function blur(node) {
+    tagName = node.tagName.toLowerCase();
+    if ((tagName == 'input') || (tagName == 'select')
+       || (tagName == 'textarea')) {
+        node.blur();
+;;;} else {
+;;;    kukit.logWarning('Blur on node that cannot be blured!');
+    };
+};
+
+kukit.actionsGlobalRegistry.register('plonetabs-blur', function(oper) {
+;;; oper.componentName = '[plonetabs-blur] action';
+    // TODO get rid of none
+    oper.evaluateParameters([], {'none': false});
+    blur(oper.node);
+
+});
+
+kukit.commandsGlobalRegistry.registerFromAction('plonetabs-blur', kukit.cr.makeSelectorCommand);
 
 kukit.actionsGlobalRegistry.register('plonetabs-handleServerError', function(oper) {
     oper.componentName = '[plonetabs-handleServerError] action';

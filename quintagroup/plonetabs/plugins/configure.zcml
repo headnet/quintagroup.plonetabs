@@ -32,6 +32,12 @@
         command_factory="selector"
         jsfile="plugin.js"
         />
+
+    <kss:action
+        name="plonetabs-blur"
+        command_factory="selector"
+        jsfile="plugin.js"
+        />
     
     <kss:action
         name="plonetabs-generateId"

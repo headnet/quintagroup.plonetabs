@@ -31,7 +31,7 @@
 .qPloneTabs ul {
   list-style-type:none;
   list-style-image:none;
-  margin-left:15px;
+  margin-left:18px;
   }
 .kssTabsActive ul {
   margin-left:0;
@@ -72,12 +72,13 @@
 
 /*----- Items List Section -----*/
 #tabslist li {
+  clear:left;
   margin:0.1em 6.5em 0.1em 0;
   position:relative;
   width:35em;
   }
 .kssTabsActive #tabslist li {
-  margin-left:-15px;
+  margin-left:-12px;
   }
 #tabslist li span {
   display:block;
@@ -133,6 +134,7 @@
 /*--- Title Wrapper ---*/
 .titleWrapper {
   margin-left:30px;
+  overflow:hidden;
   padding:1px 5px;
   white-space:nowrap;
   }
@@ -169,6 +171,11 @@
 .kssTabsActive .qPloneTabs .bridge {
   left:0;
   width:30px;
+  }
+/* IE need this to remove the padding around the check box */
+.kssTabsActive .qPloneTabs .bridge input {
+  height:12px;
+  width:12px;
   }
 .drag-handle {
   cursor:move;
@@ -207,7 +214,7 @@
 
 /*----- Add Action Section -----*/
 #addaction {
-  margin-left:15px;
+  margin-left:18px;
   position:relative;
   width:35em;
   }
@@ -232,7 +239,7 @@
   width:23.3em;
   }
 #addaction .bridge {
-  left:-16px;
+  left:-18px;
   top:0;
   }
   
@@ -241,10 +248,11 @@
   margin-top:1em;
   }
 #roottabs {
-  margin-left:18px;
+  margin-left:0;
   }
 #roottabs li {
   margin:0.1em 6.5em 0.1em 0;
+  padding-left:18px;
   position:relative;
   width:35em;
   }
@@ -252,9 +260,14 @@
   background-color:#FFD;
   cursor:default;
   }
+#roottabs .bridge {
+  left:0;  
+  }
 #roottabs li:hover .bridge {
   display:block;
-  left:-18px;
+  }
+#autogeneration_controls {
+  padding-left:18px;
   }
 
 /*----- Error Messeges -----*/
@@ -278,6 +291,9 @@
   }
 .qPloneTabs dl.error input[type="text"] {
   margin:0 -0.5em;
+  width:102.4%;
+  }
+.qPloneTabs .contentAdvanced dl.error input[type="text"] {
   width:102.5%;
   }
 #addaction.adding .error #actaction {
