@@ -114,6 +114,7 @@
 .qPloneTabs input[type="text"] {
   padding:2px 0;
   text-indent:3px;
+  //text-indent:0;
   width:99.5%;
   }
 .qPloneTabs input:focus {
@@ -133,6 +134,7 @@
 
 /*--- Title Wrapper ---*/
 .titleWrapper {
+  background-color:#fff;
   margin-left:30px;
   overflow:hidden;
   padding:1px 5px;
@@ -164,6 +166,7 @@
 /*--- Bridge ---*/
 .qPloneTabs .bridge {
   left:-1.5em;
+  //left:-1.7em;
   position:absolute;
   top:0.2em;
   width:3em;
@@ -174,13 +177,14 @@
   }
 /* IE need this to remove the padding around the check box */
 .kssTabsActive .qPloneTabs .bridge input {
-  height:12px;
-  width:12px;
+  height:13px;
+  width:13px;
   }
 .drag-handle {
   cursor:move;
   float:left;
-  margin-right: 0.2em;
+  margin-right:0.2em;
+  //margin-top:0.2em;
   }
 
 /*----- Edit Item Section -----*/
@@ -207,6 +211,7 @@
 #app dl.collapseAdvanced dd.contentAdvanced {
   background-color:#dee7ec;
   padding:1px 1.5em 0.5em;
+  zoom:1;
   }
 #app dl.expandedBlock dd.contentAdvanced {
   display: block;
@@ -268,6 +273,10 @@
   }
 #autogeneration_controls {
   padding-left:18px;
+  }
+.qPloneTabs .visibility {
+  height:13px;
+  width:13px;
   }
 
 /*----- Error Messeges -----*/
