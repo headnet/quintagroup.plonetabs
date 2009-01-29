@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.5'
+version = '0.5a'
 
 setup(name='quintagroup.plonetabs',
       version=version,
