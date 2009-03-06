@@ -543,12 +543,22 @@ class PloneTabsControlPanel(PloneKSSView):
         """"Hide Add form, reset it and remove error messages"""
         # no server changes, only update client
         ksscore = self.getCommandSet("core")
+        
         # hide form itself
         ksscore.removeClass(ksscore.getHtmlIdSelector('addaction'), 'adding')
+        
         # collapse advanced section
-        self.kss_toggleCollapsible(ksscore.getCssSelector('#addaction .headerAdvanced'), collapse='true')
+        self.kss_toggleCollapsible(
+            ksscore.getCssSelector('#addaction .headerAdvanced'),
+            collapse='true')
+        
         # reset form inputs
         self.kss_resetForm(ksscore.getHtmlIdSelector('addaction'))
+        
+        # set client state var 'plonetabs-addingTitle' to empty string for
+        # correct id autogeneration functionality
+        ksscore.setStateVar('plonetabs-addingTitle', '')
+        
         # remove form errors if such exist
         self.kss_issueErrors({})
     
@@ -954,5 +964,3 @@ class PloneTabsControlPanel(PloneKSSView):
             self.getCommandSet("core").getHtmlIdSelector("portal-personaltools-wrapper"),
             "plone.portaltop",
             "plone.personal_bar")
-
-
