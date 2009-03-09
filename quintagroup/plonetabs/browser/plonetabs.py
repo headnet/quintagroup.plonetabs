@@ -588,6 +588,9 @@ class PloneTabsControlPanel(PloneKSSView):
         ksscore = self.getCommandSet("core")
         content = self.getActionsList(category=cat_name, tabs=[action,])
         ksscore.replaceHTML(ksscore.getHtmlIdSelector(id), content)
+        
+        # hide portal status message
+        self.kss_hideStatusMessage(ksscore)
     
     @kssaction
     def kss_editAction(self):

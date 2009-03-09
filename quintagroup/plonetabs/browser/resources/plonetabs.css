@@ -309,4 +309,8 @@
   width:26.4em;
   }
 
+#kssPortalMessage {
+    float: right;
+}
+
 /* </dtml-with> (do not remove this either :) */
