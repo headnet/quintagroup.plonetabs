@@ -90,7 +90,7 @@
       </dt>
       <dd>
         <span class="error-container" tal:content="error">Validation error output</span>
-        <input id="actname" type="text" value="" name="title"
+        <input id="actname" type="text" value="" name="title" autocomplete="off"
                tal:attributes="value request/title|nothing"/>
       </dd>
     </dl>
