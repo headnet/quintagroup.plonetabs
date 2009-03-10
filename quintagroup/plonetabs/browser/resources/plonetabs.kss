@@ -132,6 +132,7 @@
     evt-click-preventdefault: true;
     action-server: plonetabs-addAction;
     plonetabs-addAction-kssSubmitForm: currentForm();
+    plonetabs-addAction-cat_name: stateVar(plonetabs-category);
     plonetabs-addAction-error: plonetabs-handleServerError;
 }
 

@@ -71,8 +71,7 @@ kukit.commandsGlobalRegistry.registerFromAction('plonetabs-toggleCollapsible', k
 kukit.actionsGlobalRegistry.register('plonetabs-resetForm', function(oper) {
 ;;; oper.componentName = '[plonetabs-resetForm] action';
     oper.evaluateParameters([], {});
-
-    if (typeof(oper.node.reset) == 'function') {
+    if (typeof(oper.node.reset) == 'function' || typeof(oper.node.reset) == 'object') {
         oper.node.reset();
     } else {
         kukit.logWarning('plonetabs-resetForm: reset could only be executed on form element');

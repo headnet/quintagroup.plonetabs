@@ -72,7 +72,7 @@
         action="@@plonetabs-controlpanel"
         tal:attributes="action string:${portal_url}/${attrs/action}">
     <input type="hidden" name="form.submitted:boolean" value="True" />
-    <input type="hidden" name="category" value="category" tal:attributes="value category" id="add-form-category" />
+    <input type="hidden" name="category" value="category" tal:attributes="value category" />
     <dl class="field-visible bridge">
       <dt>
         <label for="actvisible">Visible</label>

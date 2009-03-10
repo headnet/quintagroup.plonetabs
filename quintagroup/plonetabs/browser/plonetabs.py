@@ -398,7 +398,7 @@ class PloneTabsControlPanel(PloneKSSView):
                                  self.getPageTitle(cat_name))
         
         # update category hidden field on adding form
-        ksscore.setAttribute(ksscore.getHtmlIdSelector('add-form-category'), 'value', cat_name)
+        ksscore.setAttribute(ksscore.getCssSelector('form[name=addaction_form] input[name=category]'), 'value', cat_name)
         
         # update state variable 'plonetabs-category' on client
         ksscore.setStateVar('plonetabs-category', cat_name)
@@ -487,10 +487,10 @@ class PloneTabsControlPanel(PloneKSSView):
         self.updatePage(cat_name)
     
     @kssaction
-    def kss_addAction(self):
+    def kss_addAction(self, cat_name):
         """ KSS method to add new portal action """
         # extract posted data
-        id, cat_name, data = self.parseAddForm(self.request.form)
+        id, ie7bad_category, data = self.parseAddForm(self.request.form)
         
         # validate posted data
         errors = self.validateActionFields(cat_name, data)
@@ -511,7 +511,7 @@ class PloneTabsControlPanel(PloneKSSView):
             
             # hide adding form
             ksscore.removeClass(ksscore.getHtmlIdSelector('addaction'), 'adding')
-            self.kss_toggleCollapsible(ksscore.getCssSelector('#addaction .headerAdvanced'), collapse='true')
+            self.kss_toggleCollapsible(ksscore.getCssSelector('form[name=addaction_form] .headerAdvanced'), collapse='true')
             
             # set client state var 'plonetabs-addingTitle' to empty string for correct id autogeneration functionality
             ksscore.setStateVar('plonetabs-addingTitle', '')
@@ -530,7 +530,7 @@ class PloneTabsControlPanel(PloneKSSView):
         else:
             # expand advanced section if there are errors in id or condition
             if errors.has_key('id') or errors.has_key('available_expr'):
-                self.kss_toggleCollapsible(ksscore.getCssSelector('#addaction .headerAdvanced'), collapse='false')
+                self.kss_toggleCollapsible(ksscore.getCssSelector('form[name=addaction_form] .headerAdvanced'), collapse='false')
             
             # send error message
             kssplone.issuePortalMessage(_(u"Please correct the indicated errors."), msgtype="error")
@@ -549,7 +549,7 @@ class PloneTabsControlPanel(PloneKSSView):
         
         # collapse advanced section
         self.kss_toggleCollapsible(
-            ksscore.getCssSelector('#addaction .headerAdvanced'),
+            ksscore.getCssSelector('form[name=addaction_form] .headerAdvanced'),
             collapse='true')
         
         # reset form inputs
@@ -818,8 +818,8 @@ class PloneTabsControlPanel(PloneKSSView):
             field_selector = ksscore.getCssSelector('#%s .edit-field-%s' % (id, UI_ATTRS.get(name, name)))
             field_error_selector = ksscore.getCssSelector('#%s .edit-field-%s .error-container' % (id, UI_ATTRS.get(name, name)))
         else:
-            field_selector = ksscore.getCssSelector('#addaction .field-%s' % UI_ATTRS.get(name, name))
-            field_error_selector = ksscore.getCssSelector('#addaction .field-%s .error-container' % UI_ATTRS.get(name, name))
+            field_selector = ksscore.getCssSelector('form[name=addaction_form] .field-%s' % UI_ATTRS.get(name, name))
+            field_error_selector = ksscore.getCssSelector('form[name=addaction_form] .field-%s .error-container' % UI_ATTRS.get(name, name))
 
         if error:
             ksscore.replaceInnerHTML(field_error_selector, _(error))
