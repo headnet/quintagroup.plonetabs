@@ -51,7 +51,7 @@ class PloneTabsControlPanel(PloneKSSView):
     sufix = ""
     
     def __call__(self):
-        """ Perform the update and redirect if necessary, or render the page """
+        """Perform the update and redirect if necessary, or render the page"""
         postback = True
         errors = {}
         context = aq_inner(self.context)
@@ -85,10 +85,11 @@ class PloneTabsControlPanel(PloneKSSView):
     ########################################
     
     def manage_setAutogeneration(self, form, errors):
-        """ Process managing autogeneration settings """
+        """Process managing autogeneration settings"""
         
         # set excludeFromNav property for root objects
-        portal = getMultiAdapter((aq_inner(self.context), self.request), name='plone_portal_state').portal()
+        portal = getMultiAdapter((aq_inner(self.context), self.request),
+                                 name='plone_portal_state').portal()
         generated_tabs = form.get("generated_tabs", '0')
         nonfolderish_tabs = form.get("nonfolderish_tabs", '0')
         
@@ -114,13 +115,15 @@ class PloneTabsControlPanel(PloneKSSView):
             self.setSiteProperties(disable_nonfolderish_sections=True)
         
         # after successfull form processing make redirect with good message
-        IStatusMessage(self.request).addStatusMessage(_(u"Changes saved!"), type="info")
+        IStatusMessage(self.request).addStatusMessage(_(u"Changes saved!"),
+                                                      type="info")
         self.redirect()
         return False
     
     def manage_addAction(self, form, errs):
-        """ Manage method to add a new action to given category,
-            if category doesn't exist, create it """
+        """Manage method to add a new action to given category,
+        if category doesn't exist, create it
+        """
         # extract posted data
         id, cat_name, data = self.parseAddForm(form)
         
@@ -130,16 +133,18 @@ class PloneTabsControlPanel(PloneKSSView):
         # if not errors find (or create) category and set action to it
         if not errors:
             action = self.addAction(cat_name, data)
-            IStatusMessage(self.request).addStatusMessage(_(u"'%s' action successfully added." % action.id), type="info")
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"'%s' action successfully added." % action.id), type="info")
             self.redirect(search="category=%s" % cat_name)
             return False
         else:
             errs.update(errors)
-            IStatusMessage(self.request).addStatusMessage(_(u"Please correct the indicated errors."), type="error")
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"Please correct the indicated errors."), type="error")
             return True
     
     def manage_editAction(self, form, errs):
-        """ Manage Method to update action """
+        """Manage Method to update action"""
         # extract posted data
         id, cat_name, data = self.parseEditForm(form)
         
@@ -148,20 +153,24 @@ class PloneTabsControlPanel(PloneKSSView):
         action = category[id]
         
         # validate posted data
-        errors = self.validateActionFields(cat_name, data, allow_dup=(id == data['id']))
+        errors = self.validateActionFields(cat_name, data,
+            allow_dup=(id == data['id']))
         
         if not errors:
             action = self.updateAction(id, cat_name, data)
-            IStatusMessage(self.request).addStatusMessage(_(u"'%s' action saved." % action.id), type="info")
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"'%s' action saved." % action.id), type="info")
             self.redirect(search="category=%s" % cat_name)
             return False
         else:
-            errs.update(self.processErrors(errors, sufix='_%s' % id)) # add edit form sufix to error ids
-            IStatusMessage(self.request).addStatusMessage(_(u"Please correct the indicated errors."), type="error")
+            errs.update(self.processErrors(errors,
+                sufix='_%s' % id)) # add edit form sufix to error ids
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"Please correct the indicated errors."), type="error")
             return True
     
     def manage_deleteAction(self, form, errs):
-        """ Manage Method to delete action """
+        """Manage Method to delete action"""
         # extract posted data
         id, cat_name, data = self.parseEditForm(form)
         
@@ -169,15 +178,18 @@ class PloneTabsControlPanel(PloneKSSView):
         category = self.getActionCategory(cat_name)
         if id in category.objectIds():
             self.deleteAction(id, cat_name)
-            IStatusMessage(self.request).addStatusMessage(_(u"'%s' action deleted." % id), type="info")
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"'%s' action deleted." % id), type="info")
             self.redirect(search="category=%s" % cat_name)
             return False
         else:
-            IStatusMessage(self.request).addStatusMessage(_(u"No '%s' action in '%s' category." % (id, cat_name)), type="error")
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"No '%s' action in '%s' category." % (id, cat_name)),
+                type="error")
             return True
     
     def manage_moveUpAction(self, form, errs):
-        """ Manage Method for moving up given action by one position """
+        """Manage Method for moving up given action by one position"""
         # extract posted data
         id, cat_name, data = self.parseEditForm(form)
         
@@ -185,15 +197,18 @@ class PloneTabsControlPanel(PloneKSSView):
         category = self.getActionCategory(cat_name)
         if id in category.objectIds():
             self.moveAction(id, cat_name, steps=1)
-            IStatusMessage(self.request).addStatusMessage(_(u"'%s' action moved up." % id), type="info")
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"'%s' action moved up." % id), type="info")
             self.redirect(search="category=%s" % cat_name)
             return False
         else:
-            IStatusMessage(self.request).addStatusMessage(_(u"No '%s' action in '%s' category." % (id, cat_name)), type="error")
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"No '%s' action in '%s' category." % (id, cat_name)),
+                type="error")
             return True
     
     def manage_moveDownAction(self, form, errs):
-        """ Manage Method for moving down given action by one position """
+        """Manage Method for moving down given action by one position"""
         # extract posted data
         id, cat_name, data = self.parseEditForm(form)
         
@@ -201,17 +216,22 @@ class PloneTabsControlPanel(PloneKSSView):
         category = self.getActionCategory(cat_name)
         if id in category.objectIds():
             self.moveAction(id, cat_name, steps=-1)
-            IStatusMessage(self.request).addStatusMessage(_(u"'%s' action moved down." % id), type="info")
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"'%s' action moved down." % id), type="info")
             self.redirect(search="category=%s" % cat_name)
             return False
         else:
-            IStatusMessage(self.request).addStatusMessage(_(u"No '%s' action in '%s' category." % (id, cat_name)), type="error")
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"No '%s' action in '%s' category." % (id, cat_name)),
+                type="error")
             return True
     
     def redirect(self, url="", search="", url_hash=""):
-        """ Redirect to @@plonetabs-controlpanel configlet """
-        portal_url =  getMultiAdapter((self.context, self.request), name=u"plone_portal_state").portal_url()
-        url = (url == "") and "%s/%s" % (portal_url, "@@plonetabs-controlpanel") or url
+        """Redirect to @@plonetabs-controlpanel configlet"""
+        portal_url =  getMultiAdapter((self.context, self.request),
+            name=u"plone_portal_state").portal_url()
+        url = (url == "") and "%s/%s" % (portal_url,
+                                         "@@plonetabs-controlpanel") or url
         search = (search != "") and "?%s" % search or search
         url_hash = (url_hash != "") and "#%s" % url_hash or url_hash
         self.request.response.redirect("%s%s%s" % (url, search, url_hash))
@@ -223,7 +243,7 @@ class PloneTabsControlPanel(PloneKSSView):
     ###################################
     
     def getPageTitle(self, category="portal_tabs"):
-        """ See interface """
+        """See interface"""
         portal_props = getToolByName(self.context, "portal_properties")
         default_title = "Plone '%s' Configuration" % category
         
@@ -243,11 +263,12 @@ class PloneTabsControlPanel(PloneKSSView):
         return dict.get(category, None) or default_title
     
     def hasActions(self, category="portal_tabs"):
-        """ See interface """
-        return len(getToolByName(self.context, "portal_actions").listActions(categories=[category,])) > 0
+        """See interface"""
+        tool = getToolByName(self.context, "portal_actions")
+        return len(tool.listActions(categories=[category,])) > 0
     
     def getPortalActions(self, category="portal_tabs"):
-        """ See interface """
+        """See interface"""
         portal_actions = getToolByName(self.context, "portal_actions")
         
         if category not in portal_actions.objectIds():
@@ -261,32 +282,36 @@ class PloneTabsControlPanel(PloneKSSView):
         return actions
     
     def isGeneratedTabs(self):
-        """ See interface """
-        site_properties = getToolByName(self.context, "portal_properties").site_properties
+        """See interface"""
+        site_properties = getToolByName(self.context,
+                                        "portal_properties").site_properties
         return not site_properties.getProperty("disable_folder_sections", False)
     
     def isNotFoldersGenerated(self):
-        """ See interface """
-        site_properties = getToolByName(self.context, "portal_properties").site_properties
-        return not site_properties.getProperty("disable_nonfolderish_sections", False)
+        """See interface"""
+        site_properties = getToolByName(self.context,
+                                        "portal_properties").site_properties
+        prop = site_properties.getProperty("disable_nonfolderish_sections",
+                                           False)
+        return not prop
     
     def getActionsList(self, category="portal_tabs", errors={}, tabs=[]):
-        """ See interface """
+        """See interface"""
         kw = {'category': category, 'errors': errors}
         if tabs:
             kw['tabs'] = tabs
         return self.actionslist_template(**kw)
     
     def getAutoGenereatedSection(self, cat_name, errors={}):
-        """ See interface """
+        """See interface"""
         return self.autogenerated_template(category=cat_name, errors=errors)
     
     def getGeneratedTabs(self):
-        """ See interface """
+        """See interface"""
         return self.autogenerated_list()
     
     def getRootTabs(self):
-        """ See interface """
+        """See interface"""
         context = aq_inner(self.context)
         
         portal_catalog = getToolByName(context, 'portal_catalog')
@@ -314,7 +339,8 @@ class PloneTabsControlPanel(PloneKSSView):
                 query['sort_order'] = sortOrder
         
         if navtree_properties.getProperty('enable_wf_state_filtering', False):
-            query['review_state'] = navtree_properties.getProperty('wf_states_to_show', [])
+            query['review_state'] = navtree_properties.getProperty(
+                'wf_states_to_show', [])
         
         query['is_default_page'] = False
 
@@ -343,7 +369,7 @@ class PloneTabsControlPanel(PloneKSSView):
         return result
     
     def getCategories(self):
-        """ See interface """
+        """See interface"""
         portal_actions = getToolByName(self.context, "portal_actions")
         return portal_actions.objectIds()
     
@@ -352,7 +378,7 @@ class PloneTabsControlPanel(PloneKSSView):
     #
     
     def test(self, condition, ifTrue, ifFalse):
-        """ See interface """
+        """See interface"""
         if condition:
             return ifTrue
         else:
@@ -362,16 +388,19 @@ class PloneTabsControlPanel(PloneKSSView):
     # due to bug in macroContent when global-section list is empty,
     # ul have condition
     def portal_tabs(self):
-        """ See global-sections viewlet """
-        actions = context_state = getMultiAdapter((self.context, self.request), name=u"plone_context_state").actions()
-        portal_tabs_view = getMultiAdapter((self.context, self.request), name="portal_tabs_view")
+        """See global-sections viewlet"""
+        actions = context_state = getMultiAdapter((self.context, self.request),
+            name=u"plone_context_state").actions()
+        portal_tabs_view = getMultiAdapter((self.context, self.request),
+            name="portal_tabs_view")
         
         return portal_tabs_view.topLevelTabs(actions=actions)
     
     def selected_portal_tab(self):
-        """ See global-sections viewlet """
+        """See global-sections viewlet"""
         selectedTabs = self.context.restrictedTraverse('selectedTabs')
-        selected_tabs = selectedTabs('index_html', self.context, self.portal_tabs())
+        selected_tabs = selectedTabs('index_html', self.context,
+            self.portal_tabs())
         
         return selected_tabs['portal']
     
@@ -383,22 +412,28 @@ class PloneTabsControlPanel(PloneKSSView):
     
     @kssaction
     def kss_changeCategory(self, cat_name):
-        """ Change action category to manage """
+        """Change action category to manage"""
         ksscore = self.getCommandSet('core')
         
         # update actions list
         actionslist = self.getActionsList(category=cat_name)
-        ksscore.replaceInnerHTML(ksscore.getHtmlIdSelector('tabslist'), actionslist)
+        ksscore.replaceInnerHTML(ksscore.getHtmlIdSelector('tabslist'),
+            actionslist)
         
         # update autogenerated sections
         section = self.getAutoGenereatedSection(cat_name)
-        ksscore.replaceHTML(ksscore.getHtmlIdSelector('autogeneration_section'), section)
+        ksscore.replaceHTML(
+            ksscore.getHtmlIdSelector('autogeneration_section'), section)
         # and title
-        ksscore.replaceInnerHTML(ksscore.getHtmlIdSelector('plonetabs-form-title'),
-                                 self.getPageTitle(cat_name))
+        ksscore.replaceInnerHTML(
+            ksscore.getHtmlIdSelector('plonetabs-form-title'),
+            self.getPageTitle(cat_name))
         
         # update category hidden field on adding form
-        ksscore.setAttribute(ksscore.getCssSelector('form[name=addaction_form] input[name=category]'), 'value', cat_name)
+        ksscore.setAttribute(ksscore.getCssSelector(
+            'form[name=addaction_form] input[name=category]'),
+            'value',
+            cat_name)
         
         # update state variable 'plonetabs-category' on client
         ksscore.setStateVar('plonetabs-category', cat_name)
@@ -411,7 +446,7 @@ class PloneTabsControlPanel(PloneKSSView):
     
     @kssaction
     def kss_toggleGeneratedTabs(self, field, checked='0'):
-        """ Toggle autogenaration setting on configlet """
+        """Toggle autogenaration setting on configlet"""
         if checked == '1':
             self.setSiteProperties(**{field: False})
         else:
@@ -427,14 +462,16 @@ class PloneTabsControlPanel(PloneKSSView):
     
     @kssaction
     def kss_toggleRootsVisibility(self, id, checked='0'):
-        """ Toggle visibility for portal root objects (exclude_from_nav) """
-        portal = getMultiAdapter((aq_inner(self.context), self.request), name='plone_portal_state').portal()
+        """Toggle visibility for portal root objects (exclude_from_nav)"""
+        portal = getMultiAdapter((aq_inner(self.context), self.request),
+            name='plone_portal_state').portal()
         
         # remove prefix, added for making ids on configlet unique ("roottabs_")
         obj_id = id[len("roottabs_"):]
         
         if obj_id not in portal.objectIds():
-            raise KSSExplicitError, "Object with %s id doesn't exist in portal root" % obj_id
+            raise KSSExplicitError, \
+                  "Object with %s id doesn't exist in portal root" % obj_id
         
         if checked == '1':
             checked = True
@@ -446,7 +483,8 @@ class PloneTabsControlPanel(PloneKSSView):
         # update client
         ksscore = self.getCommandSet("core")
         if checked:
-            ksscore.removeClass(ksscore.getHtmlIdSelector(id), value="invisible")
+            ksscore.removeClass(ksscore.getHtmlIdSelector(id),
+                value="invisible")
         else:
             ksscore.addClass(ksscore.getHtmlIdSelector(id), value="invisible")
         
@@ -455,40 +493,44 @@ class PloneTabsControlPanel(PloneKSSView):
     
     @kssaction
     def kss_toggleActionsVisibility(self, id, checked='0', cat_name=None):
-        """ Toggle visibility for portal actions """
+        """Toggle visibility for portal actions"""
         # validate input
         act_id, category, action = self.kss_validateAction(id, cat_name)
-        self.updateAction(act_id, cat_name, {'id': act_id, 'visible': (checked == '1') or False})
+        self.updateAction(act_id, cat_name,
+            {'id': act_id, 'visible': (checked == '1') or False})
         
         # update client
         ksscore = self.getCommandSet("core")
         if checked == '1':
-            ksscore.removeClass(ksscore.getHtmlIdSelector(id), value="invisible")
+            ksscore.removeClass(ksscore.getHtmlIdSelector(id),
+                value="invisible")
         else:
             ksscore.addClass(ksscore.getHtmlIdSelector(id), value="invisible")
         self.updatePage(cat_name)
     
     @kssaction
     def kss_deleteAction(self, id, cat_name):
-        """ Delete portal action with given id & category """
+        """Delete portal action with given id & category"""
         # validate input
         act_id, category, action = self.kss_validateAction(id, cat_name)
         self.deleteAction(act_id, cat_name)
         
         # update client
         ksscore = self.getCommandSet("core")
-        # XXX TODO: fade effect during removing, to do this we need kukit js action/command plugin
+        # XXX TODO: fade effect during removing, to do this
+        # we need kukit js action/command plugin
         ksscore.deleteNode(ksscore.getHtmlIdSelector(id))
         
         # issue portal message
-        self.getCommandSet('plone').issuePortalMessage(_(u"'%s' action successfully deleted." % act_id), msgtype="info")
+        self.getCommandSet('plone').issuePortalMessage(
+            _(u"'%s' action successfully deleted." % act_id), msgtype="info")
         
         # update different sections of page depending on actions category
         self.updatePage(cat_name)
     
     @kssaction
     def kss_addAction(self, cat_name):
-        """ KSS method to add new portal action """
+        """KSS method to add new portal action"""
         # extract posted data
         id, ie7bad_category, data = self.parseAddForm(self.request.form)
         
@@ -504,16 +546,21 @@ class PloneTabsControlPanel(PloneKSSView):
             # update client
             # add one more action to actions list
             content = self.getActionsList(category=cat_name, tabs=[action,])
-            ksscore.insertHTMLAsLastChild(ksscore.getHtmlIdSelector('tabslist'), content)
+            ksscore.insertHTMLAsLastChild(ksscore.getHtmlIdSelector('tabslist'),
+                 content)
             
             # update reorder controls
             #self.kss_checkReorderControls(cat_name)
             
             # hide adding form
-            ksscore.removeClass(ksscore.getHtmlIdSelector('addaction'), 'adding')
-            self.kss_toggleCollapsible(ksscore.getCssSelector('form[name=addaction_form] .headerAdvanced'), collapse='true')
+            ksscore.removeClass(ksscore.getHtmlIdSelector('addaction'),
+                'adding')
+            self.kss_toggleCollapsible(
+                ksscore.getCssSelector('form[name=addaction_form] '
+                                       '.headerAdvanced'), collapse='true')
             
-            # set client state var 'plonetabs-addingTitle' to empty string for correct id autogeneration functionality
+            # set client state var 'plonetabs-addingTitle' to empty
+            # string for correct id autogeneration functionality
             ksscore.setStateVar('plonetabs-addingTitle', '')
             
             # reset adding form
@@ -523,17 +570,22 @@ class PloneTabsControlPanel(PloneKSSView):
             self.kss_blur(ksscore.getHtmlIdSelector('actname'))
             
             # issue portal message
-            kssplone.issuePortalMessage(_(u"'%s' action successfully added." % action.id), msgtype="info")
+            kssplone.issuePortalMessage(
+                _(u"'%s' action successfully added." % action.id),
+                msgtype="info")
             
             # update page
             self.updatePage(cat_name)
         else:
             # expand advanced section if there are errors in id or condition
             if errors.has_key('id') or errors.has_key('available_expr'):
-                self.kss_toggleCollapsible(ksscore.getCssSelector('form[name=addaction_form] .headerAdvanced'), collapse='false')
+                self.kss_toggleCollapsible(
+                    ksscore.getCssSelector('form[name=addaction_form] '
+                                           '.headerAdvanced'), collapse='false')
             
             # send error message
-            kssplone.issuePortalMessage(_(u"Please correct the indicated errors."), msgtype="error")
+            kssplone.issuePortalMessage(
+                _(u"Please correct the indicated errors."), msgtype="error")
         
         # update errors on client form
         self.kss_issueErrors(errors)
@@ -577,7 +629,8 @@ class PloneTabsControlPanel(PloneKSSView):
         ksscore.replaceHTML(ksscore.getHtmlIdSelector(id), content)
         
         # focus name field
-        ksscore.focus(ksscore.getCssSelector("#%s input[name=title_%s]" % (id, act_id)))
+        ksscore.focus(
+            ksscore.getCssSelector("#%s input[name=title_%s]" % (id, act_id)))
     
     @kssaction
     def kss_hideEditForm(self, id, cat_name):
@@ -594,7 +647,7 @@ class PloneTabsControlPanel(PloneKSSView):
     
     @kssaction
     def kss_editAction(self):
-        """ Update action's properties """
+        """Update action's properties"""
         id, cat_name, data = self.parseEditForm(self.request.form)
         
         # get category and action to edit
@@ -602,7 +655,8 @@ class PloneTabsControlPanel(PloneKSSView):
         action = category[id]
         
         # validate posted data
-        errors = self.validateActionFields(cat_name, data, allow_dup=(id == data['id']))
+        errors = self.validateActionFields(cat_name, data,
+            allow_dup=(id == data['id']))
         
         html_id = '%s%s%s' % (self.prefix, id, self.sufix)
         ksscore = self.getCommandSet('core')
@@ -616,7 +670,8 @@ class PloneTabsControlPanel(PloneKSSView):
             ksscore.replaceHTML(ksscore.getHtmlIdSelector(html_id), content)
             
             # issue portal message
-            kssplone.issuePortalMessage(_(u"'%s' action saved." % action.id), msgtype="info")
+            kssplone.issuePortalMessage(_(u"'%s' action saved." % action.id),
+                msgtype="info")
             
             # update page
             self.updatePage(cat_name)
@@ -624,16 +679,21 @@ class PloneTabsControlPanel(PloneKSSView):
             # issue error messages
             self.kss_issueErrors(errors, editform=id)
             
-            # expand advanced section if there are errors in id, action url or condition
-            if errors.has_key('id') or errors.has_key('available_expr') or errors.has_key('url_expr'):
-                self.kss_toggleCollapsible(ksscore.getCssSelector('#%s .headerAdvanced' % html_id), collapse='false')
+            # expand advanced section if there are errors in id,
+            # action url or condition
+            if errors.has_key('id') or errors.has_key('available_expr') or \
+                errors.has_key('url_expr'):
+                self.kss_toggleCollapsible(
+                    ksscore.getCssSelector('#%s .headerAdvanced' % html_id),
+                    collapse='false')
             
             # send error message
-            kssplone.issuePortalMessage(_(u"Please correct the indicated errors."), msgtype="error")
+            kssplone.issuePortalMessage(
+                _(u"Please correct the indicated errors."), msgtype="error")
     
     @kssaction
     def kss_orderActions(self):
-        """ Update actions order in the given category """
+        """Update actions order in the given category"""
         form = self.request.form
         cat_name = form['cat_name']
         category = self.getActionCategory(cat_name)
@@ -643,7 +703,8 @@ class PloneTabsControlPanel(PloneKSSView):
         if self.sufix == '':
             ids = [component[len(self.prefix):] for component in components]
         else:
-            ids = [component[len(self.prefix):-len(self.sufix)] for component in components]
+            ids = [component[len(self.prefix):-len(self.sufix)]
+                for component in components]
         
         # do actual sorting
         category.moveObjectsByDelta(ids, -len(category.objectIds()))
@@ -661,7 +722,8 @@ class PloneTabsControlPanel(PloneKSSView):
             return 'string:${portal_url}%s' % expr
         elif re.compile('^(ht|f)tps?\:', re.I).search(expr):
             return 'string:%s' % expr
-        #elif re.compile('^(python:|string:|not:|exists:|nocall:|path:)', re.I).search(expr):
+        #elif re.compile('^(python:|string:|not:|exists:|nocall:|path:)',
+                        #re.I).search(expr):
             #return expr
         elif expr.find(':') != -1:
             return expr
@@ -669,20 +731,23 @@ class PloneTabsControlPanel(PloneKSSView):
             return 'string:${object_url}/%s' % expr
     
     def copyAction(self, action):
-        """ Copy action to dictionary """
+        """Copy action to dictionary"""
         action_info = {'description':action.description}
         for attr in ACTION_ATTRS:
             action_info[attr] = getattr(action, attr)
         return action_info
     
     def validateActionFields(self, cat_name, data, allow_dup=False):
-        """ Check action fields on validity """
+        """Check action fields on validity"""
         errors = {}
         
         if allow_dup:
-            category = ActionCategory(cat_name)           # create dummy category to avoid id duplication during action update
+            # create dummy category to avoid id
+            # duplication during action update
+            category = ActionCategory(cat_name)
         else:
-            category = self.getOrCreateCategory(cat_name) # get or create (if necessary) actions category
+            # get or create (if necessary) actions category
+            category = self.getOrCreateCategory(cat_name)
         
         # validate action id
         chooser = INameChooser(category)
@@ -712,9 +777,10 @@ class PloneTabsControlPanel(PloneKSSView):
         return errors
     
     def processErrors(self, errors, prefix='', sufix=''):
-        """ Add prefixes, sufixes to error ids 
-            This is necessary during edit form validation,
-            because every edit form on the page has it's own sufix (id) """
+        """Add prefixes, sufixes to error ids 
+        This is necessary during edit form validation,
+        because every edit form on the page has it's own sufix (id)
+        """
         if not (prefix or sufix):
             return errors
         
@@ -725,7 +791,7 @@ class PloneTabsControlPanel(PloneKSSView):
         return result
     
     def parseEditForm(self, form):
-        """ Extract all needed fields from edit form """
+        """Extract all needed fields from edit form"""
         # get original id and category
         info = {}
         id = form['orig_id']
@@ -744,7 +810,7 @@ class PloneTabsControlPanel(PloneKSSView):
         return (id, category, info)
     
     def parseAddForm(self, form):
-        """ Extract all needed fields from add form """
+        """Extract all needed fields from add form"""
         info = {}
         id = form['id']
         category = form['category']
@@ -769,15 +835,18 @@ class PloneTabsControlPanel(PloneKSSView):
         return portal_actions[name]
     
     def getOrCreateCategory(self, name):
-        """ Get or create (if necessary) category """
+        """Get or create (if necessary) category"""
         portal_actions = getToolByName(self.context, 'portal_actions')
-        if name not in map(lambda x: x.id, filter(lambda x: IActionCategory.providedBy(x), portal_actions.objectValues())):
+        if name not in map(lambda x: x.id,
+                           filter(lambda x: IActionCategory.providedBy(x),
+                                  portal_actions.objectValues())):
             portal_actions._setObject(name, ActionCategory(name))
         return self.getActionCategory(name)
     
     def setSiteProperties(self, **kw):
-        """ Change site_properties """
-        site_properties = getToolByName(self.context, "portal_properties").site_properties
+        """Change site_properties"""
+        site_properties = getToolByName(self.context,
+            "portal_properties").site_properties
         site_properties.manage_changeProperties(**kw)
         return True
     
@@ -787,39 +856,49 @@ class PloneTabsControlPanel(PloneKSSView):
     
     def kss_hideStatusMessage(self, ksscore):
         """Hide Portal Status Message"""
-        ksscore.setStyle(ksscore.getHtmlIdSelector('kssPortalMessage'), 'display', 'none')
+        ksscore.setStyle(ksscore.getHtmlIdSelector('kssPortalMessage'),
+            'display', 'none')
     
     def kss_validateAction(self, id, cat_name):
-        """ Check whether action with given id exists in cat_name category """
+        """Check whether action with given id exists in cat_name category"""
         try:
             category = self.getActionCategory(cat_name)
         except Exception:
-            raise KSSExplicitError, "'%s' action category does not exist" % cat_name
+            raise KSSExplicitError, \
+                  "'%s' action category does not exist" % cat_name
         
         # extract action id from given list item id on client
-        action_id = self.sufix and id[len(self.prefix):-len(self.sufix)] or id[len(self.prefix):]
+        action_id = self.sufix and id[len(self.prefix):-len(self.sufix)] or \
+                    id[len(self.prefix):]
         try:
             action = category[action_id]
         except Exception:
-            raise KSSExplicitError, "No '%s' action in '%s' category." % (action_id, cat_name)
+            raise KSSExplicitError, \
+                  "No '%s' action in '%s' category." % (action_id, cat_name)
         
         return (action_id, category, action)
     
     def kss_issueErrors(self, errors, editform=False, fields=ACTION_ATTRS):
-        """ Display error messages on the client """
+        """Display error messages on the client"""
         ksscore = self.getCommandSet('core')
         for field in fields:
-            self.kss_issueFieldError(ksscore, field, errors.get(field, False), editform)
+            self.kss_issueFieldError(ksscore, field,
+                                     errors.get(field, False), editform)
     
     def kss_issueFieldError(self, ksscore, name, error, editform):
-        """ Issue this error message for the field """
+        """Issue this error message for the field"""
         if editform:
             id = '%s%s%s' % (self.prefix, editform, self.sufix)
-            field_selector = ksscore.getCssSelector('#%s .edit-field-%s' % (id, UI_ATTRS.get(name, name)))
-            field_error_selector = ksscore.getCssSelector('#%s .edit-field-%s .error-container' % (id, UI_ATTRS.get(name, name)))
+            field_selector = ksscore.getCssSelector('#%s .edit-field-%s' % (id,
+                UI_ATTRS.get(name, name)))
+            field_error_selector = ksscore.getCssSelector('#%s .edit-field-%s '
+                '.error-container' % (id, UI_ATTRS.get(name, name)))
         else:
-            field_selector = ksscore.getCssSelector('form[name=addaction_form] .field-%s' % UI_ATTRS.get(name, name))
-            field_error_selector = ksscore.getCssSelector('form[name=addaction_form] .field-%s .error-container' % UI_ATTRS.get(name, name))
+            field_selector = ksscore.getCssSelector('form[name=addaction_form] '
+                '.field-%s' % UI_ATTRS.get(name, name))
+            field_error_selector = ksscore.getCssSelector('form[name='
+                'addaction_form] .field-%s '
+                '.error-container' % UI_ATTRS.get(name, name))
 
         if error:
             ksscore.replaceInnerHTML(field_error_selector, _(error))
@@ -828,9 +907,13 @@ class PloneTabsControlPanel(PloneKSSView):
             ksscore.clearChildNodes(field_error_selector)
             ksscore.removeClass(field_selector, 'error')
     
-    def kss_toggleCollapsible(self, selector, collapsed=None, expanded=None, collapse=None):
-        """ KSS Server command to add plonetabs-toggleCollapsible client action to response """
-        command = self.commands.addCommand('plonetabs-toggleCollapsible', selector)
+    def kss_toggleCollapsible(self, selector, collapsed=None,
+                              expanded=None, collapse=None):
+        """KSS Server command to add plonetabs-toggleCollapsible client
+        action to response
+        """
+        command = self.commands.addCommand('plonetabs-toggleCollapsible',
+                                           selector)
         if collapsed is not None:
             data = command.addParam('collapsed', collapsed)
         if expanded is not None:
@@ -839,17 +922,20 @@ class PloneTabsControlPanel(PloneKSSView):
             data = command.addParam('collapse', collapse)
     
     def kss_resetForm(self, selector):
-        """ KSS Server command to reset form on client """
+        """KSS Server command to reset form on client"""
         command = self.commands.addCommand('plonetabs-resetForm', selector)
     
     def kss_blur(self, selector):
-        """ KSS Server command to remove focus from input """
+        """KSS Server command to remove focus from input"""
         command = self.commands.addCommand('plonetabs-blur', selector)
     
-    def kss_replaceOrInsert(self, selector, parentSelector, html, withKssSetup='True', alternativeHTML='', selectorType='',
-                                  position='', positionSelector='', positionSelectorType=''):
-        """ KSS Server command to execute replaceOrInsert client action """
-        command = self.commands.addCommand('plonetabs-replaceOrInsert', selector)
+    def kss_replaceOrInsert(self, selector, parentSelector, html,
+                            withKssSetup='True', alternativeHTML='',
+                            selectorType='', position='', positionSelector='',
+                            positionSelectorType=''):
+        """KSS Server command to execute replaceOrInsert client action"""
+        command = self.commands.addCommand('plonetabs-replaceOrInsert',
+            selector)
         data = command.addParam('selector', parentSelector)
         data = command.addHtmlParam('html', html)
         data = command.addParam('withKssSetup', withKssSetup)
@@ -862,12 +948,15 @@ class PloneTabsControlPanel(PloneKSSView):
         if positionSelector:
             data = command.addParam('positionSelector', positionSelector)
         if positionSelectorType:
-            data = command.addParam('positionSelectorType', positionSelectorType)
+            data = command.addParam('positionSelectorType',
+                                    positionSelectorType)
     
     def renderViewlet(self, manager, name):
         if isinstance(manager, basestring):
-            manager = getMultiAdapter((self.context, self.request, self,), IViewletManager, name=manager)
-        renderer = getMultiAdapter((self.context, self.request, self, manager), IViewlet, name=name)
+            manager = getMultiAdapter((self.context, self.request, self,),
+                                      IViewletManager, name=manager)
+        renderer = getMultiAdapter((self.context, self.request, self, manager),
+                                   IViewlet, name=name)
         renderer = renderer.__of__(self.context)
         renderer.update()
         return renderer.render()
@@ -877,7 +966,7 @@ class PloneTabsControlPanel(PloneKSSView):
     #
     
     def addAction(self, cat_name, data):
-        """ Create and add new action to category with given name """
+        """Create and add new action to category with given name"""
         id = data.pop('id')
         category = self.getOrCreateCategory(cat_name)
         action = Action(id, **data)
@@ -885,7 +974,7 @@ class PloneTabsControlPanel(PloneKSSView):
         return action
     
     def updateAction(self, id, cat_name, data):
-        """ Update action with given id and category """
+        """Update action with given id and category"""
         new_id = data.pop('id')
         category = self.getActionCategory(cat_name)
         
@@ -904,13 +993,13 @@ class PloneTabsControlPanel(PloneKSSView):
         return action
     
     def deleteAction(self, id, cat_name):
-        """ Delete action with given id from given category """
+        """Delete action with given id from given category"""
         category = self.getActionCategory(cat_name)
         category.manage_delObjects(ids=[id,])
         return True
     
     def moveAction(self, id, cat_name, steps=0):
-        """ Move action by a given steps """
+        """Move action by a given steps"""
         if steps != 0:
             category = self.getActionCategory(cat_name)
             if steps > 0:
@@ -926,15 +1015,17 @@ class PloneTabsControlPanel(PloneKSSView):
     #
     
     def updatePage(self, category):
-        """ Seek for according method in class and calls it if found
-            Example of making up method's name:
-                portal_tabs => updatePortalTabsPageSection """
-        method_name = 'update%sPageSection' % ''.join(map(lambda x: x.capitalize(), category.split('_')))
+        """Seek for according method in class and calls it if found
+        Example of making up method's name:
+            portal_tabs => updatePortalTabsPageSection
+        """
+        method_name = 'update%sPageSection' % ''.join(
+            map(lambda x: x.capitalize(), category.split('_')))
         if hasattr(self, method_name):
             getattr(self, method_name)()
     
     def updatePortalTabsPageSection(self):
-        """ Method for updating global-sections on client """
+        """Method for updating global-sections on client"""
         ksscore = self.getCommandSet("core")
         self.kss_replaceOrInsert(ksscore.getHtmlIdSelector("portal-header"),
                                  "portal-globalnav",
@@ -943,11 +1034,12 @@ class PloneTabsControlPanel(PloneKSSView):
                                  selectorType='htmlid')
     
     def updateSiteActionsPageSection(self):
-        """ Method for updating site action on client """
+        """Method for updating site action on client"""
         ksscore = self.getCommandSet("core")
         self.kss_replaceOrInsert(ksscore.getHtmlIdSelector("portal-header"),
                                  "portal-siteactions",
-                                 self.renderViewlet("plone.portalheader", "plone.site_actions"),
+                                 self.renderViewlet("plone.portalheader",
+                                                    "plone.site_actions"),
                                  withKssSetup='False',
                                  selectorType='htmlid',
                                  position="before",
@@ -961,9 +1053,10 @@ class PloneTabsControlPanel(PloneKSSView):
             #"plone.site_actions")
     
     def updateUserPageSection(self):
-        """ Method for updating site action on client """
+        """Method for updating site action on client"""
         ksszope = self.getCommandSet("zope")
         ksszope.refreshViewlet(
-            self.getCommandSet("core").getHtmlIdSelector("portal-personaltools-wrapper"),
+            self.getCommandSet("core").getHtmlIdSelector(
+                "portal-personaltools-wrapper"),
             "plone.portaltop",
             "plone.personal_bar")
