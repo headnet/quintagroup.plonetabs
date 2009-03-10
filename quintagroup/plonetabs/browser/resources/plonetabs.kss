@@ -120,11 +120,11 @@
 #buttoncancel:click {
     evt-click-preventdefault: true;
     action-server: plonetabs-hideAddForm;
+    plonetabs-hideAddForm-error: plonetabs-handleServerError;
     action-client: setStyle;
     setStyle-kssSelector: htmlid(kssPortalMessage);
     setStyle-name: display;
     setStyle-value: none;
-    plonetabs-hideAddForm-error: plonetabs-handleServerError;
 }
 
 #buttonadd:click,

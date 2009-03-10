@@ -398,9 +398,9 @@ class PloneTabsControlPanel(PloneKSSView):
                                  self.getPageTitle(cat_name))
         
         # update category hidden field on adding form
-        ksscore.setAttribute(ksscore.getCssSelector('#addaction input[name=category]'), 'value', cat_name)
+        ksscore.setAttribute(ksscore.getHtmlIdSelector('add-form-category'), 'value', cat_name)
         
-        # update state variable 'plonetabs-category' on client 
+        # update state variable 'plonetabs-category' on client
         ksscore.setStateVar('plonetabs-category', cat_name)
         
         # hide portal status message
