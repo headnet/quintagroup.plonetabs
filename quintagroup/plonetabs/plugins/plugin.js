@@ -114,11 +114,13 @@ kukit.actionsGlobalRegistry.register('plonetabs-handleServerError', function(ope
             if (client_reason && client_reason[2]) {
                 message = client_reason[2];
                 if (message.indexOf('invalid KSS response') != -1) {
-                    message = 'It seems like you are not logged in anymore ' +
+                    message = 'Error occured. ' +
+                              'It seems like you are not logged in anymore ' +
                               'or have no privileges to perform this action. ' +
                               'In another case there might be an internal ' +
                               'server error while executing your last action.' +
-                              ' Check your portal error log.';
+                              ' Check your portal error log.' +
+                              ' Eventually your server may be not available.';
                 }
             }
         }
