@@ -103,8 +103,29 @@ kukit.commandsGlobalRegistry.registerFromAction('plonetabs-blur', kukit.cr.makeS
 
 kukit.actionsGlobalRegistry.register('plonetabs-handleServerError', function(oper) {
     oper.componentName = '[plonetabs-handleServerError] action';
-    oper.evaluateParameters([], {'message' : kukit.E});
-    alert(oper.parms.message);
+    oper.evaluateParameters([], {'message' : ''});
+    var message = oper.parms.message;
+    if (message == '') {
+        var server_reason = (/^.*(server_reason="(.*?)").*$/i).exec(kukit.E);
+        if (server_reason && server_reason[2]) {
+            message = server_reason[2];
+        } else {
+            var client_reason = (/^.*(client_reason="(.*?)").*$/i).exec(kukit.E);
+            if (client_reason && client_reason[2]) {
+                message = client_reason[2];
+                if (message.indexOf('invalid KSS response') != -1) {
+                    message = 'It seems like you are not logged in anymore ' +
+                              'or have no privileges to perform this action. ' +
+                              'In another case there might be an internal ' +
+                              'server error while executing your last action.' +
+                              ' Check your portal error log.';
+                }
+            }
+        }
+    }
+    if (message) {
+        alert(message);
+    }
 });
 
 
