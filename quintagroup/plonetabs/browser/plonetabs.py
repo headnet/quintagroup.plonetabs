@@ -989,7 +989,7 @@ class PloneTabsControlPanel(PloneKSSView):
         self.getCommandSet('plone').issuePortalMessage(message, msgtype=msgtype)
         self.kss_timeout(
             ksscore.getHtmlIdSelector('kssPortalMessage'),
-            delay='5000', repeat='false',
+            delay='10000', repeat='false',
             cmd_name='setStyle', name='display', value='none'
         )
     
