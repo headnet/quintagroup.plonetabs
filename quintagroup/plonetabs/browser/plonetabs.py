@@ -438,19 +438,27 @@ class PloneTabsControlPanel(PloneKSSView):
         # update state variable 'plonetabs-category' on client
         ksscore.setStateVar('plonetabs-category', cat_name)
         
-        # hide portal status message
-        self.kss_hideStatusMessage(ksscore)
-        
         # hide adding form
         self.kss_hideAddForm()
+        
+        # issue portal status message
+        self.kss_issueMessage(_(u"Category changed successfully."))
     
     @kssaction
     def kss_toggleGeneratedTabs(self, field, checked='0'):
         """Toggle autogenaration setting on configlet"""
         if checked == '1':
             self.setSiteProperties(**{field: False})
+            prefix = 'Generated'
+            if field == 'disable_nonfolderish_sections':
+                prefix += ' not folderish'
+            message = _(u"%s tabs switched on." % prefix)
         else:
             self.setSiteProperties(**{field: True})
+            prefix = 'Generated'
+            if field == 'disable_nonfolderish_sections':
+                prefix += ' not folderish'
+            message = _(u"%s tabs switched off." % prefix)
         
         # update client
         ksscore = self.getCommandSet("core")
@@ -459,6 +467,9 @@ class PloneTabsControlPanel(PloneKSSView):
         
         # update global-sections viewlet
         self.updatePortalTabsPageSection()
+        
+        # issue portal status message
+        self.kss_issueMessage(message)
     
     @kssaction
     def kss_toggleRootsVisibility(self, id, checked='0'):
@@ -485,11 +496,18 @@ class PloneTabsControlPanel(PloneKSSView):
         if checked:
             ksscore.removeClass(ksscore.getHtmlIdSelector(id),
                 value="invisible")
+            message = _(u"'${id}' object was included into navigation.",
+                        mapping={'id':obj_id})
         else:
             ksscore.addClass(ksscore.getHtmlIdSelector(id), value="invisible")
+            message = _(u"'${id}' object was excluded from navigation.",
+                        mapping={'id':obj_id})
         
         # update global-sections viewlet
         self.updatePortalTabsPageSection()
+        
+        # issue portal status message
+        self.kss_issueMessage(message)
     
     @kssaction
     def kss_toggleActionsVisibility(self, id, checked='0', cat_name=None):
@@ -504,9 +522,16 @@ class PloneTabsControlPanel(PloneKSSView):
         if checked == '1':
             ksscore.removeClass(ksscore.getHtmlIdSelector(id),
                 value="invisible")
+            message = _(u"'${id}' action is now visible.",
+                        mapping={'id':act_id})
         else:
             ksscore.addClass(ksscore.getHtmlIdSelector(id), value="invisible")
+            message = _(u"'${id}' action is now invisible.",
+                        mapping={'id':act_id})
         self.updatePage(cat_name)
+    
+        # issue portal status message
+        self.kss_issueMessage(message)
     
     @kssaction
     def kss_deleteAction(self, id, cat_name):
@@ -521,12 +546,12 @@ class PloneTabsControlPanel(PloneKSSView):
         # we need kukit js action/command plugin
         ksscore.deleteNode(ksscore.getHtmlIdSelector(id))
         
-        # issue portal message
-        self.getCommandSet('plone').issuePortalMessage(
-            _(u"'%s' action successfully deleted." % act_id), msgtype="info")
-        
         # update different sections of page depending on actions category
         self.updatePage(cat_name)
+        
+        # issue portal status message
+        self.kss_issueMessage(_(u"'${id}' action successfully removed.",
+                                mapping={'id':act_id}))
     
     @kssaction
     def kss_addAction(self, cat_name):
@@ -569,10 +594,9 @@ class PloneTabsControlPanel(PloneKSSView):
             # remove focus from name input
             self.kss_blur(ksscore.getHtmlIdSelector('actname'))
             
-            # issue portal message
-            kssplone.issuePortalMessage(
-                _(u"'%s' action successfully added." % action.id),
-                msgtype="info")
+            message = _(u"'${id}' action successfully added.",
+                        mapping={'id':action.id})
+            msgtype = "info"
             
             # update page
             self.updatePage(cat_name)
@@ -583,12 +607,14 @@ class PloneTabsControlPanel(PloneKSSView):
                     ksscore.getCssSelector('form[name=addaction_form] '
                                            '.headerAdvanced'), collapse='false')
             
-            # send error message
-            kssplone.issuePortalMessage(
-                _(u"Please correct the indicated errors."), msgtype="error")
+            message = _(u"Please correct the indicated errors.")
+            msgtype = "error"
         
         # update errors on client form
         self.kss_issueErrors(errors)
+        
+        # issue portal status message
+        self.kss_issueMessage(message, msgtype)
     
     @kssaction
     def kss_hideAddForm(self):
@@ -613,6 +639,9 @@ class PloneTabsControlPanel(PloneKSSView):
         
         # remove form errors if such exist
         self.kss_issueErrors({})
+        
+        # issue portal status message
+        self.kss_issueMessage(_(u"Adding canceled."))
     
     @kssaction
     def kss_showEditForm(self, id, cat_name):
@@ -631,6 +660,9 @@ class PloneTabsControlPanel(PloneKSSView):
         # focus name field
         ksscore.focus(
             ksscore.getCssSelector("#%s input[name=title_%s]" % (id, act_id)))
+        
+        # issue portal status message
+        self.kss_issueMessage(_(u"Fill in required fields and click on Add."))
     
     @kssaction
     def kss_hideEditForm(self, id, cat_name):
@@ -642,8 +674,8 @@ class PloneTabsControlPanel(PloneKSSView):
         content = self.getActionsList(category=cat_name, tabs=[action,])
         ksscore.replaceHTML(ksscore.getHtmlIdSelector(id), content)
         
-        # hide portal status message
-        self.kss_hideStatusMessage(ksscore)
+        # issue portal status message
+        self.kss_issueMessage(_(u"Changes discarded."))
     
     @kssaction
     def kss_editAction(self):
@@ -669,9 +701,9 @@ class PloneTabsControlPanel(PloneKSSView):
             content = self.getActionsList(category=cat_name, tabs=[action,])
             ksscore.replaceHTML(ksscore.getHtmlIdSelector(html_id), content)
             
-            # issue portal message
-            kssplone.issuePortalMessage(_(u"'%s' action saved." % action.id),
-                msgtype="info")
+            message = _(u"'${id}' action successfully updated.",
+                        mapping={'id':action.id})
+            msgtype = "info"
             
             # update page
             self.updatePage(cat_name)
@@ -687,9 +719,11 @@ class PloneTabsControlPanel(PloneKSSView):
                     ksscore.getCssSelector('#%s .headerAdvanced' % html_id),
                     collapse='false')
             
-            # send error message
-            kssplone.issuePortalMessage(
-                _(u"Please correct the indicated errors."), msgtype="error")
+            message = _(u"Please correct the indicated errors.")
+            msgtype = "error"
+        
+        # issue portal status message
+        self.kss_issueMessage(message, msgtype)
     
     @kssaction
     def kss_orderActions(self):
@@ -711,6 +745,9 @@ class PloneTabsControlPanel(PloneKSSView):
         
         # update client
         self.updatePage(cat_name)
+        
+        # issue portal status message
+        self.kss_issueMessage(_(u"Actions successfully sorted."))
     
     #
     # Utility Methods
@@ -854,11 +891,6 @@ class PloneTabsControlPanel(PloneKSSView):
     # Utility methods for the kss actions management
     #
     
-    def kss_hideStatusMessage(self, ksscore):
-        """Hide Portal Status Message"""
-        ksscore.setStyle(ksscore.getHtmlIdSelector('kssPortalMessage'),
-            'display', 'none')
-    
     def kss_validateAction(self, id, cat_name):
         """Check whether action with given id exists in cat_name category"""
         try:
@@ -950,6 +982,20 @@ class PloneTabsControlPanel(PloneKSSView):
         if positionSelectorType:
             data = command.addParam('positionSelectorType',
                                     positionSelectorType)
+    
+    def kss_issueMessage(self, message, msgtype="info"):
+        """"Issues portal status message and removes it afte 10 seconds"""
+        ksscore = self.getCommandSet('core')
+        self.getCommandSet('plone').issuePortalMessage(message, msgtype=msgtype)
+        self.kss_timeout(
+            ksscore.getHtmlIdSelector('kssPortalMessage'),
+            delay='5000', repeat='false',
+            cmd_name='setStyle', name='display', value='none'
+        )
+    
+    def kss_timeout(self, selector, **kw):
+        """KSS Server command to execute plonetabs-timeout client action"""
+        command = self.commands.addCommand('plonetabs-timeout', selector, **kw)
     
     def renderViewlet(self, manager, name):
         if isinstance(manager, basestring):

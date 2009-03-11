@@ -66,4 +66,12 @@
         params_optional="alternativeHTML selectorType position positionSelector positionSelectorType withKssSetup"
         />
     
+    <kss:action
+        name="plonetabs-timeout"
+        command_factory="selector"
+        jsfile="plugin.js"
+        params_mandatory="cmd_name delay"
+        params_optional="repeat"
+        />
+    
 </configure>

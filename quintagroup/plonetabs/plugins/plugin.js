@@ -217,4 +217,46 @@ kukit.actionsGlobalRegistry.register('plonetabs-replaceOrInsert', function(oper)
 
 kukit.commandsGlobalRegistry.registerFromAction('plonetabs-replaceOrInsert', kukit.cr.makeSelectorCommand);
 
+kukit.actionsGlobalRegistry.register('plonetabs-timeout', function(oper) {
+    oper.componentName = '[plonetabs-timeout] action';
+    oper.evaluateParameters(['cmd_name', 'delay',], {'repeat': 'true'}, '', true);
+    oper.evalBool('repeat');
+    var parms = oper.parms;
 
+    // marshall it, the rest of the parms will be passed
+    var actionParameters = {};
+    for (var key in parms) {
+        if (key != 'cmd_name' && key != 'delay' && key != 'repeat') {
+            actionParameters[key] = parms[key];
+        }
+    }
+
+    // clear previously set timeout if such exists
+    var node = oper.node;
+    if (typeof(node.plonetabs_counter) != 'undefined') {
+        node.plonetabs_counter.clear();
+    }
+
+    // function to bind
+    var new_oper = new kukit.op.Oper({'node': node, 'parms': actionParameters});
+    var f = function() {
+        // check if the node has been deleted
+        // and weed it out if so
+        if (oper.node != null && !oper.node.parentNode) {
+;;;         var msg = 'Timeout action with ' + parms.cmd_name;
+;;;         msg += ' client action stopped';
+;;;         kukit.logDebug(msg);
+            this.clear();
+        } else {
+;;;         var msg = 'TIMEOUT: Timer action with ' + parms.cmd_name;
+;;;         msg += ' client action executed';
+;;;         kukit.logDebug(msg);
+            kukit.actionsGlobalRegistry.get(parms.cmd_name)(new_oper);
+        }
+    };
+    var counter = new kukit.ut.TimerCounter(parms.delay, f, parms.repeat);
+    node.plonetabs_counter = counter;
+    counter.start();
+});
+
+kukit.commandsGlobalRegistry.registerFromAction('plonetabs-timeout', kukit.cr.makeSelectorCommand);
