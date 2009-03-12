@@ -11,7 +11,7 @@
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         class=".plonetabs.PloneTabsControlPanel"
         permission="cmf.ManagePortal"
-        allowed_interface = ".interfaces.IPloneTabsControlPanel"
+        allowed_interface=".interfaces.IPloneTabsControlPanel"
         />
 
     <browser:page
