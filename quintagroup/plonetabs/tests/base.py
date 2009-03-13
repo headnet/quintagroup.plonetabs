@@ -1,3 +1,8 @@
+try:
+    from zope.annotation.interfaces import IAnnotations
+except ImportError:
+    from zope.app.annotation.interfaces import IAnnotations
+
 from  Testing import ZopeTestCase as ztc
 from  Products.Five import zcml
 from  Products.Five import fiveconfigure
@@ -13,17 +18,25 @@ from quintagroup.plonetabs.tests.data import PORTAL_ACTIONS, PORTAL_CONTENT
 
 @onsetup
 def setup_package():
-     import quintagroup.plonetabs
-     zcml.load_config('configure.zcml', quintagroup.plonetabs)
-     #ztc.installPackage('some.other.package')
-     ztc.installPackage('quintagroup.plonetabs')
+    import quintagroup.plonetabs
+    zcml.load_config('configure.zcml', quintagroup.plonetabs)
+    #ztc.installPackage('some.other.package')
+    ztc.installPackage('quintagroup.plonetabs')
 
 setup_package()
 ptc.setupPloneSite(products=['quintagroup.plonetabs'])
 
+_marker = object()
+
 class PloneTabsTestCase(ptc.PloneTestCase):
     """Common test base class"""
-     
+    
+    def purgeCache(self, request):
+        annotations = IAnnotations(request)
+        cache = annotations.get('plone.memoize', _marker)
+        if cache is not _marker:
+            del annotations['plone.memoize']
+    
     def purgeActions(self):
         for obj in self.tool.objectValues():
             self.tool._delObject(obj.id)

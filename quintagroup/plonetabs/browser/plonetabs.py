@@ -228,12 +228,14 @@ class PloneTabsControlPanel(PloneKSSView):
     
     def redirect(self, url="", search="", url_hash=""):
         """Redirect to @@plonetabs-controlpanel configlet"""
-        portal_url =  getMultiAdapter((self.context, self.request),
-            name=u"plone_portal_state").portal_url()
-        url = (url == "") and "%s/%s" % (portal_url,
-                                         "@@plonetabs-controlpanel") or url
-        search = (search != "") and "?%s" % search or search
-        url_hash = (url_hash != "") and "#%s" % url_hash or url_hash
+        if not url:
+            portal_url =  getMultiAdapter((self.context, self.request),
+                name=u"plone_portal_state").portal_url()
+            url = '%s/%s' % (portal_url, "@@plonetabs-controlpanel")
+        if search:
+            search = '?%s' % search
+        if url_hash:
+            url_hash = '#%s' % url_hash
         self.request.response.redirect("%s%s%s" % (url, search, url_hash))
     
     ###################################
@@ -754,7 +756,7 @@ class PloneTabsControlPanel(PloneKSSView):
     #
     
     def fixExpression(self, expr):
-        """Fix expression appropriatly for tal format"""
+        """Fix expression appropriately for tal format"""
         if expr.find('/') == 0:
             return 'string:${portal_url}%s' % expr
         elif re.compile('^(ht|f)tps?\:', re.I).search(expr):
