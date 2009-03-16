@@ -1,7 +1,8 @@
 import unittest
 
-from zope.component import getMultiAdapter
+from zope.interface import Interface
 from zope.interface.verify import verifyClass
+from zope.component import getMultiAdapter, provideAdapter
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.ActionInformation import Action, ActionCategory
@@ -75,37 +76,139 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
             'between real and test environments.')
     
     def test_processErrors(self):
-        pass
+        method = self.panel.processErrors
+        errors = {'error':'error message'}
+        self.assertEquals(method(errors), errors,
+            'processErrors method is not working properly.')
+        self.assertEquals(method(errors, 'pre_', '_post'),
+            {'pre_error_post': 'error message'},
+            'processErrors method is not working properly.')
     
     def test_parseEditForm(self):
-        pass
+        method = self.panel.parseEditForm
+        form = {'orig_id': 'id1',
+                'category': 'cat1',
+                'visible_id1': True,
+                'id_id1': 'id_new',
+                'title_id1': 'title1',
+                'url_expr_id1': 'expr1',
+                'available_expr_id1': 'expr2'}
+        self.assertEquals(method(form),
+            ('id1', 'cat1', {'id': 'id_new',
+                             'title': 'title1',
+                             'url_expr': 'expr1',
+                             'available_expr': 'expr2',
+                             'visible': True}),
+            'parseEditForm method is not working properly.')
+        
+        del form['orig_id']
+        self.failUnlessRaises(KeyError, method, form)
     
     def test_parseAddForm(self):
-        pass
+        method = self.panel.parseAddForm
+        form = {'id': 'id1',
+                'category': 'cat1',
+                'visible': True,
+                'title': 'title1',
+                'url_expr': 'string:expr1',
+                'available_expr': 'expr2'}
+        self.assertEquals(method(form),
+            ('id1', 'cat1', {'id': 'id1',
+                             'visible': True,
+                             'title': 'title1',
+                             'url_expr': 'string:expr1',
+                             'available_expr': 'expr2'}),
+            'parseAddForm method is not working properly.')
+        
+        del form['id']
+        self.failUnlessRaises(KeyError, method, form)
     
     def test_getActionCategory(self):
-        pass
+        method = self.panel.getActionCategory
+        self.purgeActions()
+        self.failUnlessRaises(KeyError, method, 'portal_tabs')
+        
+        self.setupActions(self.tool)
+        self.assertEquals(method('portal_tabs').id, 'portal_tabs',
+            'getActionCategory is not working properly.')
     
     def test_getOrCreateCategory(self):
-        pass
+        method = self.panel.getOrCreateCategory
+        self.purgeActions()
+        self.assertEquals(method('portal_tabs').id, 'portal_tabs',
+            'getOrCreateCategory is not working properly.')
     
     def test_setSiteProperties(self):
-        pass
+        self.panel.setSiteProperties(title='Test Title')
+        sp = getToolByName(self.portal, 'portal_properties').site_properties
+        self.assertEquals(sp.getProperty('title'), 'Test Title',
+            'setSiteProperties method is not working properly.')
     
     def test_renderViewlet(self):
-        pass
+        # register test viewlet and it's manager
+        from zope.viewlet.interfaces import IViewlet, IViewletManager
+        from zope.viewlet.viewlet import ViewletBase
+        from zope.viewlet.manager import ViewletManagerBase
+        from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+        from zope.publisher.interfaces.browser import IBrowserView
+        class TestViewlet(ViewletBase):
+            def __of__(self, obj):
+                return self
+            def render(self):
+                return 'test viewlet'
+        provideAdapter(
+            TestViewlet,
+            (Interface, IDefaultBrowserLayer, IBrowserView, IViewletManager),
+            IViewlet,
+            name=u'test_viewlet')
+        provideAdapter(
+            ViewletManagerBase,
+            (Interface, IDefaultBrowserLayer, IBrowserView),
+            IViewletManager,
+            name=u'test_manager')
+        
+        self.assertEquals(
+            self.panel.renderViewlet('test_manager', 'test_viewlet'),
+            'test viewlet',
+            'renderViewlet method is not workig properly')
     
     def test_addAction(self):
-        pass
+        self.purgeActions()
+        self.panel.addAction('new_category', {'id':'id1', 'title':'Test'})
+        self.failUnless('id1' in self.tool.new_category.objectIds(),
+            'addAction method is not workig properly')
     
     def test_updateAction(self):
-        pass
+        method = self.panel.updateAction
+        
+        self.purgeActions()
+        self.failUnlessRaises(KeyError, method, 'id1', 'cat1', {'id':'new'})
+        
+        self.setupActions(self.tool)
+        # we need to commit transaction because
+        # we are going to rename just added action now
+        import transaction
+        transaction.savepoint()
+        method('home', 'portal_tabs', {'id':'new_home'})
+        self.failUnless('new_home' in self.tool.portal_tabs.objectIds(),
+            'updateAction method is not workig properly')
     
     def test_deleteAction(self):
-        pass
+        self.purgeActions()
+        self.setupActions(self.tool)
+        self.panel.deleteAction('home', 'portal_tabs')
+        self.failIf('home' in self.tool.portal_tabs.objectIds(),
+             'deleteAction method is not workig properly')
     
     def test_moveAction(self):
-        pass
+        self.purgeActions()
+        self.setupActions(self.tool)
+        pos = self.tool.portal_tabs.getObjectPosition
+        self.assertEquals(pos('home'), 0,
+            'moveAction method is not workig properly')
+        self.panel.moveAction('home', 'portal_tabs', -1)
+        self.assertEquals(pos('home'), 1,
+             'moveAction method is not workig properly')
 
 
 class TestControlPanelAPI(PloneTabsTestCase):
