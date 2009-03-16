@@ -67,13 +67,22 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
                     'title': ' ',
                     'available_expr': 'bad_type:test',
                     'url_expr': 'bad_type:test'}
+        
+        # Revert PloneTestCase's optimization
+        # because this breaks our test
+        def __init__(self, text):
+            self.text = text
+            if text.strip():
+                self._v_compiled = getEngine().compile(text)
+        from Products.CMFCore.Expression import Expression
+        optimized__init__ = Expression.__init__
+        Expression.__init__ = __init__
         errors = method('new_category', bad_data)
-        # this test won't pass because PloneTestCase change initial behaviour
-        # of CMFCore's Expression object, it doesn't compile expressions
-        # on creation anymore
+        # rollback our patch
+        Expression.__init__ = optimized__init__
+        
         self.assertEquals(len(errors.keys()), 4,
-            'This test is not supposed to be passed because of difference '
-            'between real and test environments.')
+            'validateActionFields method is not working properly.')
     
     def test_processErrors(self):
         method = self.panel.processErrors
@@ -361,13 +370,112 @@ class TestControlPanelAPI(PloneTabsTestCase):
 
     def test_test(self):
         self.assertEquals(self.panel.test(True, 'true', 'false'), 'true',
-            'Test function does not work propertly.')
+            'Test function does not work properly.')
+
+
+class TestControlPanelManageMethods(PloneTabsTestCase):
+    """Test here management methods of control panel class"""
+    
+    def afterSetUp(self):
+        self.loginAsPortalOwner()
+        self.panel = self.portal.restrictedTraverse('plonetabs-controlpanel')
+        self.tool = getToolByName(self.portal, 'portal_actions')
+        
+        # purge standard set of actions and set our own testing ones
+        self.purgeActions()
+        self.setupActions(self.tool)
+    
+    def test_manage_setAutogeneration(self):
+        self.setupContent(self.portal)
+        form = {'generated_tabs': '1',
+                'nonfolderish_tabs': '0',
+                'folder1': '0'}
+        self.panel.manage_setAutogeneration(form, {})
+        self.failUnless(self.portal.folder1.exclude_from_nav())
+        sp = getToolByName(self.portal, 'portal_properties').site_properties
+        self.failIf(sp.disable_folder_sections)
+        self.failUnless(sp.disable_nonfolderish_sections)
+    
+    def test_manage_addAction(self):
+        self.purgeActions()
+        form = {'id': 'id1',
+                'category': 'cat1',
+                'visible': True,
+                'title': 'title1',
+                'url_expr': 'string:expr1',
+                'available_expr': 'expr2'}
+        postback = self.panel.manage_addAction(form, {})
+        self.failUnless('id1' in self.tool.cat1.objectIds())
+        self.failIf(postback,
+            'There should be redirect after successfull adding.')
+    
+    def test_manage_editAction(self):
+        method = self.panel.manage_editAction
+        self.purgeActions()
+        self.setupActions(self.tool)
+        form = {'orig_id': 'home',
+                'category': 'portal_tabs',
+                'visible_home': True,
+                'id_home': 'id_new',
+                'title_home': 'title1',
+                'url_expr_home': 'expr1',
+                'available_expr_home': 'expr2'}
+        import transaction
+        transaction.savepoint()
+        
+        postback = method(form, {})
+        self.failUnless('id_new' in self.tool.portal_tabs.objectIds())
+        self.failIf(postback,
+            'There should be redirect after successfull edition.')
+        
+        form['category'] = 'non_existent'
+        self.failUnlessRaises(KeyError, method, form, {})
+    
+    def test_manage_deleteAction(self):
+        self.purgeActions()
+        self.setupActions(self.tool)
+        form = {'orig_id': 'home',
+                'category': 'portal_tabs',
+                'visible_home': True,
+                'id_home': 'id_new',
+                'title_home': 'title1',
+                'url_expr_home': 'expr1',
+                'available_expr_home': 'expr2'}
+        self.panel.manage_deleteAction(form, {})
+        self.failIf('home' in self.tool.portal_tabs.objectIds())
+    
+    def test_manage_moveUpAction(self):
+        self.purgeActions()
+        self.setupActions(self.tool)
+        form = {'orig_id': 'quintagroup',
+                'category': 'portal_tabs',
+                'visible_quintagroup': True,
+                'id_quintagroup': 'quintagroup',
+                'title_quintagroup': 'title1',
+                'url_expr_quintagroup': 'expr1',
+                'available_expr_quintagroup': 'expr2'}
+        self.panel.manage_moveUpAction(form, {})
+        self.assertEquals(
+            self.tool.portal_tabs.getObjectPosition('quintagroup'), 0)
+    
+    def test_manage_moveDownAction(self):
+        self.purgeActions()
+        self.setupActions(self.tool)
+        form = {'orig_id': 'home',
+                'category': 'portal_tabs',
+                'visible_home': True,
+                'id_home': 'home',
+                'title_home': 'title1',
+                'url_expr_home': 'expr1',
+                'available_expr_home': 'expr2'}
+        self.panel.manage_moveDownAction(form, {})
+        self.assertEquals(self.tool.portal_tabs.getObjectPosition('home'), 1)
 
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestControlPanelHelperMethods))
     suite.addTest(unittest.makeSuite(TestControlPanelAPI))
-    #suite.addTest(unittest.makeSuite(TestControlPanelManageMethods))
+    suite.addTest(unittest.makeSuite(TestControlPanelManageMethods))
     #suite.addTest(unittest.makeSuite(TestControlPanelKSSMethods))
     return suite
