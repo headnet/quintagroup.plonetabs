@@ -7,31 +7,37 @@
     <browser:resource
         name="plonetabs.gif"
         image="./images/plonetabs.gif"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
     
     <browser:resource
         name="busy_icon.gif"
         image="./images/busy_icon.gif"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
     
     <browser:resource
         name="trash.gif"
         image="./images/trash.gif"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
     
     <browser:resource
         name="treeExpanded.gif"
         image="./images/treeExpanded.gif"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
     
     <browser:resource
         name="treeCollapsed.gif"
         image="./images/treeCollapsed.gif"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
     
     <browser:resource
         name="drag.gif"
         image="./images/drag.gif"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
     
     <!-- Register stylesheets -->
@@ -39,6 +45,7 @@
     <browser:resource
         name="plonetabs.css"
         file="./resources/plonetabs.css"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
     
     <!-- Register kukit stylesheets -->
@@ -46,6 +53,7 @@
     <browser:resource
         name="plonetabs.kss"
         file="./resources/plonetabs.kss"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
     
     <!-- Register scriptaculous dragdrop js library -->
@@ -53,11 +61,13 @@
     <browser:resource
         name="sa_dragdrop.js"
         file="./resources/dragdrop.js"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
 
     <browser:resource
         name="pt_effects.js"
         file="./resources/effects.js"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
     
 </configure>

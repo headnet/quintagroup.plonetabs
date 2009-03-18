@@ -1,7 +1,10 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="quintagroup.plonetabs">
+
+    <include package="plone.browserlayer" />
 
     <!-- Set up as a Zope2 product -->
     <five:registerPackage package="." initialize=".initialize" />
@@ -11,5 +14,5 @@
     <include package=".browser" />
     
     <include package=".plugins" />
-    
+
 </configure>

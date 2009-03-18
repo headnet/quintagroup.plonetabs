@@ -12,6 +12,7 @@
         class=".plonetabs.PloneTabsControlPanel"
         permission="cmf.ManagePortal"
         allowed_interface=".interfaces.IPloneTabsControlPanel"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
 
     <browser:page
@@ -19,6 +20,7 @@
         for="*"
         template="templates/plonetabs_header_macro.pt"
         permission="zope.Public"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
     
 </configure>
