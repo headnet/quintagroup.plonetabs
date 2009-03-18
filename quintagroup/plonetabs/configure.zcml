@@ -15,4 +15,8 @@
     
     <include package=".plugins" />
 
+    <configure zcml:condition="have kss_demo_version_1_2">
+        <include package=".tests.selenium" />
+    </configure>
+
 </configure>
