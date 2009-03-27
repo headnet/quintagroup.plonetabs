@@ -3,6 +3,8 @@ try:
 except ImportError:
     from zope.app.annotation.interfaces import IAnnotations
 
+from plone.browserlayer.layer import mark_layer
+
 from  Testing import ZopeTestCase as ztc
 from  Products.Five import zcml
 from  Products.Five import fiveconfigure
@@ -30,6 +32,15 @@ _marker = object()
 
 class PloneTabsTestCase(ptc.PloneTestCase):
     """Common test base class"""
+    
+    def afterSetUp(self):
+        # due to some reason plone.browserlayer is not marking REQUEST
+        # with installed products layer interfaces
+        # so I'm doing it manually here 
+        class DummyEvent(object):
+            def __init__(self, request):
+                self.request = request
+        mark_layer(self.portal, DummyEvent(self.portal.REQUEST))
     
     def purgeCache(self, request):
         annotations = IAnnotations(request)

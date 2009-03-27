@@ -11,4 +11,4 @@
     expression="python:request['URL'].find('/@@plonetabs-controlpanel')>0"
     id="++resource++sa_dragdrop.js" inline="False"
     insert-after="++resource++pt_effects.js" />
- </object>
+</object>

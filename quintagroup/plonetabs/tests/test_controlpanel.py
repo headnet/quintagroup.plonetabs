@@ -17,12 +17,12 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
     """Test here configlet helper methods"""
     
     def afterSetUp(self):
+        super(TestControlPanelHelperMethods, self).afterSetUp()
         self.loginAsPortalOwner()
-        # TODO: investigate why I can't work with it but
-        # have to traverse my view
-        #self.panel = getMultiAdapter((self.portal, self.portal.REQUEST),
-            #name='plonetabs-controlpanel')
-        self.panel = self.portal.restrictedTraverse('plonetabs-controlpanel')
+        panel = getMultiAdapter((self.portal, self.portal.REQUEST),
+            name='plonetabs-controlpanel')
+        # we need this to apply zope2 security (got from zope2 traverse method)
+        self.panel = panel.__of__(self.portal)
         self.tool = getToolByName(self.portal, 'portal_actions')
     
     def test_redirect(self):
@@ -30,7 +30,7 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
         method = self.panel.redirect
         portal_url =  getMultiAdapter((self.portal, self.portal.REQUEST),
                                       name=u"plone_portal_state").portal_url()
-        url = '%s/%s' % (portal_url, "@@plonetabs-controlpanel")
+        url = '%s/@@plonetabs-controlpanel' % portal_url
         method()
         self.assertEquals(response.headers.get('location', ''), url,
             'Redirect method is not working properly.')
@@ -224,8 +224,12 @@ class TestControlPanelAPI(PloneTabsTestCase):
     """Test here interface methods of control panel class"""
     
     def afterSetUp(self):
+        super(TestControlPanelAPI, self).afterSetUp()
         self.loginAsPortalOwner()
-        self.panel = self.portal.restrictedTraverse('plonetabs-controlpanel')
+        panel = getMultiAdapter((self.portal, self.portal.REQUEST),
+            name='plonetabs-controlpanel')
+        # we need this to apply zope2 security (got from zope2 traverse method)
+        self.panel = panel.__of__(self.portal)
         self.tool = getToolByName(self.portal, 'portal_actions')
     
     def test_interface(self):
@@ -377,8 +381,12 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
     """Test here management methods of control panel class"""
     
     def afterSetUp(self):
+        super(TestControlPanelManageMethods, self).afterSetUp()
         self.loginAsPortalOwner()
-        self.panel = self.portal.restrictedTraverse('plonetabs-controlpanel')
+        panel = getMultiAdapter((self.portal, self.portal.REQUEST),
+            name='plonetabs-controlpanel')
+        # we need this to apply zope2 security (got from zope2 traverse method)
+        self.panel = panel.__of__(self.portal)
         self.tool = getToolByName(self.portal, 'portal_actions')
         
         # purge standard set of actions and set our own testing ones
@@ -477,5 +485,9 @@ def test_suite():
     suite.addTest(unittest.makeSuite(TestControlPanelHelperMethods))
     suite.addTest(unittest.makeSuite(TestControlPanelAPI))
     suite.addTest(unittest.makeSuite(TestControlPanelManageMethods))
+    
+    # these tests are implemented as Selenium KSS Tests
+    # using kss.demo package, and KSS plugins are tested by means of
+    # ecmaunit.js
     #suite.addTest(unittest.makeSuite(TestControlPanelKSSMethods))
     return suite

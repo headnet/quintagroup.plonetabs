@@ -1,4 +1,9 @@
 import unittest
+
+from zope.component import getSiteManager
+
+from plone.browserlayer.utils import registered_layers
+
 from Products.CMFCore.utils import getToolByName
 
 from quintagroup.plonetabs.tests.base import PloneTabsTestCase
@@ -6,8 +11,7 @@ from quintagroup.plonetabs.tests.base import PloneTabsTestCase
 class TestSetup(PloneTabsTestCase):
     
     def afterSetUp(self):
-        self.properties = getToolByName(self.portal, 'portal_properties')
-        self.types = getToolByName(self.portal, 'portal_types')
+        self.loginAsPortalOwner()
     
     def test_actionIcons(self):
         tool = getToolByName(self.portal, 'portal_actionicons')
@@ -60,6 +64,12 @@ class TestSetup(PloneTabsTestCase):
              'portal_footer|Portal Footer Configuration'),
             'Site properties was not setup properly'
         )
+    
+    def test_browserLayerRegistered(self):
+        sm = getSiteManager(self.portal)
+        layers = [o.__name__ for o in registered_layers()]
+        self.failUnless('IPloneTabsProductLayer' in layers,
+            'There should be quintagroup.ploentabs browser layer registered.')
 
 def test_suite():
     suite = unittest.TestSuite()
