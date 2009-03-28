@@ -100,4 +100,13 @@
         permission="cmf.ManagePortal"
         />
     
+    <browser:page
+        for="plone.app.kss.interfaces.IPortalObject"
+        attribute="kss_insertModeLink"
+        class=".plonetabs.PloneTabsControlPanel"
+        name="plonetabs-insertModeLink"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
+        permission="cmf.ManagePortal"
+        />
+    
 </configure>

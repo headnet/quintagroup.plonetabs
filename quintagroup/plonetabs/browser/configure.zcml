@@ -22,5 +22,13 @@
         permission="zope.Public"
         layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
+
+    <browser:page
+        name="plonetabs-mode"
+        for="*"
+        class=".plonetabs.PloneTabsMode"
+        permission="zope.Public"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
+        />
     
 </configure>

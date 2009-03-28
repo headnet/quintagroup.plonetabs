@@ -15,7 +15,8 @@
      tal:define="test nocall:view/test;
                  category here/REQUEST/category|nothing;
                  category python:test(category and category != '', category, 'portal_tabs');
-                 errors options/errors|nothing">
+                 errors options/errors|nothing;
+                 test nocall:view/test">
 
 <div id="plonetabs_form">
 
@@ -28,7 +29,7 @@
 
   <a href=""
      class="link-parent"
-     tal:attributes="href string: $portal_url/plone_control_panel"
+     tal:attributes="href string:${portal_url}/plone_control_panel"
      i18n:domain="plone"
      i18n:translate="label_up_to_plone_setup">
     Up to Site Setup

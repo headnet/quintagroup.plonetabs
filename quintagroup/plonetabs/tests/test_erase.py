@@ -81,6 +81,10 @@ class TestErase(PloneTabsTestCase):
         self.failUnless(kss is None,
             'There should be no ++resource++plonetabs.kss sheets after'
             ' uninstall.')
+        kss = tool.getResource('++resource++plonetabsmode.kss')
+        self.failUnless(kss is None,
+            'There should be no ++resource++plonetabsmode.kss sheets after'
+            ' uninstall.')
     
     def test_propertiesTool(self):
         tool = getToolByName(self.portal, 'portal_properties')

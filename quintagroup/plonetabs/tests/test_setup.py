@@ -53,6 +53,9 @@ class TestSetup(PloneTabsTestCase):
         kss = tool.getResource('++resource++plonetabs.kss')
         self.failIf(kss is None,
             'There is no ++resource++plonetabs.kss sheets registered.')
+        kss = tool.getResource('++resource++plonetabsmode.kss')
+        self.failIf(kss is None,
+            'There is no ++resource++plonetabsmode.kss sheets registered.')
     
     def test_propertiesTool(self):
         tool = getToolByName(self.portal, 'portal_properties')

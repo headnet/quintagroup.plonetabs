@@ -3,7 +3,6 @@
     xmlns:browser="http://namespaces.zope.org/browser">
     
     <!-- Register images -->
-    
     <browser:resource
         name="plonetabs.gif"
         image="./images/plonetabs.gif"
@@ -41,7 +40,6 @@
         />
     
     <!-- Register stylesheets -->
-    
     <browser:resource
         name="plonetabs.css"
         file="./resources/plonetabs.css"
@@ -49,15 +47,19 @@
         />
     
     <!-- Register kukit stylesheets -->
-    
     <browser:resource
         name="plonetabs.kss"
         file="./resources/plonetabs.kss"
         layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />
+
+    <browser:resource
+        name="plonetabsmode.kss"
+        file="./resources/plonetabsmode.kss"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
+        />
     
     <!-- Register scriptaculous dragdrop js library -->
-    
     <browser:resource
         name="sa_dragdrop.js"
         file="./resources/dragdrop.js"
