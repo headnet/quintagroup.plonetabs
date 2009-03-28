@@ -470,9 +470,10 @@ class PloneTabsControlPanel(PloneKSSView):
         ksscore.replaceHTML(
             ksscore.getHtmlIdSelector('autogeneration_section'), section)
         # and title
+        ts = getToolByName(self.context, 'translation_service')
+        title = ts.translate(self.getPageTitle(cat_name), context=self.context)
         ksscore.replaceInnerHTML(
-            ksscore.getHtmlIdSelector('plonetabs-form-title'),
-            self.getPageTitle(cat_name))
+            ksscore.getHtmlIdSelector('plonetabs-form-title'), title)
         
         # update category hidden field on adding form
         ksscore.setAttribute(ksscore.getCssSelector(

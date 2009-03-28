@@ -7,11 +7,11 @@ from zope.component import getMultiAdapter, provideAdapter
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.ActionInformation import Action, ActionCategory
 
+from quintagroup.plonetabs import messageFactory as _
 from quintagroup.plonetabs.browser.interfaces import IPloneTabsControlPanel
 from quintagroup.plonetabs.browser.plonetabs import PloneTabsControlPanel as ptp
 from quintagroup.plonetabs.tests.base import PloneTabsTestCase
 from quintagroup.plonetabs.tests.data import PORTAL_ACTIONS
-
 
 class TestControlPanelHelperMethods(PloneTabsTestCase):
     """Test here configlet helper methods"""
@@ -240,10 +240,11 @@ class TestControlPanelAPI(PloneTabsTestCase):
     
     def test_getPageTitle(self):
         self.assertEquals(self.panel.getPageTitle(),
-            'Portal Tabs Configuration',
+            _(u"Portal Tabs Configuration"),
             'getPageTitle method is broken')
         self.assertEquals(self.panel.getPageTitle(category='notexists'),
-            "Plone '%s' Configuration" % 'notexists',
+            _(u"Plone '${cat_name}' Configuration",
+              mapping={'cat_name': 'notexists'}),
             'getPageTitle method is broken')
     
     def test_hasActions(self):
