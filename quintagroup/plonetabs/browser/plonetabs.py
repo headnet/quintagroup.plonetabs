@@ -17,7 +17,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import IAction, IActionCategory
 from Products.CMFCore.ActionInformation import Action, ActionCategory
 from Products.CMFCore.Expression import Expression
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.navigation import get_view_url
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -25,6 +24,7 @@ from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 
 from quintagroup.plonetabs.config import *
+from quintagroup.plonetabs import messageFactory as _
 from interfaces import IPloneTabsControlPanel
 
 ACTION_ATTRS = ["id", "title", "url_expr", "available_expr", "visible"]
@@ -146,7 +146,8 @@ class PloneTabsControlPanel(PloneKSSView):
         if not errors:
             action = self.addAction(cat_name, data)
             IStatusMessage(self.request).addStatusMessage(
-                _(u"'%s' action successfully added." % action.id), type="info")
+                _(u"'${id}' action successfully added.",
+                  mapping={'id':action.id}), type="info")
             self.redirect(search="category=%s" % cat_name)
             return False
         else:
@@ -171,7 +172,8 @@ class PloneTabsControlPanel(PloneKSSView):
         if not errors:
             action = self.updateAction(id, cat_name, data)
             IStatusMessage(self.request).addStatusMessage(
-                _(u"'%s' action saved." % action.id), type="info")
+                _(u"'${id}' action saved.", mapping={'id': action.id}),
+                type="info")
             self.redirect(search="category=%s" % cat_name)
             return False
         else:
@@ -191,12 +193,13 @@ class PloneTabsControlPanel(PloneKSSView):
         if id in category.objectIds():
             self.deleteAction(id, cat_name)
             IStatusMessage(self.request).addStatusMessage(
-                _(u"'%s' action deleted." % id), type="info")
+                _(u"'${id}' action deleted.", mapping={'id': id}), type="info")
             self.redirect(search="category=%s" % cat_name)
             return False
         else:
             IStatusMessage(self.request).addStatusMessage(
-                _(u"No '%s' action in '%s' category." % (id, cat_name)),
+                _(u"No '${id}' action in '${cat_name}' category.",
+                  mapping={'id': id, 'cat_name': cat_name}),
                 type="error")
             return True
     
@@ -210,13 +213,13 @@ class PloneTabsControlPanel(PloneKSSView):
         if id in category.objectIds():
             self.moveAction(id, cat_name, steps=1)
             IStatusMessage(self.request).addStatusMessage(
-                _(u"'%s' action moved up." % id), type="info")
+                _(u"'${id}' action moved up.", mapping={'id': id}), type="info")
             self.redirect(search="category=%s" % cat_name)
             return False
         else:
             IStatusMessage(self.request).addStatusMessage(
-                _(u"No '%s' action in '%s' category." % (id, cat_name)),
-                type="error")
+                _(u"No '${id}' action in '${cat_name}' category.",
+                  mapping={'id': id, 'cat_name': cat_name}), type="error")
             return True
     
     def manage_moveDownAction(self, form, errs):
@@ -229,12 +232,14 @@ class PloneTabsControlPanel(PloneKSSView):
         if id in category.objectIds():
             self.moveAction(id, cat_name, steps=-1)
             IStatusMessage(self.request).addStatusMessage(
-                _(u"'%s' action moved down." % id), type="info")
+                _(u"'${id}' action moved down.", mapping={'id': id}),
+                type="info")
             self.redirect(search="category=%s" % cat_name)
             return False
         else:
             IStatusMessage(self.request).addStatusMessage(
-                _(u"No '%s' action in '%s' category." % (id, cat_name)),
+                _(u"No '${id}' action in '${cat_name}' category.",
+                  mapping={'id': id, 'cat_name': cat_name}),
                 type="error")
             return True
     
@@ -256,10 +261,19 @@ class PloneTabsControlPanel(PloneKSSView):
     #
     ###################################
     
+    def _charset(self):
+        pp = getToolByName(self.context, 'portal_properties', None)
+        if pp is not None:
+            site_properties = getattr(pp, 'site_properties', None)
+            if site_properties is not None:
+                return site_properties.getProperty('default_charset', 'utf-8')
+        return 'utf-8'
+    
     def getPageTitle(self, category="portal_tabs"):
         """See interface"""
         portal_props = getToolByName(self.context, "portal_properties")
-        default_title = "Plone '%s' Configuration" % category
+        default_title = _(u"Plone '${cat_name}' Configuration",
+                          mapping={'cat_name': category})
         
         if not hasattr(portal_props, PROPERTY_SHEET):
             return default_title
@@ -274,7 +288,15 @@ class PloneTabsControlPanel(PloneKSSView):
             cat, title = line.split("|", 2)
             dict[cat] = title
         
-        return dict.get(category, None) or default_title
+        title = dict.get(category, None)
+        if title is None:
+            return default_title
+        
+        charset = self._charset()
+        if not isinstance(title, unicode):
+            title = title.decode(charset)
+        
+        return _(title)
     
     def hasActions(self, category="portal_tabs"):
         """See interface"""
@@ -472,16 +494,16 @@ class PloneTabsControlPanel(PloneKSSView):
         """Toggle autogenaration setting on configlet"""
         if checked == '1':
             self.setSiteProperties(**{field: False})
-            prefix = 'Generated'
             if field == 'disable_nonfolderish_sections':
-                prefix += ' not folderish'
-            message = _(u"%s tabs switched on." % prefix)
+                message = _(u"Generated not folderish tabs switched on.")
+            else:
+                message = _(u"Generated tabs switched on.")
         else:
             self.setSiteProperties(**{field: True})
-            prefix = 'Generated'
             if field == 'disable_nonfolderish_sections':
-                prefix += ' not folderish'
-            message = _(u"%s tabs switched off." % prefix)
+                message = _(u"Generated not folderish tabs switched off.")
+            else:
+                message = _(u"Generated tabs switched off.")
         
         # update client
         ksscore = self.getCommandSet("core")
@@ -505,7 +527,8 @@ class PloneTabsControlPanel(PloneKSSView):
         
         if obj_id not in portal.objectIds():
             raise KSSExplicitError, \
-                  "Object with %s id doesn't exist in portal root" % obj_id
+                  _(u"Object with '${id}' id doesn't exist in portal root.",
+                    mapping={'id': obj_id})
         
         if checked == '1':
             checked = True
@@ -814,27 +837,48 @@ class PloneTabsControlPanel(PloneKSSView):
         try:
             chooser.checkName(data['id'], self.context)
         except Exception, e:
-            errors['id'] = "%s" % str(e)
+            errors['id'] = self._formatError(e, **{'id':data['id']})
         
         # validate action name
         if not data['title'].strip():
-            errors['title'] = 'Empty or invalid title specified'
+            errors['title'] = _(u"Empty or invalid title specified")
         
         # validate condition expression
         if data['available_expr']:
             try:
                 Expression(data['available_expr'])
             except Exception, e:
-                errors["available_expr"] = "%s" % str(e)
+                mapping = {'expr': data['available_expr']}
+                idx = data['available_expr'].find(':')
+                if idx != -1:
+                    mapping['expr_type'] = data['available_expr'][:idx]
+                errors["available_expr"] = self._formatError(e, **mapping)
         
         # validate action expression
         if data['url_expr']:
             try:
                 Expression(data['url_expr'])
             except Exception, e:
-                errors["url_expr"] = "%s" % str(e)
+                mapping = {'expr': data['url_expr']}
+                idx = data['url_expr'].find(':')
+                if idx != -1:
+                    mapping['expr_type'] = data['url_expr'][:idx]
+                errors["url_expr"] = self._formatError(e, **mapping)
         
         return errors
+    
+    def _formatError(self, message, **kw):
+        """Make error message a little bit prettier to ease translation"""
+        charset = self._charset()
+        message = str(message)
+        message = message.replace('"', "'")
+        mapping = {}
+        for key, value in kw.items():
+            message = message.replace("'%s'" % value, "'${%s}'" % key)
+            # trying to work around zope.i18n issue
+            mapping[key] = unicode(value, charset)
+        message = message.strip()
+        return _(unicode(message, charset), mapping=mapping)
     
     def processErrors(self, errors, prefix='', sufix=''):
         """Add prefixes, sufixes to error ids 
@@ -920,7 +964,8 @@ class PloneTabsControlPanel(PloneKSSView):
             category = self.getActionCategory(cat_name)
         except Exception:
             raise KSSExplicitError, \
-                  "'%s' action category does not exist" % cat_name
+                  _(u"'${cat_name}' action category does not exist.",
+                    mapping={'cat_name': cat_name})
         
         # extract action id from given list item id on client
         action_id = self.sufix and id[len(self.prefix):-len(self.sufix)] or \
@@ -929,18 +974,20 @@ class PloneTabsControlPanel(PloneKSSView):
             action = category[action_id]
         except Exception:
             raise KSSExplicitError, \
-                  "No '%s' action in '%s' category." % (action_id, cat_name)
+                  _(u"No '${id}' action in '${cat_name}' category.",
+                    mapping={'id': action_id, 'cat_name': cat_name})
         
         return (action_id, category, action)
     
     def kss_issueErrors(self, errors, editform=False, fields=ACTION_ATTRS):
         """Display error messages on the client"""
         ksscore = self.getCommandSet('core')
+        ts = getToolByName(self.context, 'translation_service')
         for field in fields:
             self.kss_issueFieldError(ksscore, field,
-                                     errors.get(field, False), editform)
+                                     errors.get(field, False), editform, ts)
     
-    def kss_issueFieldError(self, ksscore, name, error, editform):
+    def kss_issueFieldError(self, ksscore, name, error, editform, ts):
         """Issue this error message for the field"""
         if editform:
             id = '%s%s%s' % (self.prefix, editform, self.sufix)
@@ -956,7 +1003,8 @@ class PloneTabsControlPanel(PloneKSSView):
                 '.error-container' % UI_ATTRS.get(name, name))
 
         if error:
-            ksscore.replaceInnerHTML(field_error_selector, _(error))
+            error = ts.translate(error, context=self.context)
+            ksscore.replaceInnerHTML(field_error_selector, error)
             ksscore.addClass(field_selector, 'error')
         else:
             ksscore.clearChildNodes(field_error_selector)

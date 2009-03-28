@@ -35,7 +35,7 @@
     Up to Site Setup
   </a>
 
-  <div i18n:translate="description_plonetabs">
+  <div>
     <form id="selectcategory_form"
           name="selectcategory_form"
           method="post"
@@ -51,14 +51,16 @@
                 tal:define="categories view/getCategories">
           <option value="current_category" selected="selected"
                   tal:attributes="value category"
+                  i18n:translate=""
                   tal:content="category" />
           <tal:options repeat="cat categories">
             <option tal:attributes="value cat"
                     tal:content="cat"
+                    i18n:translate=""
                     tal:condition="python: cat != category" />
           </tal:options>
         </select>
-        <input class="change-button kssHidden" type="submit" name="category.change" value="Change" />
+        <input class="change-button kssHidden" type="submit" i18n:attributes="value" name="category.change" value="Change" />
       </div>
     </form>
   </div>
@@ -76,7 +78,7 @@
     <input type="hidden" name="category" value="category" tal:attributes="value category" />
     <dl class="field-visible bridge">
       <dt>
-        <label for="actvisible">Visible</label>
+        <label for="actvisible" i18n:translate="">Visible</label>
       </dt>
       <dd>
         <input id="actvisible" type="checkbox" value="1" checked="checked" title="visibility" name="visible"
@@ -87,10 +89,11 @@
         tal:define="error errors/title|nothing"
         tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
       <dt>
-        <label for="actname">Name</label>
+        <label for="actname" i18n:translate="">Name</label>
       </dt>
       <dd>
-        <span class="error-container" tal:content="error">Validation error output</span>
+        <span class="error-container" tal:content="error"
+              i18n:translate="">Validation error output</span>
         <input id="actname" type="text" value="" name="title" autocomplete="off"
                tal:attributes="value request/title|nothing"/>
       </dd>
@@ -99,25 +102,27 @@
         tal:define="error errors/url_expr|nothing"
         tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
       <dt>
-        <label for="actaction">URL (Expression)</label>
+        <label for="actaction" i18n:translate="">URL (Expression)</label>
       </dt>
       <dd>
-        <span class="error-container" tal:content="error">Validation error output</span>
+        <span class="error-container" tal:content="error"
+              i18n:translate="">Validation error output</span>
         <input id="actaction" type="text" value="" size="30" name="url_expr"
                tal:attributes="value request/url_expr|nothing"/>
       </dd>
     </dl>
     <dl class="collapseAdvanced expandedBlock">
-      <dt class="headerAdvanced">Advanced</dt>
+      <dt class="headerAdvanced" i18n:translate="">Advanced</dt>
       <dd class="contentAdvanced">
         <dl class="field-id"
             tal:define="error errors/id|nothing"
             tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
           <dt>
-            <label for="actid">Id</label>
+            <label for="actid" i18n:translate="">Id</label>
           </dt>
           <dd>
-            <span class="error-container" tal:content="error">Validation error output</span>
+            <span class="error-container" tal:content="error"
+                  i18n:translate="">Validation error output</span>
             <input id="actid" type="text" value="" name="id"
                    tal:attributes="value request/id|nothing" />
           </dd>
@@ -126,10 +131,11 @@
             tal:define="error errors/available_expr|nothing"
             tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
           <dt>
-            <label for="actcondition">Condition (Expression)</label>
+            <label for="actcondition" i18n:translate="">Condition (Expression)</label>
           </dt>
           <dd>
-            <span class="error-container" tal:content="error">Validation error output</span>
+            <span class="error-container" tal:content="error"
+                  i18n:translate="">Validation error output</span>
             <input id="actcondition" type="text" value="" size="30" name="available_expr"
                    tal:attributes="value request/available_expr|nothing" />
           </dd>
@@ -140,6 +146,7 @@
     <div class="add-controls">
       <input type="submit" id="buttonadd" class="context" i18n:attributes="value" name="add.add" value="Add" />
       <input type="submit" id="buttoncancel" class="standalone" i18n:attributes="value" name="add.cancel" value="Cancel" />
+      <input type="reset"  id="buttonreset" class="editreset kssHidden context" i18n:attributes="value" name="add.reset" value="Reset"  />
     </div>
   </form>
 

@@ -48,7 +48,9 @@
 .qPloneTabs .headerAdvanced,
 .kssTabsActive .add-controls,
 .kssTabsActive .kssHidden,
-.kssTabsActive #autogeneration_controls {
+.kssTabsActive #autogeneration_controls,
+.editcancel,
+#buttoncancel {
   display:none;
   }
 .kssTabsActive .titleWrapper,
@@ -66,7 +68,9 @@
 .kssTabsActive li:hover .bridge,
 .kssTabsActive li:hover .delete,
 .kssTabsActive li:hover .drag-handle,
-.kssTabsActive #app #addaction.adding      .error-container {
+.kssTabsActive #app #addaction.adding      .error-container,
+.kssTabsActive .editcancel,
+.kssTabsActive #buttoncancel {
   display:inline;
   }
 
