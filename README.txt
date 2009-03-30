@@ -40,6 +40,8 @@ Notes
   product from quickinstaller tool, then remove it from Products folder and only
   after that install quintagroup.plonetabs package.
 
+* 'How to run js/kss/selenium tests' instruction will be here...
+
 
 Authors
 -------
