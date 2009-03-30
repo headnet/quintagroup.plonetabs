@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
-version = '0.5a'
+version = '0.5b1'
 
 setup(name='quintagroup.plonetabs',
       version=version,
       description="Quintagroup Plone Tabs",
-      long_description="""\
-The product allows Plone websites to manage portal_actions tool from portal_control_panel configlet.""",
+      long_description=open("README.txt").read() + "\n" +
+                       open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Framework :: Plone",
