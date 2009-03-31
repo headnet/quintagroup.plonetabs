@@ -31,52 +31,57 @@
                 tal:attributes="src
                 string:${context/@@absolute_url}/++resource++minisax.js;"
                 src="/3rd_party/johnnydebris.net/minisax.js/minisax.js">
-          </script>
+        </script>
 
         <script type="text/javascript"
                 tal:attributes="src
                 string:${context/@@absolute_url}/++resource++jsbase-string.js;"
                 src="/3rd_party/johnnydebris.net/jsbase/string.js">
-          </script>
+        </script>
 
         <script type="text/javascript"
                 tal:attributes="src
                 string:${context/@@absolute_url}/++resource++jsbase-array.js;"
                 src="/3rd_party/johnnydebris.net/jsbase/array.js">
-          </script>
+        </script>
 
         <script type="text/javascript"
                 tal:attributes="src
                 string:${context/@@absolute_url}/++resource++dommer-dommer.js;"
                 src="/3rd_party/johnnydebris.net/dommer/dommer.js">
-          </script>
+        </script>
 
         <script type="text/javascript"
                 tal:attributes="src
                 string:${context/@@absolute_url}/++resource++firebuglite/firebug.js;"
                 src="/3rd_party/firebuglite/firebug.js">
-          </script>
+        </script>
 
         <script type="text/javascript"
                 tal:attributes="src string:${context/@@absolute_url}/++resource++base2-dom-fp.js;"
                 src="/3rd_party/base2-dom-fp.js">
-          </script>
+        </script>
         <script tal:define="kss_devel_mode nocall:context/@@kss_devel_mode | nothing"
                 tal:condition="python: not kss_devel_mode or kss_devel_mode.isoff()" type="text/javascript"
                 tal:attributes="src string:${context/@@absolute_url}/++resource++kukit.js;"
                 src="/kukit/kukit.js">
-          </script>
+        </script>
 
         <script tal:define="kss_devel_mode nocall:context/@@kss_devel_mode | nothing"
                 tal:condition="python: kss_devel_mode and kss_devel_mode.ison()" type="text/javascript"
                 tal:attributes="src string:${context/@@absolute_url}/++resource++kukit-devel.js;"
                 src="/kukit/utils.js">
         </script>
+        <script type="text/javascript"
+                tal:attributes="src string:${context/@@absolute_url}/++resource++base2-dom-fp.js;"
+                src="/3rd_party/base2-dom-fp.js">
+        </script>
 
-        <script type="text/javascript" src="test_utils.js"> </script>
-        <script type="text/javascript" src="test_requestmanager.js"> </script>
-        <script type="text/javascript" src="test_tokenizer.js"> </script>
-        <script type="text/javascript" src="test_kssparser.js"> </script>
+        <script type="text/javascript" src="jquery.js"> </script>
+        <script type="text/javascript" src="jquery-integration.js"> </script>
+        <script type="text/javascript" src="nodeutilities.js"> </script>
+
+        <script type="text/javascript" src="test_actions.js"> </script>
       </head>
 
 <body>
