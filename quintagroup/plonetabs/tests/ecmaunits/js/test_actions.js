@@ -2,20 +2,55 @@ if (typeof(qpt) == "undefined") {
     var qpt = {};
 }
 
+// test implementation of TimerCounter
+qpt.TimerCounter = function() {
+
+this.initialize = function(delay, func, restart) {
+    this.delay = delay;
+    this.func = func;
+    if (typeof(restart) == 'undefined') {
+        restart = false;
+    }
+    this.restart = restart;
+    this.timer = null;
+};
+
+this.start = function() {
+    if (this.timer) {
+;;;     kukit.E = 'Timer already started.';
+
+        throw new Error(kukit.E);
+    }
+    this.timeout();
+};
+
+this.timeout = function() {
+    // Call the event action
+    this.func();
+    // Restart the timer
+    if (this.restart) {
+        this.timer = null;
+        this.start();
+    }
+};
+
+this.clear = function() {
+    if (this.timer) {
+        window.clearTimeout(this.timer);
+        this.timer = null;
+    }
+    this.restart = false;
+};
+this.initialize.apply(this, arguments);
+};
+
 qpt.ActionsTestCase = function() {
     this.name = 'qpt.ActionsTestCase';
 
     this.setUp = function() {
-//         this.dom = new global.dommer.DOM();
-//         this.doc = this.dom.createDocument();
-//         this.html = this.doc.createElement('html');
-//         this.doc.appendChild(this.html);
-//         this.body = this.doc.createElement('body');
-//         this.html.appendChild(this.body);
     };
 
     this.tearDown = function() {
-//         this.body.className = '';
     };
 
     this._action = function(actName) {
@@ -27,7 +62,7 @@ qpt.ActionsTestCase = function() {
         return oper;
     };
 
-    this.ddtestRedirectTo = function() {
+    this.testRedirectTo = function() {
         // we aren't able to test this action entirely
         // because it's impossible to override window object
         // by dummy, thus we will navigate off from test page
@@ -185,10 +220,33 @@ qpt.ActionsTestCase = function() {
         this.assertEquals(document.getElementById('plonetabs-newspan').innerHTML, 'hi')
 
         // then check some more complicated behavior
-        
+        // some time maybe I'll write it, sorry but right now I'm too lazy for this
 
         // cleanup document body from test content
         document.body.removeChild(container);
+    };
+
+    this.testTimeout = function() {
+        var act = this._action('plonetabs-timeout');
+
+        // patch global alert function to be able test something
+        var _orig_alert = window.alert;
+        var message;
+        window.alert = function(m){message=m;};
+
+        // patch kukit timer
+        var _orig_counter = kukit.ut.TimerCounter;
+        kukit.ut.TimerCounter = qpt.TimerCounter;
+
+        act(this._oper(document.body, {'cmd_name': 'alert',
+                                       'delay': 100,
+                                       'repeat': 'false',
+                                       'message': 'timeout'}));
+        this.assertEquals(message, 'timeout');
+
+        // revert patches
+        window.alert = _orig_alert;
+        kukit.ut.TimerCounter = _orig_counter;
     };
 
 };
