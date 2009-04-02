@@ -220,11 +220,11 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
              'moveAction method is not workig properly')
 
 
-class TestControlPanelAPI(PloneTabsTestCase):
+class TestControlPanelAPIMethods(PloneTabsTestCase):
     """Test here interface methods of control panel class"""
     
     def afterSetUp(self):
-        super(TestControlPanelAPI, self).afterSetUp()
+        super(TestControlPanelAPIMethods, self).afterSetUp()
         self.loginAsPortalOwner()
         panel = getMultiAdapter((self.portal, self.portal.REQUEST),
             name='plonetabs-controlpanel')
@@ -484,7 +484,7 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestControlPanelHelperMethods))
-    suite.addTest(unittest.makeSuite(TestControlPanelAPI))
+    suite.addTest(unittest.makeSuite(TestControlPanelAPIMethods))
     suite.addTest(unittest.makeSuite(TestControlPanelManageMethods))
     
     # these tests are implemented as Selenium KSS Tests

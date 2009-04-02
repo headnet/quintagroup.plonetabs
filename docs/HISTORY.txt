@@ -37,6 +37,9 @@ Changelog
 * Formatted python code to make it shorter or equal to 80 characters per line.
   [piv]
 
+* Refactored presentation layer (html/css things).
+  [serg]
+
 * Made Ajax configlet fully compatible with IE7.
   [piv]
 
