@@ -13,6 +13,14 @@ This is a fully rewritten version of qPloneTabs product. It is based
 on kss javascript framework and plone 3 technologies.
 
 
+Plone Tabs Features
+-------------------
+
+1. Gives an opportunity to create/delete/rename tabs using Plone Control Panel
+
+2. Allows changing the tabs order by drag-and-drop 
+
+
 Requirements
 ------------
 
@@ -42,8 +50,13 @@ Notes
 
 * 'How to run js/kss/selenium tests' instruction will be here...
 
+Link
+----
 
-Authors
--------
+* See Plone Tabs screencast at http://quintagroup.com/services/plone-development/products/plone-tabs to learn how to use this products on your Plone instance.
+
+
+Author
+------
 
 * Vitaliy Podoba - piv@quintagroup.com
