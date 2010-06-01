@@ -5,50 +5,57 @@ This product allows Plone websites to manage portal_actions tool from
 portal_control_panel configlet in an easier way. Especially using rich (Ajax
 based) mode.
 
+This is a fully rewritten version of qPloneTabs product. It is based on kss
+javascript framework and Plone 3 technologies.
 
-Overview
+Features
 --------
 
-This is a fully rewritten version of qPloneTabs product. It is based
-on kss javascript framework and plone 3 technologies.
+* quintagroup.plonetabs allows editing portal tabs, document actions, site actions, folder buttons (and other portal_actions tools) - all via Plone Control Panel
+* possibility to make items visible/invisible
+* possibility to change items order by simple drag-and-drop
 
+Usage
+-----
 
-Plone Tabs Features
--------------------
+To create new Plone tabs go to your Site Setup:
 
-1. Gives an opportunity to create/delete/rename tabs using Plone Control Panel
+* Select Plone Tabs from the list of Add-on Products Configuration
+* In the Select category to manage select what items you want to manage
+* Enter the name and the link of the tab you want to create
+* Click Add button
 
-2. Allows changing the tabs order by drag-and-drop 
+To change tabs order:
 
+* Click on the arrows next to the item title you want to change position for
+* Move it up/down to the necessary place
+
+Screencast
+----------
+
+You can watch Plone Tabs Screencast
+http://quintagroup.com/cms/screencasts/qplonetabs to see how to use this
+products on your Plone instance. Learn how to install Plone Tabs product on a
+buildout-based Plone instance, how to create new tabs, change their order, how
+to delete or edit tabs, as well as Plone actions items.
 
 Requirements
 ------------
 
 * Plone 3.x
 
-
 Rich (Ajax based) mode works for
 --------------------------------
 
 * Firefox 2+
-
 * IE 7+
-
 
 Notes
 -----
 
-* In case you are using browser which is not compatible with the given product
-  (see list above for compatible browsers), you can easily switch to
-  'Plain Mode' and use basic HTML forms without any javascript functionality.
-  That plain mode should work for any browser ;-)
+* In case you are using browser which is not compatible with the given product (see list above for compatible browsers), you can easily switch to 'Plain Mode' and use basic HTML forms without any javascript functionality. That plain mode should work for any browser ;-)
 
-* If you were using qPloneTabs product before and now you want to install this
-  new package then before installing quintagroup.plonetabs uninstall qPloneTabs
-  product from quickinstaller tool, then remove it from Products folder and only
-  after that install quintagroup.plonetabs package.
-
-* 'How to run js/kss/selenium tests' instruction will be here...
+* If you were using qPloneTabs product before and now you want to install this new package then before installing quintagroup.plonetabs uninstall qPloneTabs product from quickinstaller tool, then remove it from Products folder and only after that install quintagroup.plonetabs package.
 
 Link
 ----

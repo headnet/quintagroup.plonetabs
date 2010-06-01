@@ -1,3 +1,6 @@
+
+
+import os
 from setuptools import setup, find_packages
 
 version = '0.5b1'
@@ -7,6 +10,7 @@ setup(name='quintagroup.plonetabs',
       description="Quintagroup Plone Tabs",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
+
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Framework :: Plone",
@@ -16,9 +20,9 @@ setup(name='quintagroup.plonetabs',
         "Topic :: Software Development :: Libraries :: Python Modules",
         ],
       keywords='quintagroup plonetabs',
-      author='(c) "Quintagroup": http://quintagroup.com/ , 2008',
-      author_email='info@quintagroup.com',
-      url='http://projects.quintagroup.com/products/wiki/qPloneTabs',
+      author='"Quintagroup": http://quintagroup.com/',
+      author_email='support@quintagroup.com',
+      url='http://quintagroup.com/services/plone-development/products/plone-tabs',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['quintagroup'],
