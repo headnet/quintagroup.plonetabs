@@ -4,6 +4,8 @@
        i18n:domain="quintagroup.plonetabs"
        tal:define="category options/category;
                    errors options/errors|nothing;
+                   portal_state context/@@plone_portal_state;
+                   portal_url portal_state/portal_url;
                    test nocall:view/test">
 
     <form name="generated_tabs_form"
