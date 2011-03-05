@@ -16,6 +16,8 @@
                  category here/REQUEST/category|nothing;
                  category python:test(category and category != '', category, 'portal_tabs');
                  errors options/errors|nothing;
+                 portal_state context/@@plone_portal_state;
+                 portal_url portal_state/portal_url;
                  test nocall:view/test">
 
 <div id="plonetabs_form">
