@@ -429,7 +429,11 @@ class PloneTabsControlPanel(PloneKSSView):
             name=u"plone_context_state").actions()
         portal_tabs_view = getMultiAdapter((self.context, self.request),
             name="portal_tabs_view")
-        return portal_tabs_view.topLevelTabs(actions=actions['portal_tabs'])
+        if 'portal_tabs' in actions:
+            actions_tabs = actions['portal_tabs']
+        else:
+            actions_tabs = []
+        return portal_tabs_view.topLevelTabs(actions=actions_tabs)
 
     def selected_portal_tab(self):
         """See global-sections viewlet"""
