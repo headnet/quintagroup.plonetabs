@@ -42,6 +42,7 @@ to delete or edit tabs, as well as Plone actions items.
 Requirements
 ------------
 
+* Plone 4
 * Plone 3.x
 
 Rich (Ajax based) mode works for
@@ -62,8 +63,13 @@ Link
 
 * See Plone Tabs screencast at http://quintagroup.com/services/plone-development/products/plone-tabs to learn how to use this products on your Plone instance.
 
+Thanks
+------
+
+* Godefroid Chapelle [gotcha]
+
 
 Author
 ------
 
-* Vitaliy Podoba - piv@quintagroup.com
+* Vitaliy Podoba [piv]

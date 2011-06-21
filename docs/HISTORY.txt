@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.6 - (21-06-2011)
+
+* Merged plone4 branch [chervol]
+
+* Confirmed plone4 compatibility [gotcha]
+
+* Take care of the case when there are no tabs [gotcha]
+
 0.5b1 - Unreleased
 ------------------
 

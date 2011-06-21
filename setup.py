@@ -3,7 +3,7 @@
 import os
 from setuptools import setup, find_packages
 
-version = '0.5b1'
+version = '0.6'
 
 setup(name='quintagroup.plonetabs',
       version=version,
