@@ -6,7 +6,6 @@ from AccessControl.SecurityManagement import newSecurityManager, \
 from Testing import ZopeTestCase as ztc
 
 from zope.component import getSiteManager
-from zope.app.component.hooks import setHooks, setSite
 
 from plone.browserlayer.utils import registered_layers
 
@@ -23,13 +22,8 @@ class TestErase(PloneTabsTestCase):
     class layer(PloneSiteLayer):
         @classmethod
         def setUp(cls):
-
             app = ztc.app()
             portal = app.plone
-
-            # change the active local site manager
-            setHooks()
-            setSite(portal)
 
             # elevate permissions
             user = portal.getWrappedOwner()
