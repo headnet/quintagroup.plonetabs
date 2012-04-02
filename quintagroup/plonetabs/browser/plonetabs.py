@@ -425,17 +425,21 @@ class PloneTabsControlPanel(PloneKSSView):
     # ul have condition
     def portal_tabs(self):
         """See global-sections viewlet"""
-        portal_tabs_view = getMultiAdapter((self.context, self.request),
-            name="portal_tabs_view")
-        context_state = getMultiAdapter((aq_inner(self.context), self.request),
-                                         name=u'plone_context_state')
+        actions = getMultiAdapter((self.context, self.request),
+                                   name=u'plone_context_state').actions()
         try: 
             # Plone 4 and higher 
             import plone.app.upgrade 
-            actions = context_state.actions(actions_category='portal_tabs')
+            if 'portal_tabs' in actions:
+                actions_tabs = actions['portal_tabs']
+            else:
+                actions_tabs = []
         except ImportError: 
-            actions = context_state.actions()
-        return portal_tabs_view.topLevelTabs(actions=actions)
+            actions_tabs = actions
+
+        portal_tabs_view = getMultiAdapter((self.context, self.request),
+            name="portal_tabs_view")
+        return portal_tabs_view.topLevelTabs(actions=actions_tabs)
 
     def selected_portal_tab(self):
         """See global-sections viewlet"""
