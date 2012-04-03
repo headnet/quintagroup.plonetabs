@@ -1,7 +1,5 @@
 import unittest
 
-from zope.component import getSiteManager
-
 from plone.browserlayer.utils import registered_layers
 
 from Products.CMFCore.utils import getToolByName
@@ -70,7 +68,6 @@ class TestSetup(PloneTabsTestCase):
         )
 
     def test_browserLayerRegistered(self):
-        sm = getSiteManager(self.portal)
         layers = [o.__name__ for o in registered_layers()]
         self.failUnless('IPloneTabsProductLayer' in layers,
             'There should be quintagroup.ploentabs browser layer registered.')

@@ -5,7 +5,6 @@ from AccessControl.SecurityManagement import newSecurityManager, \
     noSecurityManager
 from Testing import ZopeTestCase as ztc
 
-from zope.component import getSiteManager
 from zope.app.component.hooks import setHooks, setSite
 
 from plone.browserlayer.utils import registered_layers
@@ -107,7 +106,6 @@ class TestErase(PloneTabsTestCase):
         )
 
     def test_browserLayer(self):
-        sm = getSiteManager(self.portal)
         layers = [o.__name__ for o in registered_layers()]
         self.failIf('IPloneTabsProductLayer' in layers,
             'There should be no quintagroup.plonetabs layer after uninstall.')

@@ -7,9 +7,7 @@ from plone.browserlayer.layer import mark_layer
 
 from  Testing import ZopeTestCase as ztc
 from  Products.Five import zcml
-from  Products.Five import fiveconfigure
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.interfaces import IAction, IActionCategory
 from Products.CMFCore.ActionInformation import Action, ActionCategory
 from  Products.PloneTestCase import PloneTestCase as ptc
 from  Products.PloneTestCase.layer import onsetup

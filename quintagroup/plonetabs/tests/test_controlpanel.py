@@ -5,7 +5,7 @@ from zope.interface.verify import verifyClass
 from zope.component import getMultiAdapter, provideAdapter
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.ActionInformation import Action, ActionCategory
+from Products.CMFCore.ActionInformation import Action
 
 from quintagroup.plonetabs import messageFactory as _
 from quintagroup.plonetabs.browser.interfaces import IPloneTabsControlPanel
@@ -72,11 +72,15 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
 
         # Revert PloneTestCase's optimization
         # because this breaks our test
+        #### pyflakes.scripts.pyflakes, modified:
+        ## - return array of warnings instead of printing them
+        ## - honour pyflakes:ignore comments
         def __init__(self, text):
             self.text = text
             if text.strip():
                 self._v_compiled = getEngine().compile(text)
         from Products.CMFCore.Expression import Expression
+
         optimized__init__ = Expression.__init__
         Expression.__init__ = __init__
         errors = method('new_category', bad_data)
@@ -85,6 +89,7 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
 
         self.assertEquals(len(errors.keys()), 4,
             'validateActionFields method is not working properly.')
+        #### pyflakes.scripts.pyflakes ends.
 
     def test_processErrors(self):
         method = self.panel.processErrors

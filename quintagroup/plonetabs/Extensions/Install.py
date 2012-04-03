@@ -53,5 +53,4 @@ def uninstall(self):
     for extension_id in UNINSTALL_PROFILES:
         portal_setup.runAllImportStepsFromProfile('profile-%s' % extension_id,
                                                   purge_old=False)
-        product_name = extension_id.split(':')[0]
         transaction.savepoint()

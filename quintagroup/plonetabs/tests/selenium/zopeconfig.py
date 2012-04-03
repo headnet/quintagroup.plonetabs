@@ -3,8 +3,7 @@ from zope.interface import implements
 from kss.demo import KSSSeleniumTestSuite, KSSSeleniumTestDirectory, \
     KSSSeleniumTestCase
 
-from plone.app.kss.demo.zopeconfig import PloneSiteLayer, \
-    LoggedInManagerLayer, LoggedInUserLayer, IResource
+from plone.app.kss.demo.zopeconfig import LoggedInManagerLayer, IResource
 
 
 #

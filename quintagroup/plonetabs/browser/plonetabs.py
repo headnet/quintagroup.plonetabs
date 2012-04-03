@@ -23,7 +23,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 
-from quintagroup.plonetabs.config import *
+from quintagroup.plonetabs.config import PROPERTY_SHEET, FIELD_NAME
 from quintagroup.plonetabs import messageFactory as _
 from interfaces import IPloneTabsControlPanel
 
@@ -60,10 +60,8 @@ class PloneTabsControlPanel(PloneKSSView):
         """Perform the update and redirect if necessary, or render the page"""
         postback = True
         errors = {}
-        context = aq_inner(self.context)
 
         form = self.request.form
-        action = form.get("action", "")
         submitted = form.get('form.submitted', False)
 
         # action handler def handler(self, form)
@@ -429,15 +427,15 @@ class PloneTabsControlPanel(PloneKSSView):
         """See global-sections viewlet"""
         actions = getMultiAdapter((self.context, self.request),
                                    name=u'plone_context_state').actions()
+        actions_tabs = []
         try:
             # Plone 4 and higher
             import plone.app.upgrade
-            if 'portal_tabs' in actions:
-                actions_tabs = actions['portal_tabs']
-            else:
-                actions_tabs = []
+            plone.app.upgrade  # pyflakes
         except ImportError:
             actions_tabs = actions
+        if not actions_tabs and 'portal_tabs' in actions:
+            actions_tabs = actions['portal_tabs']
 
         portal_tabs_view = getMultiAdapter((self.context, self.request),
             name="portal_tabs_view")
@@ -539,9 +537,8 @@ class PloneTabsControlPanel(PloneKSSView):
         obj_id = id[len("roottabs_"):]
 
         if obj_id not in portal.objectIds():
-            raise KSSExplicitError, \
-                  _(u"Object with '${id}' id doesn't exist in portal root.",
-                    mapping={'id': obj_id})
+            raise KSSExplicitError("Object with %s id doesn't" +\
+                                   " exist in portal root." % obj_id)
 
         if checked == '1':
             checked = True
@@ -623,7 +620,6 @@ class PloneTabsControlPanel(PloneKSSView):
 
         # if not errors find (or create) category and set action to it
         ksscore = self.getCommandSet('core')
-        kssplone = self.getCommandSet('plone')
         if not errors:
             action = self.addAction(cat_name, data)
 
@@ -752,7 +748,6 @@ class PloneTabsControlPanel(PloneKSSView):
 
         html_id = '%s%s%s' % (self.prefix, id, self.sufix)
         ksscore = self.getCommandSet('core')
-        kssplone = self.getCommandSet('plone')
         if not errors:
             action = self.updateAction(id, cat_name, data)
 
@@ -977,9 +972,8 @@ class PloneTabsControlPanel(PloneKSSView):
         try:
             category = self.getActionCategory(cat_name)
         except Exception:
-            raise KSSExplicitError, \
-                  _(u"'${cat_name}' action category does not exist.",
-                    mapping={'cat_name': cat_name})
+            raise KSSExplicitError(u"%s action category does not exist." %\
+                                   cat_name)
 
         # extract action id from given list item id on client
         action_id = self.sufix and id[len(self.prefix):-len(self.sufix)] or \
@@ -987,9 +981,8 @@ class PloneTabsControlPanel(PloneKSSView):
         try:
             action = category[action_id]
         except Exception:
-            raise KSSExplicitError, \
-                  _(u"No '${id}' action in '${cat_name}' category.",
-                    mapping={'id': action_id, 'cat_name': cat_name})
+            raise KSSExplicitError("No %s action in %s category." %\
+                                              (action_id, cat_name))
 
         return (action_id, category, action)
 
@@ -1033,19 +1026,18 @@ class PloneTabsControlPanel(PloneKSSView):
         command = self.commands.addCommand('plonetabs-toggleCollapsible',
                                            selector)
         if collapsed is not None:
-            data = command.addParam('collapsed', collapsed)
+            command.addParam('collapsed', collapsed)
         if expanded is not None:
-            data = command.addParam('expanded', expanded)
+            command.addParam('expanded', expanded)
         if collapse is not None:
-            data = command.addParam('collapse', collapse)
+            command.addParam('collapse', collapse)
 
     def kss_resetForm(self, selector):
         """KSS Server command to reset form on client"""
-        command = self.commands.addCommand('plonetabs-resetForm', selector)
 
     def kss_blur(self, selector):
         """KSS Server command to remove focus from input"""
-        command = self.commands.addCommand('plonetabs-blur', selector)
+        self.commands.addCommand('plonetabs-blur', selector)
 
     def kss_replaceOrInsert(self, selector, parentSelector, html,
                             withKssSetup='True', alternativeHTML='',
@@ -1054,20 +1046,20 @@ class PloneTabsControlPanel(PloneKSSView):
         """KSS Server command to execute replaceOrInsert client action"""
         command = self.commands.addCommand('plonetabs-replaceOrInsert',
             selector)
-        data = command.addParam('selector', parentSelector)
-        data = command.addHtmlParam('html', html)
-        data = command.addParam('withKssSetup', withKssSetup)
+        command.addParam('selector', parentSelector)
+        command.addHtmlParam('html', html)
+        command.addParam('withKssSetup', withKssSetup)
         if alternativeHTML:
-            data = command.addHtmlParam('alternativeHTML', alternativeHTML)
+            command.addHtmlParam('alternativeHTML', alternativeHTML)
         if selectorType:
-            data = command.addParam('selectorType', selectorType)
+            command.addParam('selectorType', selectorType)
         if position:
-            data = command.addParam('position', position)
+            command.addParam('position', position)
         if positionSelector:
-            data = command.addParam('positionSelector', positionSelector)
+            command.addParam('positionSelector', positionSelector)
         if positionSelectorType:
-            data = command.addParam('positionSelectorType',
-                                    positionSelectorType)
+            command.addParam('positionSelectorType',
+                              positionSelectorType)
 
     def kss_issueMessage(self, message, msgtype="info"):
         """"Issues portal status message and removes it afte 10 seconds"""
@@ -1082,7 +1074,7 @@ class PloneTabsControlPanel(PloneKSSView):
 
     def kss_timeout(self, selector, **kw):
         """KSS Server command to execute plonetabs-timeout client action"""
-        command = self.commands.addCommand('plonetabs-timeout', selector, **kw)
+        self.commands.addCommand('plonetabs-timeout', selector, **kw)
 
     def renderViewlet(self, manager, name):
         if isinstance(manager, basestring):
