@@ -1,8 +1,8 @@
 try:
     from zope.annotation.interfaces import IAnnotations
+    IAnnotations  # pyflakes
 except ImportError:
     from zope.app.annotation.interfaces import IAnnotations
-
 from plone.browserlayer.layer import mark_layer
 
 from  Testing import ZopeTestCase as ztc

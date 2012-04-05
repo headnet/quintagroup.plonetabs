@@ -72,14 +72,13 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
 
         # Revert PloneTestCase's optimization
         # because this breaks our test
-        #### pyflakes.scripts.pyflakes, modified:
-        ## - return array of warnings instead of printing them
-        ## - honour pyflakes:ignore comments
+        from Products.CMFCore.Expression import getEngine
+        from Products.CMFCore.Expression import Expression
+
         def __init__(self, text):
             self.text = text
             if text.strip():
                 self._v_compiled = getEngine().compile(text)
-        from Products.CMFCore.Expression import Expression
 
         optimized__init__ = Expression.__init__
         Expression.__init__ = __init__
