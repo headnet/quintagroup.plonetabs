@@ -25,6 +25,8 @@ def setup_package():
     ztc.installPackage('quintagroup.plonetabs')
 
 setup_package()
+if ptc.PLONE30:
+    ptc.setupPloneSite(products=["plone.browserlayer", 'quintagroup.plonetabs'])
 ptc.setupPloneSite(products=['quintagroup.plonetabs'])
 
 _marker = object()
