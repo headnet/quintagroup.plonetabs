@@ -18,7 +18,7 @@ from quintagroup.plonetabs.tests.data import PORTAL_ACTIONS, PORTAL_CONTENT
 
 
 @onsetup
-dejf setup_package():
+def setup_package():
     import quintagroup.plonetabs
     zcml.load_config('configure.zcml', quintagroup.plonetabs)
     #ztc.installPackage('some.other.package')
