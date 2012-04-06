@@ -18,7 +18,7 @@ from quintagroup.plonetabs.tests.data import PORTAL_ACTIONS, PORTAL_CONTENT
 
 
 @onsetup
-def setup_package():
+dejf setup_package():
     import quintagroup.plonetabs
     zcml.load_config('configure.zcml', quintagroup.plonetabs)
     #ztc.installPackage('some.other.package')
@@ -26,7 +26,7 @@ def setup_package():
 
 setup_package()
 if ptc.PLONE30:
-    ptc.setupPloneSite(products=["plone.browserlayer", 'quintagroup.plonetabs'])
+    ptc.setupPloneSite(products=["plone.browserlayer"])
 ptc.setupPloneSite(products=['quintagroup.plonetabs'])
 
 _marker = object()
