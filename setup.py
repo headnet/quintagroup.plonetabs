@@ -3,7 +3,7 @@
 import os
 from setuptools import setup, find_packages
 
-version = '0.7'
+version = '0.7.1-dev'
 
 setup(name='quintagroup.plonetabs',
       version=version,
@@ -11,7 +11,8 @@ setup(name='quintagroup.plonetabs',
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
 
-      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+      # Get more strings from
+      # http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Framework :: Plone",
         "Framework :: Zope2",
@@ -22,7 +23,8 @@ setup(name='quintagroup.plonetabs',
       keywords='quintagroup plonetabs',
       author='"Quintagroup": http://quintagroup.com/',
       author_email='support@quintagroup.com',
-      url='http://quintagroup.com/services/plone-development/products/plone-tabs',
+      url='http://quintagroup.com/' +\
+          'services/plone-development/products/plone-tabs',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['quintagroup'],
@@ -30,6 +32,7 @@ setup(name='quintagroup.plonetabs',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'plone.browserlayer'
           # -*- Extra requirements: -*-
       ],
       entry_points="""
