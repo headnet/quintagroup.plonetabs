@@ -1,8 +1,8 @@
 Changelog
 =========
 
-0.8 - Unreleased
-----------------
+0.7.1-dev (unreleased)
+----------------------
 * Updated code according with pep8, pylint, pyflakes
   [potar]
 
