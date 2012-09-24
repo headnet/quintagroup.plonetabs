@@ -460,7 +460,7 @@ class PloneTabsControlPanel(PloneKSSView):
                                              self.context,
                                              self.request,
                                              'plone.global_sections')
-        if section_viewlet:
+        if hasattr(section_viewlet, 'selectedTabs'):
             # Plone >= 4.3
             selected_tabs = section_viewlet.selectedTabs(
                 default_tab='index_html', 
