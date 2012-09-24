@@ -6,7 +6,16 @@ from DateTime import DateTime
 
 from zope.interface import implements
 from zope.component import getMultiAdapter
-from zope.app.container.interfaces import INameChooser
+
+# BBB: compatibility with older plone versions
+try:
+     # Plone < 4.3
+     from zope.app.container import interfaces
+     INameChooser = interfaces.INameChooser
+except ImportError:
+     # Plone >= 4.3 
+     from zope.container.interfaces import INameChooser
+     
 from zope.viewlet.interfaces import IViewletManager, IViewlet
 
 from plone.app.layout.navigation.root import getNavigationRoot
@@ -24,6 +33,7 @@ from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 
 from quintagroup.plonetabs.config import PROPERTY_SHEET, FIELD_NAME
+from quintagroup.plonetabs.utils import setupViewletByName
 from quintagroup.plonetabs import messageFactory as _
 from interfaces import IPloneTabsControlPanel
 
@@ -443,9 +453,23 @@ class PloneTabsControlPanel(PloneKSSView):
 
     def selected_portal_tab(self):
         """See global-sections viewlet"""
-        selectedTabs = self.context.restrictedTraverse('selectedTabs')
-        selected_tabs = selectedTabs('index_html', self.context,
-            self.portal_tabs())
+        # BBB: compatibility with older plone versions.
+        # ``selectedTabs`` Python script was merged into the 
+        # GlobalSectionsViewlet.
+        section_viewlet = setupViewletByName(self,
+                                             self.context,
+                                             self.request,
+                                             'plone.global_sections')
+        if section_viewlet:
+            # Plone >= 4.3
+            selected_tabs = section_viewlet.selectedTabs(
+                default_tab='index_html', 
+                portal_tabs=self.portal_tabs())
+        else:
+            # Plone < 4.3
+            selectedTabs = self.context.restrictedTraverse('selectedTabs')
+            selected_tabs = selectedTabs('index_html', self.context,
+                self.portal_tabs())
 
         return selected_tabs['portal']
 

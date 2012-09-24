@@ -5,7 +5,15 @@ from AccessControl.SecurityManagement import newSecurityManager, \
     noSecurityManager
 from Testing import ZopeTestCase as ztc
 
-from zope.app.component.hooks import setHooks, setSite
+# BBB: compatibility with older plone versions
+try:
+    # Plone < 4.3
+    from zope.app.component import hooks 
+    setSite = hooks.setSite
+    setHooks = hooks.setHooks
+except ImportError:
+    # Plone >= 4.3 
+    from zope.component.hooks import setSite, setHooks
 
 from plone.browserlayer.utils import registered_layers
 
