@@ -2,7 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="quintagroup.plonetabs">
-    
+
     <genericsetup:registerProfile
        name="default"
        title="Plone Tabs"
@@ -18,5 +18,5 @@
        description="Uninstall Quintagroup Plone Tabs Product"
        provides="Products.GenericSetup.interfaces.EXTENSION"
        />
-    
+
 </configure>

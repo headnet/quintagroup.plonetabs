@@ -7,10 +7,10 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.viewlet.interfaces import IViewlet
 
 
-# TODO: Methods 'getViewletByName' and 'setupViewletByName' were copied 
+# TODO: Methods 'getViewletByName' and 'setupViewletByName' were copied
 # from https://github.com/collective/collective.developermanual/blob/master/source/views/viewlets.rst#what-viewlets-do
-# Better solution would be to use collective.fastview 
-# (http://svn.plone.org/svn/collective/collective.fastview/trunk/) 
+# Better solution would be to use collective.fastview
+# (http://svn.plone.org/svn/collective/collective.fastview/trunk/)
 # which has not yet included in plone.
 
 def getViewletByName(name):
@@ -46,7 +46,7 @@ def setupViewletByName(view, context, request, name):
     # Perform viewlet regisration look-up
     # from adapters registry
     reg = getViewletByName(name)
-    if reg == None:
+    if reg is None:
         return None
 
     # factory method is responsible for creating the viewlet instance
