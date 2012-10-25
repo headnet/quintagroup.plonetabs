@@ -8,7 +8,7 @@ from zope.viewlet.interfaces import IViewlet
 
 
 # TODO: Methods 'getViewletByName' and 'setupViewletByName' were copied
-# from https://github.com/collective/collective.developermanual/blob/master/source/views/viewlets.rst#what-viewlets-do
+# from https://github.com/collective/collective.developermanual/blob/master/source/views/viewlets.rst#rendering-viewlet-by-name
 # Better solution would be to use collective.fastview
 # (http://svn.plone.org/svn/collective/collective.fastview/trunk/)
 # which has not yet included in plone.
