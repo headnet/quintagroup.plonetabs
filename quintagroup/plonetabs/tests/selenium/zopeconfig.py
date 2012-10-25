@@ -32,7 +32,7 @@ class PloneTabsSeleniumKssTests(object):
 
     selenium_tests = (
         KSSSeleniumTestSuite(
-            tests=KSSSeleniumTestDirectory('selenium_tests/' +\
+            tests=KSSSeleniumTestDirectory('selenium_tests/'
                                            'run_as_testmanager'),
             layer=PortalTabsLayer,
             component='quintagroup.plonetabs',
