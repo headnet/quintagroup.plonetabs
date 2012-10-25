@@ -222,7 +222,8 @@ class PloneTabsControlPanel(PloneKSSView):
         if id in category.objectIds():
             self.moveAction(id, cat_name, steps=1)
             IStatusMessage(self.request).addStatusMessage(
-                _(u"'${id}' action moved up.", mapping={'id': id}), type="info")
+                _(u"'${id}' action moved up.", mapping={'id': id}),
+                type="info")
             self.redirect(search="category=%s" % cat_name)
             return False
         else:
@@ -686,7 +687,8 @@ class PloneTabsControlPanel(PloneKSSView):
             if 'id' in errors or 'available_expr' in errors:
                 self.kss_toggleCollapsible(
                     ksscore.getCssSelector('form[name=addaction_form] '
-                                           '.headerAdvanced'), collapse='false')
+                                           '.headerAdvanced'),
+                    collapse='false')
 
             message = _(u"Please correct the indicated errors.")
             msgtype = "error"

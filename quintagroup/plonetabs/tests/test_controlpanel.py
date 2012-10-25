@@ -10,7 +10,7 @@ from Products.CMFCore.ActionInformation import Action
 from quintagroup.plonetabs import messageFactory as _
 from quintagroup.plonetabs.browser.interfaces import IPloneTabsControlPanel
 from quintagroup.plonetabs.browser.plonetabs \
-                                      import PloneTabsControlPanel as ptp
+    import PloneTabsControlPanel as ptp
 from quintagroup.plonetabs.tests.base import PloneTabsTestCase
 from quintagroup.plonetabs.tests.data import PORTAL_ACTIONS
 
@@ -21,7 +21,7 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
         super(TestControlPanelHelperMethods, self).afterSetUp()
         self.loginAsPortalOwner()
         panel = getMultiAdapter((self.portal, self.portal.REQUEST),
-            name='plonetabs-controlpanel')
+                                name='plonetabs-controlpanel')
         # we need this to apply zope2 security (got from zope2 traverse method)
         self.panel = panel.__of__(self.portal)
         self.tool = getToolByName(self.portal, 'portal_actions')
@@ -30,23 +30,23 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
         response = self.portal.REQUEST.RESPONSE
         method = self.panel.redirect
         portal_url = getMultiAdapter((self.portal, self.portal.REQUEST),
-                                      name=u"plone_portal_state").portal_url()
+                                     name=u"plone_portal_state").portal_url()
         url = '%s/@@plonetabs-controlpanel' % portal_url
         method()
         self.assertEquals(response.headers.get('location', ''), url,
-            'Redirect method is not working properly.')
+                          'Redirect method is not working properly.')
 
         # check query string and anchor hash
         method('http://quintagroup.com', 'q=test', 'hash_code')
         self.assertEquals(response.headers.get('location', ''),
-            'http://quintagroup.com?q=test#hash_code',
-            'Redirect method is not working properly.')
+                          'http://quintagroup.com?q=test#hash_code',
+                          'Redirect method is not working properly.')
 
     def test_fixExpression(self):
         method = self.panel.fixExpression
         self.assertEquals(method('/slash'), 'string:${portal_url}/slash')
         self.assertEquals(method('https://test.com'),
-                                 'string:https://test.com')
+                          'string:https://test.com')
         self.assertEquals(method('python:True'), 'python:True')
         self.assertEquals(method('hello'), 'string:${object_url}/hello')
 
@@ -63,7 +63,7 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
         good_data['id'] = 'new_one'
         errors = method('new_category', good_data)
         self.assertEquals(errors, {},
-            'There should be no errors for valid data.')
+                          'There should be no errors for valid data.')
 
         bad_data = {'id': '',
                     'title': ' ',
@@ -87,17 +87,18 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
         Expression.__init__ = optimized__init__
 
         self.assertEquals(len(errors.keys()), 4,
-            'validateActionFields method is not working properly.')
+                          'validateActionFields method is not working '
+                          'properly.')
         #### pyflakes.scripts.pyflakes ends.
 
     def test_processErrors(self):
         method = self.panel.processErrors
         errors = {'error': 'error message'}
         self.assertEquals(method(errors), errors,
-            'processErrors method is not working properly.')
+                          'processErrors method is not working properly.')
         self.assertEquals(method(errors, 'pre_', '_post'),
-            {'pre_error_post': 'error message'},
-            'processErrors method is not working properly.')
+                          {'pre_error_post': 'error message'},
+                          'processErrors method is not working properly.')
 
     def test_parseEditForm(self):
         method = self.panel.parseEditForm
@@ -109,12 +110,12 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
                 'url_expr_id1': 'expr1',
                 'available_expr_id1': 'expr2'}
         self.assertEquals(method(form),
-            ('id1', 'cat1', {'id': 'id_new',
-                             'title': 'title1',
-                             'url_expr': 'expr1',
-                             'available_expr': 'expr2',
-                             'visible': True}),
-            'parseEditForm method is not working properly.')
+                          ('id1', 'cat1', {'id': 'id_new',
+                                           'title': 'title1',
+                                           'url_expr': 'expr1',
+                                           'available_expr': 'expr2',
+                                           'visible': True}),
+                          'parseEditForm method is not working properly.')
 
         del form['orig_id']
         self.failUnlessRaises(KeyError, method, form)
@@ -128,12 +129,12 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
                 'url_expr': 'string:expr1',
                 'available_expr': 'expr2'}
         self.assertEquals(method(form),
-            ('id1', 'cat1', {'id': 'id1',
-                             'visible': True,
-                             'title': 'title1',
-                             'url_expr': 'string:expr1',
-                             'available_expr': 'expr2'}),
-            'parseAddForm method is not working properly.')
+                          ('id1', 'cat1', {'id': 'id1',
+                                           'visible': True,
+                                           'title': 'title1',
+                                           'url_expr': 'string:expr1',
+                                           'available_expr': 'expr2'}),
+                          'parseAddForm method is not working properly.')
 
         del form['id']
         self.failUnlessRaises(KeyError, method, form)
@@ -145,19 +146,19 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
 
         self.setupActions(self.tool)
         self.assertEquals(method('portal_tabs').id, 'portal_tabs',
-            'getActionCategory is not working properly.')
+                          'getActionCategory is not working properly.')
 
     def test_getOrCreateCategory(self):
         method = self.panel.getOrCreateCategory
         self.purgeActions()
         self.assertEquals(method('portal_tabs').id, 'portal_tabs',
-            'getOrCreateCategory is not working properly.')
+                          'getOrCreateCategory is not working properly.')
 
     def test_setSiteProperties(self):
         self.panel.setSiteProperties(title='Test Title')
         sp = getToolByName(self.portal, 'portal_properties').site_properties
         self.assertEquals(sp.getProperty('title'), 'Test Title',
-            'setSiteProperties method is not working properly.')
+                          'setSiteProperties method is not working properly.')
 
     def test_renderViewlet(self):
         # register test viewlet and it's manager
@@ -194,7 +195,7 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
         self.purgeActions()
         self.panel.addAction('new_category', {'id': 'id1', 'title': 'Test'})
         self.failUnless('id1' in self.tool.new_category.objectIds(),
-            'addAction method is not workig properly')
+                        'addAction method is not workig properly')
 
     def test_updateAction(self):
         method = self.panel.updateAction
@@ -209,24 +210,24 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
         transaction.savepoint()
         method('home', 'portal_tabs', {'id': 'new_home'})
         self.failUnless('new_home' in self.tool.portal_tabs.objectIds(),
-            'updateAction method is not workig properly')
+                        'updateAction method is not workig properly')
 
     def test_deleteAction(self):
         self.purgeActions()
         self.setupActions(self.tool)
         self.panel.deleteAction('home', 'portal_tabs')
         self.failIf('home' in self.tool.portal_tabs.objectIds(),
-             'deleteAction method is not workig properly')
+                    'deleteAction method is not workig properly')
 
     def test_moveAction(self):
         self.purgeActions()
         self.setupActions(self.tool)
         pos = self.tool.portal_tabs.getObjectPosition
         self.assertEquals(pos('home'), 0,
-            'moveAction method is not workig properly')
+                          'moveAction method is not workig properly')
         self.panel.moveAction('home', 'portal_tabs', -1)
         self.assertEquals(pos('home'), 1,
-             'moveAction method is not workig properly')
+                          'moveAction method is not workig properly')
 
 
 class TestControlPanelAPIMethods(PloneTabsTestCase):
@@ -236,53 +237,56 @@ class TestControlPanelAPIMethods(PloneTabsTestCase):
         super(TestControlPanelAPIMethods, self).afterSetUp()
         self.loginAsPortalOwner()
         panel = getMultiAdapter((self.portal, self.portal.REQUEST),
-            name='plonetabs-controlpanel')
+                                name='plonetabs-controlpanel')
         # we need this to apply zope2 security (got from zope2 traverse method)
         self.panel = panel.__of__(self.portal)
         self.tool = getToolByName(self.portal, 'portal_actions')
 
     def test_interface(self):
         self.failUnless(IPloneTabsControlPanel.implementedBy(ptp),
-            'PloneTabs control panel does not implement required interface.')
+                        'PloneTabs control panel does not implement '
+                        'required interface.')
         self.failUnless(verifyClass(IPloneTabsControlPanel, ptp),
-            'PloneTabs control panel does not implement required interface.')
+                        'PloneTabs control panel does not implement '
+                        'required interface.')
 
     def test_getPageTitle(self):
         self.assertEquals(self.panel.getPageTitle(),
-            _(u"Portal Tabs Configuration"),
-            'getPageTitle method is broken')
+                          _(u"Portal Tabs Configuration"),
+                          'getPageTitle method is broken')
         self.assertEquals(self.panel.getPageTitle(category='notexists'),
-            _(u"Plone '${cat_name}' Configuration",
-              mapping={'cat_name': 'notexists'}),
-            'getPageTitle method is broken')
+                          _(u"Plone '${cat_name}' Configuration",
+                            mapping={'cat_name': 'notexists'}),
+                          'getPageTitle method is broken')
 
     def test_hasActions(self):
         method = self.panel.hasActions
         # purge any default portal actions
         self.purgeActions()
         self.failIf(method(),
-            'There should be no portal_tab actions in portal')
+                    'There should be no portal_tab actions in portal')
 
         # setup our own actions
         self.setupActions(self.tool)
         self.failUnless(method(),
-            'There should be portal_tab actions in portal')
+                        'There should be portal_tab actions in portal')
 
     def test_getPortalActions(self):
         method = self.panel.getPortalActions
         # purge any default portal actions
         self.purgeActions()
-        self.assertEquals(len(method()), 0,
-            'There should be no actions in portal_tabs category.')
+        self.assertEquals(len(method()), 0, 'There should be no actions in '
+                          'portal_tabs category.')
 
         # setup our own actions
         self.setupActions(self.tool)
         self.assertEquals(len(method()), 2,
-            'There should be 2 actions in portal_tabs category.')
+                          'There should be 2 actions in portal_tabs category.')
 
         # marginal arguments
         self.assertEquals(len(method('notexistent_category')), 0,
-            'There should be no actions for not existed category.')
+                          'There should be no actions for not existed '
+                          'category.')
 
     def test_isGeneratedTabs(self):
         method = self.panel.isGeneratedTabs
@@ -303,19 +307,19 @@ class TestControlPanelAPIMethods(PloneTabsTestCase):
         # purge any default portal actions
         self.purgeActions()
         self.failIf('class="editform"' in method(),
-            'There should no be actions in actions list template.')
+                    'There should no be actions in actions list template.')
         self.setupActions(self.tool)
         self.failUnless('class="editform"' in method(),
-            'There are no actions in actions list template.')
+                        'There are no actions in actions list template.')
 
     def test_getAutoGenereatedSection(self):
         method = self.panel.getAutoGenereatedSection
         self.failIf('<form' in method('user'),
-            'There should be no form in autogenerated tabs template '
-            'for category other than portal_tabs.')
+                    'There should be no form in autogenerated tabs template '
+                    'for category other than portal_tabs.')
         self.failUnless('<form' in method('portal_tabs'),
-            'There should be form in autogenerated tabs template '
-            'for portal_tabs category.')
+                        'There should be form in autogenerated tabs template '
+                        'for portal_tabs category.')
 
     def test_getGeneratedTabs(self):
         self.panel.getGeneratedTabs()
@@ -330,38 +334,39 @@ class TestControlPanelAPIMethods(PloneTabsTestCase):
         # make sure we don't depend on external settings
         self.purgeContent()
         self.assertEquals(len(method()), 0,
-            'There should be no root elements for navigation.')
+                          'There should be no root elements for navigation.')
 
         # now add some testing content
         self.setupContent(self.portal)
-        self.assertEquals(len(method()), 2,
-            'There should be 2 elements in portal root for navigation.')
+        self.assertEquals(len(method()), 2, 'There should be 2 elements in '
+                          'portal root for navigation.')
 
         # now switch off autogeneration
         sp = getToolByName(self.portal, 'portal_properties').site_properties
         sp.manage_changeProperties(disable_folder_sections=True)
         self.assertEquals(len(method()), 0,
-            'There should be no root elements for navigation when '
-            'tabs autogeneration is switched off.')
+                          'There should be no root elements for navigation '
+                          'when tabs autogeneration is switched off.')
 
     def test_getCategories(self):
         method = self.panel.getCategories
         # purge any default portal actions
         self.purgeActions()
-        self.assertEquals(len(method()), 0,
-            'There should be no categories in portal_actions tool.')
+        self.assertEquals(len(method()), 0, 'There should be no categories '
+                          'in portal_actions tool.')
 
         # now setup actions
         self.setupActions(self.tool)
         self.assertEquals(method(), ['portal_tabs', 'new_category'],
-            'There should be exactly 2 categories in portal_actions tool.')
+                          'There should be exactly 2 categories in '
+                          'portal_actions tool.')
 
     def test_portal_tabs(self):
         method = self.panel.portal_tabs
         self.purgeContent()
         self.purgeActions()
         self.assertEquals(len(method()), 0,
-            'There should be no portal tabs.')
+                          'There should be no portal tabs.')
 
         # cleanup memoize cache
         # cause actions method of portal context state is caching it's
@@ -371,20 +376,21 @@ class TestControlPanelAPIMethods(PloneTabsTestCase):
         # add actions
         self.setupActions(self.tool)
         self.assertEquals(len(method()), 2,
-            'There should be 2 portal tabs.')
+                          'There should be 2 portal tabs.')
 
         # add content
         self.setupContent(self.portal)
         self.assertEquals(len(method()), 4,
-            'There should be 4 portal tabs.')
+                          'There should be 4 portal tabs.')
 
     def test_selected_portal_tab(self):
         self.assertEquals(self.panel.selected_portal_tab(), 'index_html',
-            'index_html is not selected tab while being on configlet.')
+                          'index_html is not selected tab while being on '
+                          'configlet.')
 
     def test_test(self):
         self.assertEquals(self.panel.test(True, 'true', 'false'), 'true',
-            'Test function does not work properly.')
+                          'Test function does not work properly.')
 
 
 class TestControlPanelManageMethods(PloneTabsTestCase):
@@ -394,7 +400,7 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
         super(TestControlPanelManageMethods, self).afterSetUp()
         self.loginAsPortalOwner()
         panel = getMultiAdapter((self.portal, self.portal.REQUEST),
-            name='plonetabs-controlpanel')
+                                name='plonetabs-controlpanel')
         # we need this to apply zope2 security (got from zope2 traverse method)
         self.panel = panel.__of__(self.portal)
         self.tool = getToolByName(self.portal, 'portal_actions')
@@ -425,7 +431,7 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
         postback = self.panel.manage_addAction(form, {})
         self.failUnless('id1' in self.tool.cat1.objectIds())
         self.failIf(postback,
-            'There should be redirect after successfull adding.')
+                    'There should be redirect after successfull adding.')
 
     def test_manage_editAction(self):
         method = self.panel.manage_editAction
@@ -444,7 +450,7 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
         postback = method(form, {})
         self.failUnless('id_new' in self.tool.portal_tabs.objectIds())
         self.failIf(postback,
-            'There should be redirect after successfull edition.')
+                    'There should be redirect after successfull edition.')
 
         form['category'] = 'non_existent'
         self.failUnlessRaises(KeyError, method, form, {})

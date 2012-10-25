@@ -7,8 +7,9 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.viewlet.interfaces import IViewlet
 
 
-# TODO: Methods 'getViewletByName' and 'setupViewletByName' were copied
-# from https://github.com/collective/collective.developermanual/blob/master/source/views/viewlets.rst#rendering-viewlet-by-name
+# TODO: Methods 'getViewletByName' and 'setupViewletByName' were copied from
+# https://github.com/collective/collective.developermanual/blob/master/source/
+#                                 views/viewlets.rst#rendering-viewlet-by-name
 # Better solution would be to use collective.fastview
 # (http://svn.plone.org/svn/collective/collective.fastview/trunk/)
 # which has not yet included in plone.
@@ -26,8 +27,8 @@ def getViewletByName(name):
     for v in views:
 
         if v.provided == IViewlet:
-            # Note that we might have conflicting BrowserView with the same name,
-            # thus we need to check for provided
+            # Note that we might have conflicting BrowserView with the
+            # same name, thus we need to check for provided
             if v.name == name:
                 return v
 
@@ -58,6 +59,7 @@ def setupViewletByName(view, context, request, name):
         viewlet = factory(context, request, view, None).__of__(context)
     except TypeError:
         # Bad constructor call parameters
-        raise RuntimeError("Unable to initialize viewlet %s. Factory method %s call failed." % (name, str(factory)))
+        raise RuntimeError("Unable to initialize viewlet %s. Factory "
+                           "method %s call failed." % (name, str(factory)))
 
     return viewlet
