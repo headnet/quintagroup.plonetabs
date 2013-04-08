@@ -43,6 +43,7 @@ setup(name='quintagroup.plonetabs',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'plone.app.kss',
           'plone.browserlayer'
           # -*- Extra requirements: -*-
       ],
