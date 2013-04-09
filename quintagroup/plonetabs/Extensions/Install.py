@@ -32,12 +32,13 @@ def install(self, reinstall=False):
     portal_quickinstaller = getToolByName(self, 'portal_quickinstaller')
     portal_setup = getToolByName(self, 'portal_setup')
     portal_migration = getToolByName(self, 'portal_migration')
-    
-    # plone.app.kss dependency fix for plone >= 4.3 
-    plone_version = portal_migration.coreVersions().get('Plone Instance', 'unknown')
-    if plone_version.replace('.','')[:2] >= '43':
+
+    # plone.app.kss dependency fix for plone >= 4.3
+    plone_version = portal_migration.coreVersions().get('Plone Instance',
+                                                        'unknown')
+    if plone_version.replace('.', '')[:2] >= '43':
         global PRODUCT_DEPENDENCIES
-        PRODUCT_DEPENDENCIES += ('plone.app.kss',)
+        PRODUCT_DEPENDENCIES += ('plone.app.kss', )
 
     for product in PRODUCT_DEPENDENCIES:
         if reinstall and portal_quickinstaller.isProductInstalled(product):
