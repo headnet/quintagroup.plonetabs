@@ -505,5 +505,5 @@ def test_suite():
     # these tests are implemented as Selenium KSS Tests
     # using kss.demo package, and KSS plugins are tested by means of
     # ecmaunit.js
-    #suite.addTest(unittest.makeSuite(TestControlPanelKSSMethods))
+    # suite.addTest(unittest.makeSuite(TestControlPanelKSSMethods))
     return suite

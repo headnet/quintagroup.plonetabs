@@ -5,23 +5,23 @@ except ImportError:
     from zope.app.annotation.interfaces import IAnnotations
 from plone.browserlayer.layer import mark_layer
 
-from  Testing import ZopeTestCase as ztc
-from  Products.Five import zcml
+from Testing import ZopeTestCase as ztc
+from Products.Five import zcml
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.ActionInformation import Action, ActionCategory
-from  Products.PloneTestCase import PloneTestCase as ptc
-from  Products.PloneTestCase.layer import onsetup
+from Products.PloneTestCase import PloneTestCase as ptc
+from Products.PloneTestCase.layer import onsetup
 
 from quintagroup.plonetabs.tests.data import PORTAL_ACTIONS, PORTAL_CONTENT
 
-#ztc.installProduct('Zope2Product')
+# ztc.installProduct('Zope2Product')
 
 
 @onsetup
 def setup_package():
     import quintagroup.plonetabs
     zcml.load_config('configure.zcml', quintagroup.plonetabs)
-    #ztc.installPackage('some.other.package')
+    # ztc.installPackage('some.other.package')
     ztc.installPackage('quintagroup.plonetabs')
 
 setup_package()
@@ -53,10 +53,10 @@ class PloneTabsTestCase(ptc.PloneTestCase):
     def purgeActions(self):
         for obj in self.tool.objectValues():
             self.tool._delObject(obj.id)
-            #if IAction.providedBy(obj):
-                #self.tool._delObject(obj.id)
-            #elif IActionCategory.providedBy(obj):
-                #obj.manage_delObjects(ids=obj.objectIds())
+            # if IAction.providedBy(obj):
+                # self.tool._delObject(obj.id)
+            # elif IActionCategory.providedBy(obj):
+                # obj.manage_delObjects(ids=obj.objectIds())
 
     def setupActions(self, parent, kids=PORTAL_ACTIONS):
         ids = parent.objectIds()
@@ -92,6 +92,6 @@ class PloneTabsTestCase(ptc.PloneTestCase):
         obj = getattr(container.aq_inner.aq_explicit, id)
 
         # publish and reindex
-        #self._publish_item(portal, obj)
+        # self._publish_item(portal, obj)
         portal_catalog.indexObject(obj)
         return obj

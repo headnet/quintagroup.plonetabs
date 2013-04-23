@@ -657,7 +657,7 @@ class PloneTabsControlPanel(PloneKSSView):
                 content)
 
             # update reorder controls
-            #self.kss_checkReorderControls(cat_name)
+            # self.kss_checkReorderControls(cat_name)
 
             # hide adding form
             ksscore.removeClass(ksscore.getHtmlIdSelector('addaction'),
@@ -842,9 +842,9 @@ class PloneTabsControlPanel(PloneKSSView):
             return 'string:${portal_url}%s' % expr
         elif re.compile('^(ht|f)tps?\:', re.I).search(expr):
             return 'string:%s' % expr
-        #elif re.compile('^(python:|string:|not:|exists:|nocall:|path:)',
-                        #re.I).search(expr):
-            #return expr
+        # elif re.compile('^(python:|string:|not:|exists:|nocall:|path:)',
+                        # re.I).search(expr):
+            # return expr
         elif expr.find(':') != -1:
             return expr
         else:
@@ -1201,9 +1201,9 @@ class PloneTabsControlPanel(PloneKSSView):
                                  positionSelector="portal-searchbox",
                                  positionSelectorType="htmlid")
 
-        #ksszope = self.getCommandSet("zope")
-        #ksszope.refreshViewlet(
-           #self.getCommandSet("core").getHtmlIdSelector("portal-siteactions"),
+        # ksszope = self.getCommandSet("zope")
+        # ksszope.refreshViewlet(
+           # self.getCommandSet("core").getHtmlIdSelector("portal-siteactions"),
            #"plone.portalheader",
            #"plone.site_actions")
 

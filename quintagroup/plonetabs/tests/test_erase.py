@@ -18,7 +18,7 @@ except ImportError:
 from plone.browserlayer.utils import registered_layers
 
 from Products.CMFCore.utils import getToolByName
-from  Products.PloneTestCase.layer import PloneSiteLayer
+from Products.PloneTestCase.layer import PloneSiteLayer
 
 from quintagroup.plonetabs.tests.base import PloneTabsTestCase
 
