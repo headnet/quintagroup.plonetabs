@@ -1203,7 +1203,8 @@ class PloneTabsControlPanel(PloneKSSView):
 
         # ksszope = self.getCommandSet("zope")
         # ksszope.refreshViewlet(
-           # self.getCommandSet("core").getHtmlIdSelector("portal-siteactions"),
+           # self.getCommandSet("core").getHtmlIdSelector("portal-siteactions"
+           #     ""),
            #"plone.portalheader",
            #"plone.site_actions")
 
