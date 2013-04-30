@@ -19,8 +19,6 @@
 
     <include package=".browser" />
 
-    <include package=".plugins" />
-
     <!-- Javascript testing support -->
     <configure zcml:condition="have kss_demo_version_1_2">
         <include package=".tests.selenium" />
