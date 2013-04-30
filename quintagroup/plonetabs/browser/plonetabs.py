@@ -36,10 +36,11 @@ from quintagroup.plonetabs.utils import setupViewletByName
 from quintagroup.plonetabs import messageFactory as _
 from interfaces import IPloneTabsControlPanel
 
-ACTION_ATTRS = ["id", "title", "url_expr", "available_expr", "visible"]
+ACTION_ATTRS = ["id", "title", "url_expr", "icon_expr", "available_expr", "visible"]
 UI_ATTRS = {"id": "id",
             "title": "name",
             "url_expr": "action",
+            "icon_expr": "icon_expr",
             "available_expr": "condition",
             "visible": "visible"}
 

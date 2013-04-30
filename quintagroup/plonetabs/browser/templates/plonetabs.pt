@@ -129,6 +129,19 @@
                    tal:attributes="value request/id|nothing" />
           </dd>
         </dl>
+        <dl class="field-icon"
+          tal:define="error errors/icon_expr|nothing"
+          tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
+        <dt>
+          <label for="actaction" i18n:translate="">Icon (Expression)</label>
+        </dt>
+        <dd>
+          <span class="error-container" tal:content="error"
+                i18n:translate="">Validation error output</span>
+          <input id="actaction" type="text" value="" size="30" name="icon_expr"
+                 tal:attributes="value request/icon_expr|nothing"/>
+        </dd>
+      </dl>
         <dl class="field-condition"
             tal:define="error errors/available_expr|nothing"
             tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">

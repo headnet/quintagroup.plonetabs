@@ -76,6 +76,21 @@
                                      name name;
                                      id name" /></dd>
           </dl>
+          <dl class="edit-field-icon"
+              tal:define="name string:icon_expr_${id};
+                          error python:errors.get(name, '');
+                          tab_icon tab/icon_expr"
+              tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
+            <dt><label tal:attributes="for name"
+                       i18n:translate="">Icon (Expression)</label></dt>
+            <dd>
+              <span class="error-container" tal:content="error"
+                    i18n:translate="">Validation error output</span>
+              <input type="text" value="" name="icon_expr"     size="30"
+                     tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_icon);
+                                     name name;
+                                     id name" /></dd>
+          </dl>
           <dl class="edit-field-id"
               tal:define="name string:id_${id};
                           error python:errors.get(name, '');
