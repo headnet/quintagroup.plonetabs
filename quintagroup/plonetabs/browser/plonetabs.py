@@ -17,6 +17,8 @@ except ImportError:
     # Plone >= 4.3
     from zope.container.interfaces import INameChooser
 
+from zope.viewlet.interfaces import IViewletManager, IViewlet
+
 from plone.app.layout.navigation.root import getNavigationRoot
 
 from Products.CMFCore.utils import getToolByName
@@ -921,6 +923,15 @@ class PloneTabsControlPanel():
         site_properties.manage_changeProperties(**kw)
         return True
 
+    def renderViewlet(self, manager, name):
+        if isinstance(manager, basestring):
+            manager = getMultiAdapter((self.context, self.request, self,),
+                                      IViewletManager, name=manager)
+        renderer = getMultiAdapter((self.context, self.request, self, manager),
+                                   IViewlet, name=name)
+        renderer = renderer.__of__(self.context)
+        renderer.update()
+        return renderer.render()
     #
     # Basic API to work with portal actions tool in a more pleasent way
     #

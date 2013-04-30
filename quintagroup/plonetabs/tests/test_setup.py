@@ -47,15 +47,6 @@ class TestSetup(PloneTabsTestCase):
         self.failIf(dad is None, 'There is no ++resource++sa_dragdrop.js '
                     'script registered.')
 
-    def test_kssRegistry(self):
-        tool = getToolByName(self.portal, 'portal_kss')
-        kss = tool.getResource('++resource++plonetabs.kss')
-        self.failIf(kss is None,
-                    'There is no ++resource++plonetabs.kss sheets registered.')
-        kss = tool.getResource('++resource++plonetabsmode.kss')
-        self.failIf(kss is None, 'There is no ++resource++plonetabsmode.kss '
-                    'sheets registered.')
-
     def test_propertiesTool(self):
         tool = getToolByName(self.portal, 'portal_properties')
         self.failUnless(hasattr(tool, 'tabs_properties'), 'There is no '
