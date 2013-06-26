@@ -45,4 +45,16 @@
         file="./resources/plonetabs.css"
         layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
         />    
+    <!-- Register scripts -->
+    <browser:resource
+        name="plonetabs.js"
+        file="./resources/plonetabs.js"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
+        />
+
+    <browser:resource
+        name="sortable.js"
+        file="./resources/sortable.js"
+        layer="quintagroup.plonetabs.interfaces.IPloneTabsProductLayer"
+        />
 </configure>
