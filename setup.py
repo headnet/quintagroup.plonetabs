@@ -49,5 +49,8 @@ setup(name='quintagroup.plonetabs',
       ],
       entry_points="""
       # -*- Entry points: -*-
+
+      [z3c.autoinclude.plugin]
+      target = plone
       """,
       )
