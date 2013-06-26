@@ -8,8 +8,8 @@ version = '0.7.1-dev'
 setup(name='quintagroup.plonetabs',
       version=version,
       description="Quintagroup Plone Tabs",
-      long_description=open("README.txt").read() + "\n" +
-      open(os.path.join("docs", "HISTORY.txt")).read(),
+      long_description=open("README.rst").read() + "\n" +
+      open(os.path.join("docs", "HISTORY.rst")).read(),
 
       # Get more strings from
       # http://www.python.org/pypi?%3Aaction=list_classifiers
@@ -48,5 +48,8 @@ setup(name='quintagroup.plonetabs',
       ],
       entry_points="""
       # -*- Entry points: -*-
+
+      [z3c.autoinclude.plugin]
+      target = plone
       """,
       )

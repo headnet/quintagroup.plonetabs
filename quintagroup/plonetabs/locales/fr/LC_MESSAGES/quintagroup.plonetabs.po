@@ -1,231 +1,232 @@
 # 
 # Translators:
+# msoko <sokolovitch@yahoo.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Quintagroup\n"
 "POT-Creation-Date: 2009-03-28 12:59+0000\n"
-"PO-Revision-Date: 2013-05-09 22:09+0000\n"
-"Last-Translator: Roman Kozlovskiy <krzroman@gmail.com>\n"
-"Language-Team: Ukrainian (http://www.transifex.com/projects/p/quintagroup/language/uk/)\n"
+"PO-Revision-Date: 2013-04-27 22:04+0000\n"
+"Last-Translator: msoko <sokolovitch@yahoo.com>\n"
+"Language-Team: French (http://www.transifex.com/projects/p/quintagroup/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Domain: quintagroup.plonetabs\n"
-"Language: uk\n"
+"Language: fr\n"
 "Language-Code: en\n"
 "Language-Name: English\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Preferred-Encodings: utf-8 latin1\n"
 
 #: ./browser/plonetabs.py:196
 msgid "'${id}' action deleted."
-msgstr "'${id}' елемент видалений."
+msgstr "'${id}' action supprimée."
 
 #: ./browser/plonetabs.py:557
 msgid "'${id}' action is now invisible."
-msgstr "'${id}' елемент тепер невидимий."
+msgstr "'${id}' action est maintenant invisible."
 
 #: ./browser/plonetabs.py:553
 msgid "'${id}' action is now visible."
-msgstr "'${id}' елемент тепер видимий."
+msgstr "'${id}' action est maintenant visible."
 
 #: ./browser/plonetabs.py:235
 msgid "'${id}' action moved down."
-msgstr "'${id}' елемент переміщений до низу."
+msgstr "'${id}' action déplacée vers le bas."
 
 #: ./browser/plonetabs.py:216
 msgid "'${id}' action moved up."
-msgstr "'${id}' елемент переміщений до верху."
+msgstr "'${id}' action déplacée vers le haut."
 
 #: ./browser/plonetabs.py:175
 msgid "'${id}' action saved."
-msgstr "'${id}' елемент збережений."
+msgstr "'${id}' action enregistrée."
 
 #: ./browser/plonetabs.py:149
 msgid "'${id}' action successfully added."
-msgstr "'${id}' елемент успішно доданий."
+msgstr "'${id}' action ajoutée."
 
 #: ./browser/plonetabs.py:581
 msgid "'${id}' action successfully removed."
-msgstr "'${id}' елемент успішно видалений."
+msgstr "'${id}' action supprimée."
 
 #: ./browser/plonetabs.py:732
 msgid "'${id}' action successfully updated."
-msgstr "'${id}' елемент успішно оновлений."
+msgstr "'${id}' action mise à jour."
 
 #: ./browser/plonetabs.py:531
 msgid "'${id}' object was excluded from navigation."
-msgstr "'${id}' об'єкт вилучений з навігації."
+msgstr "'${id}' objet a été exclu de la navigation."
 
 #: ./browser/plonetabs.py:527
 msgid "'${id}' object was included into navigation."
-msgstr "'${id}' об'єкт тепер видимий для навігації."
+msgstr "'${id}' objet a été inclus dans la navigation."
 
 #: ./browser/plonetabs.py:778
 msgid "Actions successfully sorted."
-msgstr "Елементи успішно посортовані."
+msgstr "Actions triés succès."
 
 #. Default: "Add"
 #: ./browser/templates/plonetabs.pt:141
 msgid "Add"
-msgstr "Додати"
+msgstr "Ajouter"
 
 #: ./browser/plonetabs.py:672
 msgid "Adding canceled."
-msgstr "Додавання відмінено."
+msgstr "Ajout annulé"
 
 #. Default: "Cancel"
 #: ./browser/templates/plonetabs.pt:142
 msgid "Cancel"
-msgstr "Відмінити"
+msgstr "Annulé"
 
 #: ./browser/plonetabs.py:473
 msgid "Category changed successfully."
-msgstr "Категорія успішно змінена."
+msgstr "Catégorie changée."
 
 #: ./browser/plonetabs.py:706
 msgid "Changes discarded."
-msgstr "Зміни скасовані."
+msgstr "Changement annulés."
 
 #: ./browser/plonetabs.py:130
 msgid "Changes saved!"
-msgstr "Зміни збережені!"
+msgstr "Changement enregistrés!"
 
 #: ./browser/plonetabs.py:693
 msgid "Fill in required fields and click on Add."
-msgstr "Заповніть обов'язкові поля і натисніть на кнопку Додати."
+msgstr "Remplissez les champs obligatoires et cliquez sur Ajouter."
 
 #: ./browser/plonetabs.py:487
 msgid "Generated not folderish tabs switched off."
-msgstr "Генеровані не папкоподібні таби вимкнені."
+msgstr "Les onglets générés hors conteneur sont hors fonction."
 
 #: ./browser/plonetabs.py:481
 msgid "Generated not folderish tabs switched on."
-msgstr "Генеровані не папкоподібні таби увімкнені."
+msgstr "Les onglets générés hors conteneur fonctionnent."
 
 #: ./browser/plonetabs.py:489
 msgid "Generated tabs switched off."
-msgstr "Генеровані таби вимкнені."
+msgstr "Les onglets générés sont hors fonction."
 
 #: ./browser/plonetabs.py:483
 msgid "Generated tabs switched on."
-msgstr "Генеровані таби увімкнені."
+msgstr "Les onglets générés hors container fonctionnent."
 
 #: ./browser/plonetabs.py:201
 msgid "No '${id}' action in '${cat_name}' category."
-msgstr "Не знайдено '${id}' елемента у '${cat_name}' категорії."
+msgstr "Pas d'action '${id}' dans la catégorie '${cat_name}'."
 
 #: ./browser/plonetabs.py:966
 msgid "'${cat_name}' action category does not exist."
-msgstr "'${cat_name}' категорія не існує."
+msgstr "La catégorie d'action '${cat_name}' n'existe pas."
 
 #: ./browser/plonetabs.py:530
 msgid "Object with '${id}' id doesn't exist in portal root."
-msgstr "Об'єкта з '${id}' id немає в корені сайту."
+msgstr "L'objet avec \"$ {id} 'id n'existe pas dans la racine du portail."
 
 #: ./browser/plonetabs.py:156
 msgid "Please correct the indicated errors."
-msgstr "Будь-ласка, виправте знайдені помилки."
+msgstr "S'il vous plaît corrigez les erreurs indiquées."
 
 #. Default: "Reset"
 #: ./browser/templates/plonetabs.pt:143
 msgid "Reset"
-msgstr "Скинути"
+msgstr "Réinitialiser"
 
 #. Default: "Select category to manage"
 #: ./browser/templates/plonetabs.pt:48
 msgid "label_select_category"
-msgstr "Оберіть категорію для редагування"
+msgstr "Choisir_une_catégorie_de_nom"
 
 #: ./browser/templates/changemodelink.pt:8
 msgid "Rich Mode"
-msgstr "Стандартний режим"
+msgstr "Mode Riche"
 
 #: ./browser/templates/changemodelink.pt:8
 msgid "Plain Mode"
-msgstr "Базовий HTML"
+msgstr "Mode Ordinaire"
 
 #: ./browser/plonetabs.py:275
 msgid "Plone '${cat_name}' Configuration"
-msgstr "Конфігурація категорії: '${cat_name}'"
+msgstr "Configuration de Plone '$ {cat_name}'"
 
 #: ./profiles/default/propertiestool.xml:5
 msgid "Portal Tabs Configuration"
-msgstr "Конфігурація Табів"
+msgstr "Portail des onglets de configuration"
 
 #: ./profiles/default/propertiestool.xml:6
 msgid "Portal Footer Configuration"
-msgstr "Конфігурація Колонтитула"
+msgstr "Configuration du pied de page du portail"
 
 #: ./browser/templates/plonetabs.pt:61
 msgid "Change"
-msgstr "Змінити"
+msgstr "Changer"
 
 #: ./browser/templates/actionslist.pt:15
 msgid "Delete"
-msgstr "Знищити"
+msgstr "Effacer"
 
 #: ./browser/templates/actionslist.pt:48
 msgid "Name"
-msgstr "Ім'я"
+msgstr "Nom"
 
 #: ./browser/templates/actionslist.pt:67
 msgid "URL (Expression)"
-msgstr "URL (TAL вираз)"
+msgstr "URL (Expression)"
 
 #: ./browser/templates/actionslist.pt:82
 msgid "Id"
-msgstr "Id"
+msgstr "Identifiant"
 
 #: ./browser/templates/actionslist.pt:97
 msgid "Condition (Expression)"
-msgstr "Умова (TAL вираз)"
+msgstr "Condition (Expression)"
 
 #: ./browser/templates/actionslist.pt:111
 msgid "Save"
-msgstr "Зберегти"
+msgstr "Enregistrer"
 
 #: ./browser/templates/actionslist.pt:115
 msgid "Move Up"
-msgstr "Вгору"
+msgstr "Déplacer vers le haut"
 
 #: ./browser/templates/actionslist.pt:117
 msgid "Move Down"
-msgstr "Вниз"
+msgstr "Déplacer vers le bas"
 
 #. Default: "Generate tabs for items other than folders"
 #: ./browser/templates/autogenerated.pt:46
 msgid "label_nonfolderish_tabs_enable"
-msgstr "Також автоматично створювати закладки для елементів що не є папками"
+msgstr "onglet_sans_conteneur_d_etiquette_activé"
 
 #: ./browser/plonetabs.py:843
 msgid "Empty or invalid title specified"
-msgstr "Вказано порожнє або не дійсне ім'я"
+msgstr "Titre spécifié vide ou invalide"
 
 #: ./browser/plonetabs.py
 msgid "Empty or invalid id specified"
-msgstr "Вказано порожнє або не дійсне id"
+msgstr "L'identifiant spécifié vide ou invalide"
 
 #: ./browser/plonetabs.py
 msgid "The id '${id}' is invalid - it is already in use."
-msgstr "Id '${id}' не є дійсним - воно уже використовується."
+msgstr "L'identifiant '${id}' est invalide ou déjà existant."
 
 #: ./browser/plonetabs.py
 msgid "Id must contain only ASCII characters."
-msgstr "Id повинно містити лише ASCII символи."
+msgstr "L'identifiant doit contenir seulement des caractères ASCII."
 
 #: ./browser/plonetabs.py
 msgid "Unrecognized expression type '${expr_type}'."
-msgstr "Недійсний тип виразу '${expr_type}'."
+msgstr "Type d'expression non-reconnu '${expr_type}'."
 
 #: ./browser/plonetabs.py
 msgid "Invalid variable name '${expr}'"
-msgstr "Недійсна назва змінної '${expr}'"
+msgstr "Nom de variable '${expr}' invalide."
 
 #: ./browser/templates/plonetabs.pt:81
 msgid "Visible"
-msgstr "Видимість"
+msgstr "Visible"
 
 #: ./browser/templates/plonetabs.pt:115
 msgid "Advanced"
-msgstr "Більше"
+msgstr "Avancé"

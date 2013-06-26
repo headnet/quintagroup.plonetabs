@@ -3,6 +3,10 @@ Changelog
 
 0.7.1-dev (unreleased)
 ----------------------
+
+* Added French translations from transifex, thanks Marc Sokolovitch
+  [kroman0, msoko]
+
 * Updated code according with pep8, pylint, pyflakes
   [potar]
 
