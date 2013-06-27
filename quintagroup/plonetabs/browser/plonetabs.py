@@ -37,7 +37,8 @@ from quintagroup.plonetabs.utils import setupViewletByName
 from quintagroup.plonetabs import messageFactory as _
 from interfaces import IPloneTabsControlPanel
 
-ACTION_ATTRS = ["id", "title", "url_expr", "icon_expr", "available_expr", "visible"]
+ACTION_ATTRS = ["id", "title", "url_expr",
+                "icon_expr", "available_expr", "visible"]
 UI_ATTRS = {"id": "id",
             "title": "name",
             "url_expr": "action",
@@ -114,7 +115,6 @@ class PloneTabsControlPanel():
             postback = True
         return postback
 
-
     def ajax_postback(self, form, errors):
         """ajax_postback ajaxback"""
         conv_dict = {
@@ -128,11 +128,11 @@ class PloneTabsControlPanel():
             "generated_tabs": "manage_ajax_toggleGeneratedTabs",
             "add_add": "manage_ajax_addAction",
         }
-        
+
         for method in conv_dict.keys():
             if method in form.keys():
                 method_val = conv_dict.get(method)
-                return  getattr(self, method_val)(form, errors)
+                return getattr(self, method_val)(form, errors)
 
         return False
 
@@ -152,9 +152,9 @@ class PloneTabsControlPanel():
         """portal_actions"""
         return getToolByName(self.context, 'portal_actions')
 
-    ########################################
+    #
     # AJAX Methods
-    ########################################
+    #
 
     def manage_ajax_addAction(self, form, errs):
         # extract posted data
@@ -171,9 +171,11 @@ class PloneTabsControlPanel():
             content = self.getActionsList(category=cat_name, tabs=[action, ])
             resp_dict['content'] = content
             resp_dict['status_code'] = 200
-            resp_dict['status_message'] = "%s action successfully added." % action.id
+            resp_dict[
+                'status_message'] = "%s action successfully added." % action.id
         else:
-            resp_dict['status_message'] = "Please correct the indicated errors."
+            resp_dict[
+                'status_message'] = "Please correct the indicated errors."
             resp_dict['status_code'] = 500
             resp_dict['content'] = errors
         return resp_dict
@@ -182,11 +184,11 @@ class PloneTabsControlPanel():
         """Toggle autogenaration setting on configlet"""
         resp_dict = {}
         errors = []
-        
-        #TODO: parse, validate form
+
+        # TODO: parse, validate form
         checked = form['generated_tabs']
         field = form['field']
-        
+
         if not errors:
             if checked == 'true':
                 self.setSiteProperties(**{field: False})
@@ -204,11 +206,11 @@ class PloneTabsControlPanel():
         return resp_dict
 
     def manage_ajax_toggleRootsVisibility(self, form, errs):
-        #Toggle visibility for portal actions
+        # Toggle visibility for portal actions
         resp_dict = {}
         errors = []
-        
-        #TODO: parse, validate form
+
+        # TODO: parse, validate form
         id = form['orig_id']
         checked = form['visibility']
 
@@ -219,7 +221,8 @@ class PloneTabsControlPanel():
         obj_id = id[len("roottabs_"):]
 
         if obj_id not in portal.objectIds():
-            errors.append("Object with %s id doesn't exist in portal root." % obj_id)
+            errors.append(
+                "Object with %s id doesn't exist in portal root." % obj_id)
 
         checked = True if checked == 'true' else False
 
@@ -238,19 +241,22 @@ class PloneTabsControlPanel():
         return resp_dict
 
     def manage_ajax_toggleActionsVisibility(self, form, errs):
-        #Toggle visibility for portal actions
+        # Toggle visibility for portal actions
         resp_dict = {}
-        
-        #TODO: parse, validate form
+
+        # TODO: parse, validate form
         id = form['orig_id']
         cat_name = form['category']
         checked = form['visibility']
 
-        act_id, category, action, errors = self.manage_validateAction(id, cat_name)
+        act_id, category, action, errors = self.manage_validateAction(
+            id, cat_name)
 
         if not errors:
-            self.updateAction(act_id, cat_name,
-                              {'id': act_id, 'visible': (checked == 'true') or False})
+            self.updateAction(act_id, cat_name, {
+                'id': act_id,
+                'visible': (checked == 'true') or False
+            })
             if checked == 'true':
                 message = "%s action is now visible." % act_id
             else:
@@ -261,19 +267,21 @@ class PloneTabsControlPanel():
             resp_dict['status_message'] = errors
             resp_dict['status_code'] = 500
         return resp_dict
-    
+
     def manage_ajax_deleteAction(self, form, errs):
         """Delete portal action with given id & category"""
         resp_dict = {}
-        
-        #TODO: parse, validate form
+
+        # TODO: parse, validate form
         id = form['orig_id']
         cat_name = form['category']
 
-        act_id, category, action, errors = self.manage_validateAction(id, cat_name)
+        act_id, category, action, errors = self.manage_validateAction(
+            id, cat_name)
         if not errors:
             self.deleteAction(act_id, cat_name)
-            resp_dict['status_message'] =  "%s action successfully removed." % act_id
+            resp_dict[
+                'status_message'] = "%s action successfully removed." % act_id
             resp_dict['status_code'] = 200
         else:
             resp_dict['status_message'] = errors
@@ -283,16 +291,17 @@ class PloneTabsControlPanel():
     def manage_ajax_cancelEditting(self, form, errs):
         """Hide edit form for given action"""
         resp_dict = {}
-        #TODO: parse, validate form
+        # TODO: parse, validate form
         id = form['orig_id']
         cat_name = form['category']
 
-        act_id, category, action, errors = self.manage_validateAction(id, cat_name)
+        act_id, category, action, errors = self.manage_validateAction(
+            id, cat_name)
 
         if not errors:
             content = self.getActionsList(category=cat_name, tabs=[action, ])
             resp_dict['content'] = content
-            resp_dict['status_message'] =  "Changes discarded."
+            resp_dict['status_message'] = "Changes discarded."
             resp_dict['status_code'] = 200
         else:
             resp_dict['status_message'] = errors
@@ -317,13 +326,12 @@ class PloneTabsControlPanel():
             action = category[act_id]
         except Exception:
             errors.append("No %s action in %s category." %
-                                   (act_id, cat_name))
+                         (act_id, cat_name))
         return (act_id, category, action, errors)
 
     def manage_ajax_saveAction(self, form, errs):
         """Manage Method to update action"""
         # extract posted data
-        resp_dict = {}
         id, cat_name, data = self.parseEditForm(form)
 
         # get category and action to edit
@@ -337,17 +345,20 @@ class PloneTabsControlPanel():
         if not errors:
             action = self.updateAction(id, cat_name, data)
             content = self.getActionsList(category=cat_name, tabs=[action, ])
-            resp_dict['content'] = content
-            resp_dict['status_code'] = 200
-            resp_dict['status_message'] = "%s action successfully updated." % action.id
+            resp_dict = {
+                'content': content,
+                'status_code': 200,
+                'status_message': "%s action successfully updated." % action.id
+            }
         else:
-            resp_dict['status_code'] = 500
-            resp_dict['content'] = errors
-            resp_dict['status_message'] = "Please correct the indicated errors."
+            resp_dict = {
+                'content': errors,
+                'status_code': 500,
+                'status_message': "Please correct the indicated errors."
+            }
         return resp_dict
 
     def manage_ajax_moveAction(self, form, errs):
-        resp_dict = {}
         cat_name = form['cat_name']
         category = self.getActionCategory(cat_name)
         components = urllib.unquote(form['actions']).split('&')
@@ -360,11 +371,18 @@ class PloneTabsControlPanel():
         resp = category.moveObjectsByDelta(ids, -len(category.objectIds()))
 
         if resp:
+            resp_dict = {
+                'status_code': 200,
+                'status_message': "Actions successfully sorted."
+            }
             resp_dict['status_code'] = 200
             resp_dict['status_message'] = "Actions successfully sorted."
         else:
-            resp_dict['status_code'] = 500
-            resp_dict['status_message'] = "There was error while sorting, or list not changed"
+            resp_dict = {
+                'status_code': 500,
+                'status_message': "There was error while sorting, or list not"
+                " changed"
+            }
         return resp_dict
 
     def manage_ajax_changeCategory(self, form, errs):
@@ -379,22 +397,22 @@ class PloneTabsControlPanel():
         resp_dict['section'] = self.getAutoGenereatedSection(cat_name)
         # and title
         ts = getToolByName(self.context, 'translation_service')
-        resp_dict['title'] = ts.translate(self.getPageTitle(cat_name), context=self.context)
-    
+        resp_dict['title'] = ts.translate(
+            self.getPageTitle(cat_name), context=self.context)
+
         if not errors:
             resp_dict['status_code'] = 200
             resp_dict['status_message'] = "Category changed successfully"
         else:
             resp_dict['status_code'] = 500
-            resp_dict['status_message'] = "There was error while changed category"
+            resp_dict[
+                'status_message'] = "There was error while changed category"
 
         return resp_dict
 
-
-    ########################################
+    #
     # Methods for processing configlet posts
-    ########################################
-
+    #
     def manage_setAutogeneration(self, form, errors):
         """Process managing autogeneration settings"""
 
@@ -553,11 +571,11 @@ class PloneTabsControlPanel():
             url_hash = '#%s' % url_hash
         self.request.response.redirect("%s%s%s" % (url, search, url_hash))
 
-    ###################################
+    #
     #
     #  Methods - providers for templates
     #
-    ###################################
+    #
 
     def _charset(self):
         pp = self.portal_properties
