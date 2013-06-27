@@ -54,7 +54,7 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
         data = PORTAL_ACTIONS[0][1]['children'][0][1]
         action = Action('act1', **data)
         info = self.panel.copyAction(action)
-        self.assertEquals(len(info.keys()), 6)
+        self.assertEquals(len(info.keys()), 7)
         self.assertEquals(info['description'], 'The most important place')
 
     def test_validateActionFields(self):

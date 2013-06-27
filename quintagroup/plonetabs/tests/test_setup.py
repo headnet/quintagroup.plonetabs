@@ -30,23 +30,6 @@ class TestSetup(PloneTabsTestCase):
         self.failIf(css is None, 'There is no ++resource++plonetabs.css '
                     'stylesheets registered.')
 
-    def test_jsRegistry(self):
-        tool = getToolByName(self.portal, 'portal_javascripts')
-
-        prototype = tool.getResource('++resource++prototype.js')
-        self.failIf(prototype is None,
-                    'There is no ++resource++prototype.js script registered.')
-        self.failUnless(prototype._data['enabled'],
-                        '++resource++prototype.js script is disabled.')
-
-        effects = tool.getResource('++resource++pt_effects.js')
-        self.failIf(effects is None,
-                    'There is no ++resource++pt_effects.js script registered.')
-
-        dad = tool.getResource('++resource++sa_dragdrop.js')
-        self.failIf(dad is None, 'There is no ++resource++sa_dragdrop.js '
-                    'script registered.')
-
     def test_propertiesTool(self):
         tool = getToolByName(self.portal, 'portal_properties')
         self.failUnless(hasattr(tool, 'tabs_properties'), 'There is no '
