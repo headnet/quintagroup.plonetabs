@@ -25,7 +25,7 @@
         action="@@plonetabs-controlpanel"
         name="edit_form"
         tal:attributes="action string:${context/portal_url}/${attrs/action};
-                        name string:${attrs/name}_${id}">
+                        name string:edit_form_${id}">
 
     <input type="hidden" name="orig_id" value="orig_id" tal:attributes="value id" />
     <input type="hidden" name="category" value="current_category" tal:attributes="value category" />
@@ -34,7 +34,7 @@
     <div class="bridge">
       <img class="drag-handle" src="++resource++drag.gif" alt="" height="11" width="11" />
       <input type="checkbox" class="visibility" value="1" name="visible" title="visibility"
-             tal:define="name string:${attrs/name}_${id};
+             tal:define="name string:visible_${id};
                          submitted python:test(request.get('form.submitted','') and request.get('orig_id','')==id, True, False)"
              tal:attributes="name name;
                              checked python:test(submitted, test(request.form.get(name, False), 'checked', None), test(visible, 'checked', None))"/>
