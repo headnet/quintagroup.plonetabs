@@ -41,7 +41,7 @@ function sendRequest(formData, handler, this_event, parse) {
     type: 'POST',
     url: '@@plonetabs-controlpanel',
     data: formData,
-    dataType: "json",
+    dataType: 'json',
     success: function(response) {
       if (parse) {
         parseResponse(response, this_event, formData, handler);
@@ -107,7 +107,7 @@ function hideErrorMessage() {
   for (err in error_fields) {
     var field_name = 'form[name=addaction_form] .' + error_fields[err];
     $(field_name).removeClass('error');
-    $(field_name + ' .error-container').text("");
+    $(field_name + ' .error-container').text('');
 
   }
 }
@@ -185,7 +185,7 @@ function category_handler(response) {
     $('#plonetabs-form-title').text(response.title);
 
     $('#addaction').removeClass('adding');
-    toggleCollapsible($('form[name=addaction_form] .headerAdvanced'), true);     
+    toggleCollapsible($('form[name=addaction_form] .headerAdvanced'), true);
     startupActions();
   }
 }
@@ -239,7 +239,7 @@ function add_handler(response) {
   else {
     setStatusMessage('error', response.status_message);
     toggleCollapsible($('form[name=addaction_form] .headerAdvanced'), false);
-    if (response.content){
+    if (response.content) {
       displayErrorMessage(response.content);
     }
   }
