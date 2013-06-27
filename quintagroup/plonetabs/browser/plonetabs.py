@@ -91,6 +91,7 @@ class PloneTabsControlPanel():
                                             expires=expires)
 
         if ajaxback:
+            self.request.response.setHeader("Content-type", "application/json")
             return json.dumps(ajaxback)
         elif postback:
             return self.template(errors=errors)
