@@ -21,14 +21,30 @@
       initStatusMessage('warning', 'Warning');
     }
     $('#kssPortalMessage dd').text(message);
-    $('#kssPortalMessage').show()
+    $('#kssPortalMessage').show();
     //('#kssPortalMessage').show().delay(5000).hide();
   }
 
-  function clearAddForm() {
-    $('#addaction').removeClass('adding');
-    toggleCollapsible($('form[name=addaction_form] .headerAdvanced'), true);
-    $('form[name=addaction_form]')[0].reset();
+  function hideErrorMessage() {
+    var error_fields = ['field-name', 'field-action', 'field-id', 'field-icon', 'field-condition'];
+    for (r in error_fields) {
+      var field_name = 'form[name=addaction_form] .' + error_fields[r];
+      $(field_name).removeClass('error');
+      $(field_name + ' .error-container').text("");
+
+    }
+  }
+
+  function displayErrorMessage(err_content) {
+    var error_fields = {'title': 'field-name', 'url_expr': 'field-action', 'id': 'field-id', 'icon_expr': 'field-icon', 'available_expr': 'field-condition'};
+    hideErrorMessage();
+    for (r in error_fields) {
+      if (err_content[r]) {
+        var field_name = 'form[name=addaction_form] .' + error_fields[r];
+        $(field_name).addClass('error');
+        $(field_name + ' .error-container').text(err_content[r]);
+      }
+    }
   }
 
   function sortableList() {
@@ -55,6 +71,20 @@
             }
       }
     });
+  }
+
+  function updateSortable() {
+    $('#tabslist').unbind();
+    $('#tabslist').sortable().bind('sortupdate', function() {sortableList()});
+  }
+
+  function clearAddForm() {
+    $('#addaction').removeClass('adding');
+    toggleCollapsible($('form[name=addaction_form] .headerAdvanced'), true);
+    $('form[name=addaction_form]')[0].reset();
+    hideErrorMessage();
+    $('#kssPortalMessage').hide();
+    updateSortable();
   }
 
   function toggleCollapsible(el, collapse) {
@@ -88,6 +118,7 @@
     $('.add-controls input').addClass('allowMultiSubmit');
     $('.edit-controls input').addClass('allowMultiSubmit');
     $('.collapseAdvanced').removeClass('expandedBlock').addClass('collapsedBlock');
+    updateSortable();
   }
 
   $(document).ready(function() {
@@ -126,6 +157,7 @@
             if (json.status_code === 200) {
                 setStatusMessage('info', json.status_message);
                 $(this).closest('li').replaceWith(json.content);
+                updateSortable();
             } else {
                 setStatusMessage('error', json.status_message);
                 //if 'id' in errors or 'available_expr' in errors or 'url_expr' in errors:
@@ -154,6 +186,7 @@
             if (json.status_code === 200) {
                 setStatusMessage('info', json.status_message);
                 parentFormSelect.replaceWith(json.content);
+                updateSortable();
             }
             else {
                 setStatusMessage('error', json.status_message);
@@ -181,6 +214,7 @@
             if (json.status_code === 200) {
                 setStatusMessage('info', json.status_message);
                 parentFormSelect.remove();
+                updateSortable();
             }
             else {
                 setStatusMessage('error', json.status_message);
@@ -242,12 +276,7 @@
                   $('#plonetabs-form-title').text(json.title);
 
                   $('#addaction').removeClass('adding');
-                  toggleCollapsible($('form[name=addaction_form] .headerAdvanced'), true);
-
-                  //Sorting lists
-                  $('#tabslist').unbind();
-                  $('#tabslist').sortable().bind('sortupdate', function() {sortableList()});
-
+                  toggleCollapsible($('form[name=addaction_form] .headerAdvanced'), true);     
                   //Running startupActions
                   startupActions();
               }
@@ -293,7 +322,7 @@
 });
 
 //General func for toggleGeneratedTabs and nonfolderish_tabs request
-  function sendRequest(field_name, checked_status) {
+  function sendtoggleRequest(field_name, checked_status) {
     var formData = {};
     formData.ajax_request = true;
     formData.field = field_name;
@@ -320,14 +349,14 @@
   $('#generated_tabs').live('click', function() {
       var field_name = 'disable_folder_sections';
       var checked_status = $(this).is(':checked');
-      sendRequest(field_name, checked_status);
+      sendtoggleRequest(field_name, checked_status);
   });
 
 //nonfolderish_tabs
   $('#nonfolderish_tabs').live('click', function() {
       var field_name = 'disable_nonfolderish_sections';
       var checked_status = $(this).is(':checked');
-      sendRequest(field_name, checked_status);
+      sendtoggleRequest(field_name, checked_status);
   });
 
 //Add new action methods
@@ -344,7 +373,6 @@
   });
 
 //add
-  //TODO: add #addaction:submit event processing
   $('#buttonadd').live('click', function(event) {
       event.preventDefault();
       var formData = $(this).closest('form').serializeArray();
@@ -367,12 +395,7 @@
             setStatusMessage('error', json.status_message);
             toggleCollapsible($('form[name=addaction_form] .headerAdvanced'), false);
             if (json.content){
-              if (json.content.id){
-                $('form[name=addaction_form] .field-id .error-container').text(json.content.id);
-              }
-              if (json.content.title){
-                $('form[name=addaction_form] .field-name .error-container').text(json.content.title);
-              }
+              displayErrorMessage(json.content);
             }
           }
         }

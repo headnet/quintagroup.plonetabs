@@ -5,6 +5,7 @@ import json
 from Acquisition import aq_inner
 from DateTime import DateTime
 
+from zope.i18n import translate
 from zope.interface import implements
 from zope.component import getMultiAdapter
 
@@ -836,6 +837,9 @@ class PloneTabsControlPanel():
         # validate action expression
         self._validate_expression('url_expr', data, errors)
 
+        # validate icon expression
+        self._validate_expression('icon_expr', data, errors)
+
         return errors
 
     def _formatError(self, message, **kw):
@@ -849,7 +853,7 @@ class PloneTabsControlPanel():
             # trying to work around zope.i18n issue
             mapping[key] = unicode(value, charset)
         message = message.strip()
-        return _(unicode(message, charset), mapping=mapping)
+        return translate(_(unicode(message, charset), mapping=mapping))
 
     def processErrors(self, errors, prefix='', sufix=''):
         """Add prefixes, sufixes to error ids
