@@ -68,7 +68,8 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
         bad_data = {'id': '',
                     'title': ' ',
                     'available_expr': 'bad_type:test',
-                    'url_expr': 'bad_type:test'}
+                    'url_expr': 'bad_type:test',
+                    'icon_expr': 'bad_type:test'}
 
         # Revert PloneTestCase's optimization
         # because this breaks our test
@@ -86,7 +87,7 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
         # rollback our patch
         Expression.__init__ = optimized__init__
 
-        self.assertEquals(len(errors.keys()), 4,
+        self.assertEquals(len(errors.keys()), 5,
                           'validateActionFields method is not working '
                           'properly.')
         #### pyflakes.scripts.pyflakes ends.
@@ -108,12 +109,14 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
                 'id_id1': 'id_new',
                 'title_id1': 'title1',
                 'url_expr_id1': 'expr1',
-                'available_expr_id1': 'expr2'}
+                'available_expr_id1': 'expr2',
+                'icon_expr_id1': 'expr3'}
         self.assertEquals(method(form),
                           ('id1', 'cat1', {'id': 'id_new',
                                            'title': 'title1',
                                            'url_expr': 'expr1',
                                            'available_expr': 'expr2',
+                                           'icon_expr': 'expr3',
                                            'visible': True}),
                           'parseEditForm method is not working properly.')
 
@@ -127,13 +130,15 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
                 'visible': True,
                 'title': 'title1',
                 'url_expr': 'string:expr1',
-                'available_expr': 'expr2'}
+                'available_expr': 'expr2',
+                'icon_expr': 'expr3'}
         self.assertEquals(method(form),
                           ('id1', 'cat1', {'id': 'id1',
                                            'visible': True,
                                            'title': 'title1',
                                            'url_expr': 'string:expr1',
-                                           'available_expr': 'expr2'}),
+                                           'available_expr': 'expr2',
+                                           'icon_expr': 'expr3'}),
                           'parseAddForm method is not working properly.')
 
         del form['id']
@@ -427,7 +432,8 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
                 'visible': True,
                 'title': 'title1',
                 'url_expr': 'string:expr1',
-                'available_expr': 'expr2'}
+                'available_expr': 'expr2',
+                'icon_expr': 'expr3'}
         postback = self.panel.manage_addAction(form, {})
         self.failUnless('id1' in self.tool.cat1.objectIds())
         self.failIf(postback,
@@ -443,7 +449,8 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
                 'id_home': 'id_new',
                 'title_home': 'title1',
                 'url_expr_home': 'expr1',
-                'available_expr_home': 'expr2'}
+                'available_expr_home': 'expr2',
+                'icon_expr_home': 'expr3'}
         import transaction
         transaction.savepoint()
 
@@ -464,7 +471,8 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
                 'id_home': 'id_new',
                 'title_home': 'title1',
                 'url_expr_home': 'expr1',
-                'available_expr_home': 'expr2'}
+                'available_expr_home': 'expr2',
+                'icon_expr_home': 'expr3'}
         self.panel.manage_deleteAction(form, {})
         self.failIf('home' in self.tool.portal_tabs.objectIds())
 
@@ -477,7 +485,8 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
                 'id_quintagroup': 'quintagroup',
                 'title_quintagroup': 'title1',
                 'url_expr_quintagroup': 'expr1',
-                'available_expr_quintagroup': 'expr2'}
+                'available_expr_quintagroup': 'expr2',
+                'icon_expr_quintagroup': 'expr3'}
         self.panel.manage_moveUpAction(form, {})
         self.assertEquals(
             self.tool.portal_tabs.getObjectPosition('quintagroup'), 0)
@@ -491,7 +500,8 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
                 'id_home': 'home',
                 'title_home': 'title1',
                 'url_expr_home': 'expr1',
-                'available_expr_home': 'expr2'}
+                'available_expr_home': 'expr2',
+                'icon_expr_home': 'expr3'}
         self.panel.manage_moveDownAction(form, {})
         self.assertEquals(self.tool.portal_tabs.getObjectPosition('home'), 1)
 

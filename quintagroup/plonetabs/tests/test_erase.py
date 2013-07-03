@@ -89,17 +89,6 @@ class TestErase(PloneTabsTestCase):
                         'There should be no ++resource++sa_dragdrop.js script '
                         'after uninstall.')
 
-    def test_kssRegistry(self):
-        tool = getToolByName(self.portal, 'portal_kss')
-        kss = tool.getResource('++resource++plonetabs.kss')
-        self.failUnless(kss is None,
-                        'There should be no ++resource++plonetabs.kss sheets '
-                        'after uninstall.')
-        kss = tool.getResource('++resource++plonetabsmode.kss')
-        self.failUnless(kss is None,
-                        'There should be no ++resource++plonetabsmode.kss '
-                        'sheets after uninstall.')
-
     def test_propertiesTool(self):
         tool = getToolByName(self.portal, 'portal_properties')
         self.failUnless(hasattr(tool, 'tabs_properties'),
