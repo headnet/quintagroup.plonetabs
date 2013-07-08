@@ -248,7 +248,7 @@ function add_handler(response) {
 /*EVENTS*/
 
 //changing category
-$('#select_category').change(function(event) {
+$('#select_category').live('change', function(event) {
       var formData = {};
       formData.ajax_request = true;
       formData.category = $(this).val();
