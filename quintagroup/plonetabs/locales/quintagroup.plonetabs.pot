@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: quintagroup.plonetabs 0.5\n"
-"POT-Creation-Date: 2009-03-28 12:59+0000\n"
+"POT-Creation-Date: 2013-07-08 14:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Vitaliy Podoba <piv@quintagroup.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,215 +14,193 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: quintagroup.plonetabs\n"
 
-#: ./browser/plonetabs.py:196
-msgid "'${id}' action deleted."
-msgstr ""
-
-#: ./browser/plonetabs.py:557
-msgid "'${id}' action is now invisible."
-msgstr ""
-
-#: ./browser/plonetabs.py:553
-msgid "'${id}' action is now visible."
-msgstr ""
-
-#: ./browser/plonetabs.py:235
-msgid "'${id}' action moved down."
-msgstr ""
-
-#: ./browser/plonetabs.py:216
-msgid "'${id}' action moved up."
-msgstr ""
-
-#: ./browser/plonetabs.py:175
-msgid "'${id}' action saved."
-msgstr ""
-
-#: ./browser/plonetabs.py:149
-msgid "'${id}' action successfully added."
-msgstr ""
-
-#: ./browser/plonetabs.py:581
-msgid "'${id}' action successfully removed."
-msgstr ""
-
-#: ./browser/plonetabs.py:732
-msgid "'${id}' action successfully updated."
-msgstr ""
-
-#: ./browser/plonetabs.py:531
-msgid "'${id}' object was excluded from navigation."
-msgstr ""
-
-#: ./browser/plonetabs.py:527
-msgid "'${id}' object was included into navigation."
-msgstr ""
-
-#: ./browser/plonetabs.py:778
-msgid "Actions successfully sorted."
-msgstr ""
-
-#. Default: "Add"
-#: ./browser/templates/plonetabs.pt:141
-msgid "Add"
-msgstr ""
-
-#: ./browser/plonetabs.py:672
-msgid "Adding canceled."
-msgstr ""
-
-#. Default: "Cancel"
-#: ./browser/templates/plonetabs.pt:142
-msgid "Cancel"
-msgstr ""
-
-#: ./browser/plonetabs.py:473
-msgid "Category changed successfully."
-msgstr ""
-
-#: ./browser/plonetabs.py:706
-msgid "Changes discarded."
-msgstr ""
-
-#: ./browser/plonetabs.py:130
-msgid "Changes saved!"
-msgstr ""
-
-#: ./browser/plonetabs.py:693
-msgid "Fill in required fields and click on Add."
-msgstr ""
-
-#: ./browser/plonetabs.py:487
-msgid "Generated not folderish tabs switched off."
-msgstr ""
-
-#: ./browser/plonetabs.py:481
-msgid "Generated not folderish tabs switched on."
-msgstr ""
-
-#: ./browser/plonetabs.py:489
-msgid "Generated tabs switched off."
-msgstr ""
-
-#: ./browser/plonetabs.py:483
-msgid "Generated tabs switched on."
-msgstr ""
-
-#: ./browser/plonetabs.py:201
-msgid "No '${id}' action in '${cat_name}' category."
-msgstr ""
-
-#: ./browser/plonetabs.py:966
+#: ./browser/plonetabs.py:340
 msgid "'${cat_name}' action category does not exist."
 msgstr ""
 
-#: ./browser/plonetabs.py:530
-msgid "Object with '${id}' id doesn't exist in portal root."
-msgstr ""
-
-#: ./browser/plonetabs.py:156
-msgid "Please correct the indicated errors."
-msgstr ""
-
-#. Default: "Reset"
-#: ./browser/templates/plonetabs.pt:143
-msgid "Reset"
-msgstr ""
-
-#. Default: "Select category to manage"
-#: ./browser/templates/plonetabs.pt:48
-msgid "label_select_category"
-msgstr ""
-
-#: ./browser/templates/changemodelink.pt:8
-msgid "Rich Mode"
-msgstr ""
-
-#: ./browser/templates/changemodelink.pt:8
-msgid "Plain Mode"
+#: ./browser/plonetabs.py:533
+msgid "'${id}' action deleted."
 msgstr ""
 
 #: ./browser/plonetabs.py:275
-msgid "Plone '${cat_name}' Configuration"
+msgid "'${id}' action is now invisible."
 msgstr ""
 
-#: ./profiles/default/propertiestool.xml:5
-msgid "Portal Tabs Configuration"
+#: ./browser/plonetabs.py:271
+msgid "'${id}' action is now visible."
 msgstr ""
 
-#: ./profiles/default/propertiestool.xml:6
-msgid "Portal Footer Configuration"
+#: ./browser/plonetabs.py:573
+msgid "'${id}' action moved down."
 msgstr ""
 
-#: ./browser/templates/plonetabs.pt:61
+#: ./browser/plonetabs.py:553
+msgid "'${id}' action moved up."
+msgstr ""
+
+#: ./browser/plonetabs.py:512
+msgid "'${id}' action saved."
+msgstr ""
+
+#: ./browser/plonetabs.py:179
+msgid "'${id}' action successfully added."
+msgstr ""
+
+#: ./browser/plonetabs.py:297
+msgid "'${id}' action successfully removed."
+msgstr ""
+
+#: ./browser/plonetabs.py:372
+msgid "'${id}' action successfully updated."
+msgstr ""
+
+#: ./browser/plonetabs.py:243
+msgid "'${id}' object was excluded from navigation."
+msgstr ""
+
+#: ./browser/plonetabs.py:239
+msgid "'${id}' object was included into navigation."
+msgstr ""
+
+#: ./browser/plonetabs.py:400
+msgid "Actions successfully sorted."
+msgstr ""
+
+#: ./browser/templates/plonetabs.pt:164
+msgid "Add"
+msgstr ""
+
+#: ./browser/templates/actionslist.pt:62
+#: ./browser/templates/plonetabs.pt:119
+msgid "Advanced"
+msgstr ""
+
+#: ./browser/templates/actionslist.pt:130
+#: ./browser/templates/plonetabs.pt:165
+msgid "Cancel"
+msgstr ""
+
+#: ./browser/plonetabs.py:426
+msgid "Category changed successfully."
+msgstr ""
+
+#: ./browser/templates/plonetabs.pt:67
 msgid "Change"
 msgstr ""
 
-#: ./browser/templates/actionslist.pt:15
-msgid "Delete"
+#: ./browser/plonetabs.py:319
+msgid "Changes discarded."
 msgstr ""
 
-#: ./browser/templates/actionslist.pt:48
-msgid "Name"
+#: ./browser/plonetabs.py:467
+msgid "Changes saved!"
 msgstr ""
 
-#: ./browser/templates/actionslist.pt:67
-msgid "URL (Expression)"
-msgstr ""
-
-#: ./browser/templates/actionslist.pt:82
-msgid "Id"
-msgstr ""
-
-#: ./browser/templates/actionslist.pt:97
+#: ./browser/templates/actionslist.pt:114
+#: ./browser/templates/plonetabs.pt:151
 msgid "Condition (Expression)"
 msgstr ""
 
-#: ./browser/templates/actionslist.pt:111
-msgid "Save"
+#: ./browser/templates/actionslist.pt:18
+msgid "Delete"
 msgstr ""
 
-#: ./browser/templates/actionslist.pt:115
-msgid "Move Up"
-msgstr ""
-
-#: ./browser/templates/actionslist.pt:117
-msgid "Move Down"
-msgstr ""
-
-#. Default: "Generate tabs for items other than folders"
-#: ./browser/templates/autogenerated.pt:46
-msgid "label_nonfolderish_tabs_enable"
-msgstr ""
-
-#: ./browser/plonetabs.py:843
-msgid "Empty or invalid title specified"
-msgstr ""
-
-#: ./browser/plonetabs.py
 msgid "Empty or invalid id specified"
 msgstr ""
 
-#: ./browser/plonetabs.py
-msgid "The id '${id}' is invalid - it is already in use."
+#: ./browser/plonetabs.py:873
+msgid "Empty or invalid title specified"
 msgstr ""
 
-#: ./browser/plonetabs.py
+#: ./browser/plonetabs.py:203
+msgid "Generated tabs switched off."
+msgstr ""
+
+#: ./browser/plonetabs.py:200
+msgid "Generated tabs switched on."
+msgstr ""
+
+#: ./browser/templates/actionslist.pt:84
+#: ./browser/templates/plonetabs.pt:138
+msgid "Icon (Expression)"
+msgstr ""
+
+#: ./browser/templates/actionslist.pt:99
+#: ./browser/templates/plonetabs.pt:125
+msgid "Id"
+msgstr ""
+
 msgid "Id must contain only ASCII characters."
 msgstr ""
 
-#: ./browser/plonetabs.py
-msgid "Unrecognized expression type '${expr_type}'."
-msgstr ""
-
-#: ./browser/plonetabs.py
 msgid "Invalid variable name '${expr}'"
 msgstr ""
 
-#: ./browser/templates/plonetabs.pt:81
+#: ./browser/templates/actionslist.pt:135
+msgid "Move Down"
+msgstr ""
+
+#: ./browser/templates/actionslist.pt:133
+msgid "Move Up"
+msgstr ""
+
+#: ./browser/templates/actionslist.pt:50
+#: ./browser/templates/plonetabs.pt:96
+msgid "Name"
+msgstr ""
+
+#: ./browser/plonetabs.py:348
+msgid "No '${id}' action in '${cat_name}' category."
+msgstr ""
+
+#: ./browser/plonetabs.py:183
+msgid "Please correct the indicated errors."
+msgstr ""
+
+#: ./browser/plonetabs.py:612
+msgid "Plone '${cat_name}' Configuration"
+msgstr ""
+
+#: ./browser/templates/actionslist.pt:131
+#: ./browser/templates/plonetabs.pt:166
+msgid "Reset"
+msgstr ""
+
+#: ./browser/templates/actionslist.pt:129
+#: ./browser/templates/autogenerated.pt:63
+msgid "Save"
+msgstr ""
+
+msgid "The id '${id}' is invalid - it is already in use."
+msgstr ""
+
+#: ./browser/plonetabs.py:430
+msgid "There was error while changed category"
+msgstr ""
+
+#: ./browser/plonetabs.py:406
+msgid "There was error while sorting, or list not changed"
+msgstr ""
+
+#: ./browser/templates/actionslist.pt:69
+#: ./browser/templates/plonetabs.pt:109
+msgid "URL (Expression)"
+msgstr ""
+
+msgid "Unrecognized expression type '${expr_type}'."
+msgstr ""
+
+#: ./browser/templates/plonetabs.pt:85
 msgid "Visible"
 msgstr ""
 
-#: ./browser/templates/plonetabs.pt:115
-msgid "Advanced"
+#. Default: "Generate tabs for items other than folders"
+#: ./browser/templates/autogenerated.pt:48
+msgid "label_nonfolderish_tabs_enable"
 msgstr ""
+
+#. Default: "Select category to manage"
+#: ./browser/templates/plonetabs.pt:52
+msgid "label_select_category"
+msgstr ""
+

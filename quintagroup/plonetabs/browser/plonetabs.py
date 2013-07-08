@@ -423,7 +423,7 @@ class PloneTabsControlPanel():
         if not errors:
             resp_dict['status_code'] = 200
             resp_dict['status_message'] = self.translate(
-                _("Category changed successfully"))
+                _("Category changed successfully."))
         else:
             resp_dict['status_code'] = 500
             resp_dict['status_message'] = self.translate(
