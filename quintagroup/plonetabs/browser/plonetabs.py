@@ -5,7 +5,6 @@ import json
 from Acquisition import aq_inner
 from DateTime import DateTime
 
-from zope.i18n import translate
 from zope.interface import implements
 from zope.component import getMultiAdapter
 
@@ -97,6 +96,11 @@ class PloneTabsControlPanel():
         elif postback:
             return self.template(errors=errors)
 
+    def translate(self, message):
+        """translate message"""
+        ts = getToolByName(self.context, 'translation_service')
+        return ts.translate(message, context=self.context)
+
     def submitted_postback(self, form, errors):
         """submitted postback"""
         if 'add.add' in form.keys():
@@ -171,11 +175,12 @@ class PloneTabsControlPanel():
             content = self.getActionsList(category=cat_name, tabs=[action, ])
             resp_dict['content'] = content
             resp_dict['status_code'] = 200
-            resp_dict[
-                'status_message'] = "%s action successfully added." % action.id
+            resp_dict['status_message'] = self.translate(
+                _(u"'${id}' action successfully added.",
+                  mapping={'id': action.id}))
         else:
-            resp_dict[
-                'status_message'] = "Please correct the indicated errors."
+            resp_dict['status_message'] = self.translate(
+                _("Please correct the indicated errors."))
             resp_dict['status_code'] = 500
             resp_dict['content'] = errors
         return resp_dict
@@ -192,10 +197,10 @@ class PloneTabsControlPanel():
         if not errors:
             if checked == 'true':
                 self.setSiteProperties(**{field: False})
-                message = _(u"Generated tabs switched on.")
+                message = self.translate(_(u"Generated tabs switched on."))
             else:
                 self.setSiteProperties(**{field: True})
-                message = _(u"Generated tabs switched off.")
+                message = self.translate(_(u"Generated tabs switched off."))
             content = self.getGeneratedTabs()
             resp_dict['content'] = content
             resp_dict['status_code'] = 200
@@ -230,9 +235,13 @@ class PloneTabsControlPanel():
             portal[obj_id].update(excludeFromNav=not checked)
 
             if checked:
-                message = "%s object was included into navigation." % obj_id
+                message = self.translate(
+                    _(u"'${id}' object was included into navigation.",
+                      mapping={'id': obj_id}))
             else:
-                message = "%s object was excluded from navigation." % obj_id
+                message = self.translate(
+                    _(u"'${id}' object was excluded from navigation.",
+                      mapping={'id': obj_id}))
             resp_dict['status_message'] = message
             resp_dict['status_code'] = 200
         else:
@@ -258,9 +267,13 @@ class PloneTabsControlPanel():
                 'visible': (checked == 'true') or False
             })
             if checked == 'true':
-                message = "%s action is now visible." % act_id
+                message = self.translate(
+                    _(u"'${id}' action is now visible.",
+                      mapping={'id': act_id}))
             else:
-                message = "%s action is now invisible." % act_id
+                message = self.translate(
+                    _(u"'${id}' action is now invisible.",
+                      mapping={'id': act_id}))
             resp_dict['status_message'] = message
             resp_dict['status_code'] = 200
         else:
@@ -280,8 +293,9 @@ class PloneTabsControlPanel():
             id, cat_name)
         if not errors:
             self.deleteAction(act_id, cat_name)
-            resp_dict[
-                'status_message'] = "%s action successfully removed." % act_id
+            resp_dict['status_message'] = self.translate(
+                _(u"'${id}' action successfully removed.",
+                  mapping={'id': act_id}))
             resp_dict['status_code'] = 200
         else:
             resp_dict['status_message'] = errors
@@ -301,7 +315,8 @@ class PloneTabsControlPanel():
         if not errors:
             content = self.getActionsList(category=cat_name, tabs=[action, ])
             resp_dict['content'] = content
-            resp_dict['status_message'] = "Changes discarded."
+            resp_dict['status_message'] = self.translate(
+                _(u"Changes discarded."))
             resp_dict['status_code'] = 200
         else:
             resp_dict['status_message'] = errors
@@ -320,13 +335,18 @@ class PloneTabsControlPanel():
         try:
             category = self.getActionCategory(cat_name)
         except Exception:
-            errors.append("%s action category does not exist." % cat_name)
+            errors.append(
+                self.translate(
+                    _(u"'${cat_name}' action category does not exist.",
+                      mapping={'cat_name': cat_name})))
 
         try:
             action = category[act_id]
         except Exception:
-            errors.append("No %s action in %s category." %
-                         (act_id, cat_name))
+            errors.append(
+                self.translate(
+                    _(u"No '${id}' action in '${cat_name}' category.",
+                      mapping={'id': act_id, 'cat_name': cat_name})))
         return (act_id, category, action, errors)
 
     def manage_ajax_saveAction(self, form, errs):
@@ -348,13 +368,16 @@ class PloneTabsControlPanel():
             resp_dict = {
                 'content': content,
                 'status_code': 200,
-                'status_message': "%s action successfully updated." % action.id
+                'status_message': self.translate(
+                    _(u"'${id}' action successfully updated.",
+                      mapping={'id': action.id}))
             }
         else:
             resp_dict = {
                 'content': errors,
                 'status_code': 500,
-                'status_message': "Please correct the indicated errors."
+                'status_message': self.translate(
+                    _("Please correct the indicated errors."))
             }
         return resp_dict
 
@@ -373,15 +396,14 @@ class PloneTabsControlPanel():
         if resp:
             resp_dict = {
                 'status_code': 200,
-                'status_message': "Actions successfully sorted."
+                'status_message': self.translate(
+                    _("Actions successfully sorted."))
             }
-            resp_dict['status_code'] = 200
-            resp_dict['status_message'] = "Actions successfully sorted."
         else:
             resp_dict = {
                 'status_code': 500,
-                'status_message': "There was error while sorting, or list not"
-                " changed"
+                'status_message': self.translate(
+                    _("There was error while sorting, or list not changed"))
             }
         return resp_dict
 
@@ -396,17 +418,16 @@ class PloneTabsControlPanel():
         # update autogenerated sections
         resp_dict['section'] = self.getAutoGenereatedSection(cat_name)
         # and title
-        ts = getToolByName(self.context, 'translation_service')
-        resp_dict['title'] = ts.translate(
-            self.getPageTitle(cat_name), context=self.context)
+        resp_dict['title'] = self.translate(self.getPageTitle(cat_name))
 
         if not errors:
             resp_dict['status_code'] = 200
-            resp_dict['status_message'] = "Category changed successfully"
+            resp_dict['status_message'] = self.translate(
+                _("Category changed successfully"))
         else:
             resp_dict['status_code'] = 500
-            resp_dict[
-                'status_message'] = "There was error while changed category"
+            resp_dict['status_message'] = self.translate(
+                _("There was error while changed category"))
 
         return resp_dict
 
@@ -848,7 +869,8 @@ class PloneTabsControlPanel():
 
         # validate action name
         if not data['title'].strip():
-            errors['title'] = _(u"Empty or invalid title specified")
+            errors['title'] = self.translate(
+                _(u"Empty or invalid title specified"))
 
         # validate condition expression
         self._validate_expression('available_expr', data, errors)
@@ -872,7 +894,7 @@ class PloneTabsControlPanel():
             # trying to work around zope.i18n issue
             mapping[key] = unicode(value, charset)
         message = message.strip()
-        return translate(_(unicode(message, charset), mapping=mapping))
+        return self.translate(_(unicode(message, charset), mapping=mapping))
 
     def processErrors(self, errors, prefix='', sufix=''):
         """Add prefixes, sufixes to error ids
