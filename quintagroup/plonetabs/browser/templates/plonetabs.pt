@@ -6,6 +6,11 @@
       metal:use-macro="context/prefs_main_template/macros/master"
       i18n:domain="quintagroup.plonetabs">
 
+<head>
+<metal:javascriptslot fill-slot="javascript_head_slot"> 
+    <script tal:attributes="src string:${portal_url}/++resource++sortable.js"></script>
+    <script tal:attributes="src string:${portal_url}/++resource++plonetabs.js"></script>
+</metal:javascriptslot>
 <body>
 
 <div metal:fill-slot="prefs_configlet_main"
@@ -167,8 +172,6 @@
 </div>
 
 </div>
-<script tal:attributes="src string:${portal_url}/++resource++sortable.js"></script>
-<script tal:attributes="src string:${portal_url}/++resource++plonetabs.js"></script>
 </div>
 
 </body>
