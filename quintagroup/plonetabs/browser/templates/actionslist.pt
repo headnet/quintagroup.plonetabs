@@ -61,6 +61,21 @@
       <dl class="collapseAdvanced collapsedBlock">
         <dt class="headerAdvanced" i18n:translate="">Advanced</dt>
         <dd class="contentAdvanced">
+          <dl class="edit-field-description"
+              tal:define="name string:description_${id};
+                          error python:errors.get(name, '');
+                          tab_url tab/description"
+              tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
+            <dt><label tal:attributes="for name"
+                       i18n:translate="">Description</label></dt>
+            <dd>
+              <span class="error-container" tal:content="error"
+                    i18n:translate="">Validation error output</span>
+              <input type="text" value="" name="description"     size="30"
+                     tal:attributes="value python:test(request.get(name, []) != [], request.get(name), tab_url);
+                                     name name;
+                                     id name" /></dd>
+          </dl>
           <dl class="edit-field-action"
               tal:define="name string:url_expr_${id};
                           error python:errors.get(name, '');

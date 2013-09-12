@@ -43,6 +43,7 @@
 .kssTabsActive .bridge,
 .qPloneTabs .drag-handle,
 .kssTabsActive .field-action,
+.kssTabsActive .field-description,
 .kssTabsActive .collapsedBlock .contentAdvanced,
 #addaction .headerAdvanced,
 .qPloneTabs .headerAdvanced,
@@ -57,12 +58,15 @@
 .kssTabsActive li.editing .edit-fields-wrapper,
 .kssTabsActive .adding .bridge,
 .adding .field-action,
+.adding .field-description,
 .adding .collapseAdvanced,
 .kssTabsActive .headerAdvanced,
 .kssTabsActive #addaction.adding .headerAdvanced,
 .adding .add-controls,
 .kssTabsActive .expandedBlock .contentAdvanced,
-.kssTabsActive .field-action label {
+.kssTabsActive .adding .field-name label,
+.kssTabsActive .field-action label,
+.kssTabsActive .field-description label {
   display:block;
   }
 .kssTabsActive li:hover .bridge,
@@ -229,10 +233,14 @@
 .kssTabsActive #addaction {
   width:32.5em;
   }
-#addaction .field-action {
+#addaction .field-name,
+#addaction .field-action,
+#addaction .field-description {
   position:relative;
   }
-#addaction .field-action label {
+#addaction .field-name label,
+#addaction .field-action label,
+#addaction .field-description label  {
   bottom:0;
   color: #8cacbb;
   font-size:80%;
@@ -241,7 +249,9 @@
   position:absolute;
   right:0.5em;
   }
-#addaction.adding .field-action input {
+#addaction.adding .field-name input,
+#addaction.adding .field-action input,
+#addaction.adding .field-description input {
   margin-top:0.1em; 
   padding-right:9em;
   width:23.3em;

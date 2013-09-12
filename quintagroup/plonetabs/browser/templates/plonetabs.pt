@@ -102,6 +102,19 @@
                tal:attributes="value request/title|nothing"/>
       </dd>
     </dl>
+    <dl class="field-description"
+        tal:define="error errors/description|nothing"
+        tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
+      <dt>
+        <label for="actdescription" i18n:translate="">Description</label>
+      </dt>
+      <dd>
+        <span class="error-container" tal:content="error"
+              i18n:translate="">Validation error output</span>
+        <input id="actdescription" type="text" value="" size="30" name="description"
+               tal:attributes="value request/description|nothing"/>
+      </dd>
+    </dl>
     <dl class="field-action"
         tal:define="error errors/url_expr|nothing"
         tal:attributes="class python:test(error, '%s error' % attrs['class'], attrs['class'])">
