@@ -108,12 +108,14 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
                 'visible_id1': True,
                 'id_id1': 'id_new',
                 'title_id1': 'title1',
+                'description_id1': 'description1',
                 'url_expr_id1': 'expr1',
                 'available_expr_id1': 'expr2',
                 'icon_expr_id1': 'expr3'}
         self.assertEquals(method(form),
                           ('id1', 'cat1', {'id': 'id_new',
                                            'title': 'title1',
+                                           'description': 'description1',
                                            'url_expr': 'expr1',
                                            'available_expr': 'expr2',
                                            'icon_expr': 'expr3',
@@ -129,6 +131,7 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
                 'category': 'cat1',
                 'visible': True,
                 'title': 'title1',
+                'description': 'description1',
                 'url_expr': 'string:expr1',
                 'available_expr': 'expr2',
                 'icon_expr': 'expr3'}
@@ -136,6 +139,7 @@ class TestControlPanelHelperMethods(PloneTabsTestCase):
                           ('id1', 'cat1', {'id': 'id1',
                                            'visible': True,
                                            'title': 'title1',
+                                           'description': 'description1',
                                            'url_expr': 'string:expr1',
                                            'available_expr': 'expr2',
                                            'icon_expr': 'expr3'}),
@@ -431,6 +435,7 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
                 'category': 'cat1',
                 'visible': True,
                 'title': 'title1',
+                'description': 'description1',
                 'url_expr': 'string:expr1',
                 'available_expr': 'expr2',
                 'icon_expr': 'expr3'}
@@ -448,6 +453,7 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
                 'visible_home': True,
                 'id_home': 'id_new',
                 'title_home': 'title1',
+                'description_home': 'description1',
                 'url_expr_home': 'expr1',
                 'available_expr_home': 'expr2',
                 'icon_expr_home': 'expr3'}
@@ -470,6 +476,7 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
                 'visible_home': True,
                 'id_home': 'id_new',
                 'title_home': 'title1',
+                'description_home': 'description1',
                 'url_expr_home': 'expr1',
                 'available_expr_home': 'expr2',
                 'icon_expr_home': 'expr3'}
@@ -484,6 +491,7 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
                 'visible_quintagroup': True,
                 'id_quintagroup': 'quintagroup',
                 'title_quintagroup': 'title1',
+                'description_quintagroup': 'description1',
                 'url_expr_quintagroup': 'expr1',
                 'available_expr_quintagroup': 'expr2',
                 'icon_expr_quintagroup': 'expr3'}
@@ -499,6 +507,7 @@ class TestControlPanelManageMethods(PloneTabsTestCase):
                 'visible_home': True,
                 'id_home': 'home',
                 'title_home': 'title1',
+                'description_home': 'description1',
                 'url_expr_home': 'expr1',
                 'available_expr_home': 'expr2',
                 'icon_expr_home': 'expr3'}
