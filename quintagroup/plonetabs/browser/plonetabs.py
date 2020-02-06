@@ -5,7 +5,7 @@ import json
 from Acquisition import aq_inner
 from DateTime import DateTime
 
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import getMultiAdapter
 
 # BBB: compatibility with older plone versions
@@ -34,7 +34,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 from quintagroup.plonetabs.config import PROPERTY_SHEET, FIELD_NAME
 from quintagroup.plonetabs.utils import setupViewletByName
 from quintagroup.plonetabs import messageFactory as _
-from interfaces import IPloneTabsControlPanel
+from .interfaces import IPloneTabsControlPanel
 
 ACTION_ATTRS = ["id", "title", "description", "url_expr",
                 "icon_expr", "available_expr", "visible"]
@@ -51,9 +51,8 @@ bad_id = re.compile(r'[^a-zA-Z0-9-_~,.$\(\)# @]').search
 cookie_name = 'ploneTabsMode'
 
 
+@implementer(IPloneTabsControlPanel)
 class PloneTabsControlPanel():
-
-    implements(IPloneTabsControlPanel)
 
     template = ViewPageTemplateFile("templates/plonetabs.pt")
     actionslist_template = ViewPageTemplateFile("templates/actionslist.pt")
@@ -842,7 +841,7 @@ class PloneTabsControlPanel():
         if data[name]:
             try:
                 Expression(data[name])
-            except Exception, e:
+            except Exception as e:
                 mapping = {'expr': data[name]}
                 idx = data[name].find(':')
                 if idx != -1:
@@ -865,7 +864,7 @@ class PloneTabsControlPanel():
         chooser = INameChooser(category)
         try:
             chooser.checkName(data['id'], self.context)
-        except Exception, e:
+        except Exception as e:
             errors['id'] = self._formatError(e, **{'id': data['id']})
 
         # validate action name
